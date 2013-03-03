@@ -1,7 +1,6 @@
 package ch.sipama.View;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
+
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -14,7 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
 
 
 /**
@@ -23,11 +22,14 @@ import javax.swing.JTabbedPane;
  */
 
 
-public class Hauptgui {
+public class Hauptgui extends JPanel {
 	
+	/**
+	 * 
+	 */
 	//Instanzvariablen
+	private static final long serialVersionUID = 1L;
 	private JFrame frame;
-	private Container contentPane;
 	
 	
 	//Defaultkonstruktor
@@ -42,29 +44,26 @@ public class Hauptgui {
 		//Rahmen erstellen
 		frame = new JFrame("Juniper Green");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Spielfenster spielfenster = new Spielfenster();
+		frame.getContentPane().add(spielfenster.getSplitPane());
 		
-		//MenÃ¼bar einbinden, indem die entsprechende Methode aufgerufen wird
+		
+		//Menübar einbinden, indem die entsprechende Methode aufgerufen wird
 		createMenuBar();
 		
-		//TabbedPane-Layout erstellen
-		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.addTab("Spiel", new Feld());
 		
-		//TabbedPane in den Rahmen einfÃ¼gen
-		contentPane = frame.getContentPane();
-		contentPane.setLayout(new BorderLayout());
-		contentPane.add(tabbedPane, BorderLayout.CENTER);
 			
 		//Rahmengrösse definieren und sichtbar setzen
-		frame.setBounds(200, 150, 650, 450);
+		frame.setBounds(200, 150, 950, 450);
 		frame.setMinimumSize(new Dimension(450, 300));
 		frame.setVisible(true);
+		
 		
 		
 	}
 	
 	
-	//MenÃ¼bar erstellen
+	//Menübar erstellen
 	public void createMenuBar(){
 		JMenuBar bar = new JMenuBar();
 		frame.setJMenuBar(bar);
