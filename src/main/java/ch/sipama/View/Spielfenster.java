@@ -2,8 +2,10 @@ package ch.sipama.View;
 
 import java.awt.Dimension;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -49,14 +51,32 @@ public class Spielfenster {
 		SpringLayout layout = new SpringLayout();
 		einstellungen.setLayout(layout);
 		
+		JRadioButton spielerA = new JRadioButton("Spieler A");
+		JRadioButton spielerB = new JRadioButton("Spieler B");
 		
-		JButton testbutton = new JButton("Test");
+		spielerA.setSelected( true );
+		ButtonGroup spielergruppe = new ButtonGroup();
+		spielergruppe.add( spielerA ); spielergruppe.add( spielerB );
+		
+		
+		einstellungen.add(spielerA);
+		einstellungen.add(spielerB);
+		
+		
+		
+		JButton testbutton = new JButton("Neustart");
 		einstellungen.add(testbutton);
 		
 		
 
 		layout.putConstraint(SpringLayout.NORTH, testbutton, 5,	SpringLayout.NORTH, einstellungen);
 		layout.putConstraint(SpringLayout.WEST, testbutton, 5, SpringLayout.WEST, einstellungen);
+		
+		layout.putConstraint(SpringLayout.NORTH, spielerA, 35,	SpringLayout.NORTH, einstellungen);
+		layout.putConstraint(SpringLayout.WEST, spielerA, 5, SpringLayout.WEST, einstellungen);
+		layout.putConstraint(SpringLayout.NORTH, spielerB, 24, SpringLayout.NORTH, spielerA);
+		layout.putConstraint(SpringLayout.WEST, spielerB, 5, SpringLayout.WEST, einstellungen);
+		
 		
 		
 		JScrollPane einstellungenScrollPane = new JScrollPane(einstellungen);
