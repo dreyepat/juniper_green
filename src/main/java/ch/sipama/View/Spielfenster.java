@@ -1,101 +1,175 @@
 package ch.sipama.View;
 
-import java.awt.Dimension;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.SpringLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class Spielfenster {
-	
+
 	//Instanzvariablen
+	private JTextField txtZahlenraum;
 	private JTable zahlenfeld;
 	private JPanel einstellungen;
 	private JSplitPane splitPane;
-	
-	
+	private DefaultTableModel model;
+	private JScrollPane einstellungenScrollPane;
+	private JScrollPane feldScrollPane;
+	private final Object lock = new Object();
+
+
 	public Spielfenster(){
-		
-		String[] columnNames = { "a", "b", "c",	"d", "e", "f", "g", "h", "i", "j" };
 
-		//Inhalt füllen
-		Object[][] data = {
-				
-				{ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" },
-				{ "11", "12","13", "14", "15", "16", "17", "18", "19", "20" },
-				{ "21", "22","23", "24", "25", "26", "27", "28", "29", "30" },
-				{ "31", "32","33", "34", "35", "36", "37", "38", "39", "40" },
-				{ "41", "42","43", "44", "45", "46", "47", "48", "49", "50" },
-				{ "51", "52","53", "54", "55", "56", "57", "58", "59", "60" },
-				{ "61", "62","63", "64", "65", "66", "67", "68", "69", "70" },
-				{ "71", "72","73", "74", "75", "76", "77", "78", "79", "80" },
-				{ "81", "82","83", "84", "85", "86", "87", "88", "89", "90" },
-				{ "91", "92","93", "94", "95", "96", "97", "98", "99", "100" },
-				
-			 };
+		feldScrollPane = new JScrollPane(zahlenfeld);
 
-		// Tabelle erstellen
-		zahlenfeld = new JTable(data, columnNames);
-		zahlenfeld.setTableHeader(null);
-		
-		JScrollPane feldScrollPane = new JScrollPane(zahlenfeld);
-		
-		
-		
 		einstellungen = new JPanel();
 		SpringLayout layout = new SpringLayout();
 		einstellungen.setLayout(layout);
-		
+
 		JRadioButton spielerA = new JRadioButton("Spieler A");
 		JRadioButton spielerB = new JRadioButton("Spieler B");
-		
-		spielerA.setSelected( true );
+
+		spielerA.setSelected(true);
 		ButtonGroup spielergruppe = new ButtonGroup();
 		spielergruppe.add( spielerA ); spielergruppe.add( spielerB );
-		
-		
+		//		spielerA.setForeground(Color.red);
+		//		spielerA.setBackground(Color.black);
+		//		spielerA.setEnabled(false);
+		//		spielerB.setEnabled(false);
+
 		einstellungen.add(spielerA);
 		einstellungen.add(spielerB);
-		
-		
-		
-		JButton testbutton = new JButton("Neustart");
-		einstellungen.add(testbutton);
-		
-		
 
-		layout.putConstraint(SpringLayout.NORTH, testbutton, 5,	SpringLayout.NORTH, einstellungen);
-		layout.putConstraint(SpringLayout.WEST, testbutton, 5, SpringLayout.WEST, einstellungen);
-		
-		layout.putConstraint(SpringLayout.NORTH, spielerA, 35,	SpringLayout.NORTH, einstellungen);
+		JButton btnNeustart = new JButton("Neustart");
+		einstellungen.add(btnNeustart);
+		btnNeustart.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				spielNeustarten();
+			}
+		});
+
+
+		JLabel lblZahlenraum = new JLabel("Zahlenraum:");
+		einstellungen.add(lblZahlenraum);
+
+		txtZahlenraum = new JTextField(5);
+		einstellungen.add(txtZahlenraum);
+		txtZahlenraum.setHorizontalAlignment(JTextField.RIGHT);
+
+		layout.putConstraint(SpringLayout.NORTH, lblZahlenraum, 8, SpringLayout.NORTH, einstellungen);
+		layout.putConstraint(SpringLayout.WEST, lblZahlenraum, 5, SpringLayout.WEST, einstellungen);
+		layout.putConstraint(SpringLayout.NORTH, txtZahlenraum, 5, SpringLayout.NORTH, einstellungen);
+		layout.putConstraint(SpringLayout.WEST, txtZahlenraum, 10, SpringLayout.EAST, lblZahlenraum);
+
+		layout.putConstraint(SpringLayout.NORTH, btnNeustart, 10, SpringLayout.SOUTH, lblZahlenraum);
+		layout.putConstraint(SpringLayout.WEST, btnNeustart, 5, SpringLayout.WEST, einstellungen);
+
+		layout.putConstraint(SpringLayout.NORTH, spielerA, 20,	SpringLayout.SOUTH, btnNeustart);
 		layout.putConstraint(SpringLayout.WEST, spielerA, 5, SpringLayout.WEST, einstellungen);
-		layout.putConstraint(SpringLayout.NORTH, spielerB, 24, SpringLayout.NORTH, spielerA);
+		layout.putConstraint(SpringLayout.NORTH, spielerB, 20, SpringLayout.NORTH, spielerA);
 		layout.putConstraint(SpringLayout.WEST, spielerB, 5, SpringLayout.WEST, einstellungen);
-		
-		
-		
-		JScrollPane einstellungenScrollPane = new JScrollPane(einstellungen);
-		
-		
-		
-		
+
+		einstellungenScrollPane = new JScrollPane(einstellungen);
+
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, feldScrollPane, einstellungenScrollPane);
 		splitPane.setOneTouchExpandable(false);
 		splitPane.setDividerLocation(650);
-		
 		splitPane.setPreferredSize(new Dimension(900, 600));
-		
-		
-		
+
+
+
+	}
+
+	public JSplitPane getSplitPane() {
+		return splitPane;
+	}
+
+	public String getZahlenraum(){
+		return txtZahlenraum.getText();
+	}
+
+
+	public void spielNeustarten(){
+		try{
+			int zRaum = Integer.parseInt(getZahlenraum());
+			tabelleZeichnen(zRaum);
+			txtZahlenraum.setText("");
+		}catch (NumberFormatException nfe){
+			JOptionPane.showMessageDialog(null, "Trage eine Zahl zwischen 10 und 1000 ein!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+			txtZahlenraum.setText("");
+		}	
+	}
+
+
+	public void tabelleZeichnen(int zRaum){
+
+		if(zRaum < 10 || zRaum > 1000){
+			JOptionPane.showMessageDialog(null, "Trage eine Zahl zwischen 10 und 1000 ein!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+			txtZahlenraum.setText("");
+		}else if(zRaum <= 100){
+			Vector<String> columnNames = new Vector<String>();
+			for (int i=0; i<10; i++){
+				columnNames.add(""+i);
+			}
+
+			//Neue DefaultTableModel erstellen und die Spaltentitel hinzufügen			
+			model = new DefaultTableModel( columnNames, 0 );
+
+			for(int i=0; i<10; i++){
+				Vector<String> zeile = new Vector<String>();
+				for(int j=0; j<(zRaum/10); j++){
+					zeile.add("" + (10*i+(j+1)));
+				}
+				model.addRow(zeile);
+			}
+		}else{
+			Vector<String> columnNames = new Vector<String>();
+			for (int i=0; i<20; i++){
+				columnNames.add(""+i);
+			}
+
+			//Neue DefaultTableModel erstellen und die Spaltentitel hinzufügen			
+			model = new DefaultTableModel( columnNames, 0 );
+
+			for(int i=0; i<10; i++){
+				Vector<String> zeile = new Vector<String>();
+				for(int j=0; j<(zRaum/20); j++){
+					zeile.add("" + (20*i+(j+1)));
+				}
+				model.addRow(zeile);
+			}
+		}
+
+		// Tabelle erstellen
+		zahlenfeld = new JTable(model);
+		zahlenfeld.setTableHeader(null);
+		feldScrollPane.add(zahlenfeld);
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, feldScrollPane, einstellungenScrollPane);
+//		refresh2();
+//		tabellenRefresh();
+		splitPane.repaint();
+
 	}
 	
-	public JSplitPane getSplitPane() {
-        return splitPane;
-    }
+	public void tabellenRefresh(){
+		Thread t = new Thread (new Runnable(){
+			@Override
+			public void run(){
+				synchronized(lock){
+					refresh2();
+				}
+			}
+		});
+		t.start();
+	}
+	
+	public void refresh2(){
+		zahlenfeld.repaint();
+	}
 
 }
