@@ -93,8 +93,11 @@ public class Spielfenster {
 			if(zRange < 10 || zRange > 1000){
 				JOptionPane.showMessageDialog(null, "Trage eine Zahl zwischen 10 und 1000 ein!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 			}
-			zFeld.neueTabelle(zRange);
-			zFeld.tabelleAktualisieren();
+			else{
+				zFeld.neueTabelle(zRange);
+				zFeld.tabelleAktualisieren();
+			}
+			
 			
 		}catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(null, "Trage eine Zahl zwischen 10 und 1000 ein!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
