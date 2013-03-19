@@ -11,7 +11,7 @@ bin-release/
 # information for Eclipse / Flash Builder.
 
 target/**
-.classpath
+# .classpath
 .project
 
 .metadata/**
