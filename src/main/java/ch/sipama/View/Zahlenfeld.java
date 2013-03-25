@@ -2,8 +2,8 @@ package ch.sipama.View;
 
 import java.util.Vector;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-
 
 public class Zahlenfeld {
 	private int zahlenrange;
@@ -39,6 +39,8 @@ public class Zahlenfeld {
 				model.setValueAt("", model.getRowCount()-1, model.getColumnCount()-(k+1));
 
 			}
+			
+			model.isCellEditable(anzZeilen, zahlenrange/10);
 
 		}else{
 			
@@ -73,8 +75,15 @@ public class Zahlenfeld {
 
 
 	public void tabelleUebernehmen(){
+		
 		zahlenfeld = new JTable(model);
 		zahlenfeld.setTableHeader(null);
+		zahlenfeld.setFillsViewportHeight(true);
+		zahlenfeld.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		zahlenfeld.setRowSelectionAllowed(true);
+        zahlenfeld.setColumnSelectionAllowed(true);
+   //   zahlenfeld.setDefaultEditor( Object.class, new TestEditor());
+	
 	}
 
 	public void tabelleAktualisieren(){
@@ -84,7 +93,11 @@ public class Zahlenfeld {
 	public JTable getZahlenfeld(){
 		return zahlenfeld;
 	}
-
+	
+	public DefaultTableModel getModel(){
+		return model;
+	}
+	
 
 	public void neueTabelle(int zRange){
 		int range = zRange;
@@ -104,4 +117,26 @@ public class Zahlenfeld {
 		this.zahlenrange=range;
 		tabelleZeichnen();
 	}
+	
+
+	
+    public boolean isCellEditable(int row, int col) {
+        //Note that the data/cell address is constant,
+        //no matter where the cell appears onscreen.
+    	if (col < 2) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    
+    public void spielzug(){
+    	int row = zahlenfeld.getSelectedRow();
+    	int column = zahlenfeld.getSelectedColumn();
+    	model.setValueAt("test", row, column);
+    	zahlenfeld.clearSelection();
+    }
+    
+    
 }

@@ -51,6 +51,18 @@ public class Spielfenster {
 			}
 		});
 
+		
+		JButton btnSpielzug = new JButton("Zahl ziehen");
+		einstellungen.add(btnSpielzug);
+		btnSpielzug.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				spielzug();
+				
+			}
+		});
+		
+		
 		JLabel lblZahlenraum = new JLabel("Zahlenraum:");
 		einstellungen.add(lblZahlenraum);
 
@@ -71,11 +83,15 @@ public class Spielfenster {
 		layout.putConstraint(SpringLayout.WEST, spielerA, 5, SpringLayout.WEST, einstellungen);
 		layout.putConstraint(SpringLayout.NORTH, spielerB, 20, SpringLayout.NORTH, spielerA);
 		layout.putConstraint(SpringLayout.WEST, spielerB, 5, SpringLayout.WEST, einstellungen);
+		
+		layout.putConstraint(SpringLayout.NORTH, btnSpielzug, 20, SpringLayout.SOUTH, spielerB);
+		layout.putConstraint(SpringLayout.WEST, btnSpielzug, 5, SpringLayout.WEST, einstellungen);
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, feldScrollPane, einstellungenScrollPane);
 		splitPane.setOneTouchExpandable(false);
 		splitPane.setDividerLocation(650);
 		splitPane.setPreferredSize(new Dimension(900, 600));
+		
 
 	}
 
@@ -104,4 +120,11 @@ public class Spielfenster {
 		}
 		txtZahlenraum.setText("");
 	}
+	
+	public void spielzug(){
+		zFeld.spielzug();
+	}
+	
+	
+	
 }
