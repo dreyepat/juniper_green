@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Zahlenfeld {
 	private int zahlenrange;
+	
 	private DefaultTableModel model;
 	private JTable zahlenfeld = new JTable();
 
@@ -78,11 +79,9 @@ public class Zahlenfeld {
 		
 		zahlenfeld = new JTable(model);
 		zahlenfeld.setTableHeader(null);
-		zahlenfeld.setFillsViewportHeight(true);
 		zahlenfeld.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		zahlenfeld.setRowSelectionAllowed(true);
         zahlenfeld.setColumnSelectionAllowed(true);
-   //   zahlenfeld.setDefaultEditor( Object.class, new TestEditor());
 	
 	}
 
@@ -121,21 +120,17 @@ public class Zahlenfeld {
 
 	
     public boolean isCellEditable(int row, int col) {
-        //Note that the data/cell address is constant,
-        //no matter where the cell appears onscreen.
-    	if (col < 2) {
             return false;
-        } else {
-            return true;
-        }
     }
     
     
-    public void spielzug(){
+    public String spielzug(){
     	int row = zahlenfeld.getSelectedRow();
     	int column = zahlenfeld.getSelectedColumn();
-    	model.setValueAt("test", row, column);
+    	String gezZahl = (String) model.getValueAt(row, column);
+    	model.setValueAt("", row, column);
     	zahlenfeld.clearSelection();
+    	return gezZahl;
     }
     
     

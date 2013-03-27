@@ -15,6 +15,7 @@ public class Spielfenster {
 	private JScrollPane einstellungenScrollPane;
 	private JScrollPane feldScrollPane;
 	private Zahlenfeld zFeld;
+	private JLabel gezZahl;
 
 	public Spielfenster(){
 
@@ -41,6 +42,9 @@ public class Spielfenster {
 
 		einstellungen.add(spielerA);
 		einstellungen.add(spielerB);
+		
+		gezZahl = new JLabel("Ziehe eine gerade Zahl!");
+		einstellungen.add(gezZahl);
 
 		JButton btnNeustart = new JButton("Neustart");
 		einstellungen.add(btnNeustart);
@@ -84,7 +88,10 @@ public class Spielfenster {
 		layout.putConstraint(SpringLayout.NORTH, spielerB, 20, SpringLayout.NORTH, spielerA);
 		layout.putConstraint(SpringLayout.WEST, spielerB, 5, SpringLayout.WEST, einstellungen);
 		
-		layout.putConstraint(SpringLayout.NORTH, btnSpielzug, 20, SpringLayout.SOUTH, spielerB);
+		layout.putConstraint(SpringLayout.NORTH, gezZahl, 20, SpringLayout.SOUTH, spielerB);
+		layout.putConstraint(SpringLayout.WEST, gezZahl, 5, SpringLayout.WEST, einstellungen);
+		
+		layout.putConstraint(SpringLayout.NORTH, btnSpielzug, 20, SpringLayout.SOUTH, gezZahl);
 		layout.putConstraint(SpringLayout.WEST, btnSpielzug, 5, SpringLayout.WEST, einstellungen);
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, feldScrollPane, einstellungenScrollPane);
@@ -112,6 +119,7 @@ public class Spielfenster {
 			else{
 				zFeld.neueTabelle(zRange);
 				zFeld.tabelleAktualisieren();
+				gezZahl.setText("Ziehe eine gerade Zahl!");
 			}
 			
 			
@@ -122,7 +130,7 @@ public class Spielfenster {
 	}
 	
 	public void spielzug(){
-		zFeld.spielzug();
+		gezZahl.setText("Zuletzt gezogene Zahl: " + zFeld.spielzug());
 	}
 	
 	
