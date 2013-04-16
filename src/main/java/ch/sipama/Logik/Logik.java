@@ -4,6 +4,7 @@ package ch.sipama.Logik;
  * @author Marco Lamm - 01.04.2013
  * 
  * Class is not connected to others - own main method for testing
+ * 2 different varaitions
  * 
  */
 
@@ -12,13 +13,15 @@ public class Logik {
 	private int x = 2;
 	private int y = 48;
 	int[] zahlen = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-			18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,31,32,33,34,35,36,37,38,39,40 };
-
+			18, 19, 20 };
+	int a=zahlen[6];  // first chosen number
+	
 	public Logik() {
-		// zahlGerade();
-		backtrack();
+//		backtrack1();
+		backtrack2();
 	}
 
+	//  Variante 1---Methode:backtrack1()-----------------------------------------------------------------------------------------------------
 	public void zahlGerade() {
 		if (x % 2 == 0) {
 			System.out.println("Zahl " + x
@@ -39,27 +42,60 @@ public class Logik {
 					+ " muss Teiler oder Vielfaches von " + x + " sein");
 		}
 	}
-//sucht alle Zahlen aus Sammlung "zahlen" mit Logic JuniperGreen-beginnt mit höchster GeradZahl und sucht nur nach unten
-	public void backtrack() {
+
+	// sucht alle Zahlen aus Sammlung "zahlen" mit Logic JuniperGreen-beginnt
+	// mit höchster GeradZahl und sucht nur nach unten
+	public void backtrack1() {
 		for (int i = zahlen.length; i > 0; i--) {
 			if (zahlen[i - 1] % 2 == 0) {
 				System.out.println(zahlen[i - 1]);
 
 				for (int k = i - 2; k >= 0; k--) {
 					if (zahlen[k] % zahlen[i - 1] == 0
-							|| zahlen[i - 1] % zahlen[k] == 0 ) {
+							|| zahlen[i - 1] % zahlen[k] == 0) {
 						System.out.println(zahlen[k]);
 						i = k + 1;
 					}
 				}
 				i--;
-			}else{
+			} else {
 				System.out.println("Du musst mit einer geraden Zahl beginnen");
 				break;
 			}
 		}
 
 	}
+
+//   Variante 2--Methode:backtrack2() ------------------------------------------------------------------------------------------------------
+
+	public boolean zahlGerade2(int a) {
+		if (a % 2 == 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean zahlCheck2() {
+		if (x % y == 0 || y % x == 0) {
+			return true;
+		}
+		return false;
+
+	}
+	
+	public void backtrack2() {
+
+		if (zahlGerade2(a) == false) {
+			System.out.println(" Wähle eine gerade Zahl! "+a+" ist ungerade");
+
+		} else {
+			System.out.println("OK!  die Zahl " + a + " ist gerade-Danke");
+		}
+		
+		
+	}
+		
+	
 
 	public static void main(String[] args) {
 		new Logik();
