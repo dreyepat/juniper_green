@@ -1,16 +1,21 @@
 package ch.sipama.View;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-public class Zahlenfeld {
+public class Zahlenfeld{
+
 	private int zahlenrange;
-	
 	private DefaultTableModel model;
 	private JTable zahlenfeld = new JTable();
-
+	
+	
+	
+	
 	public void tabelleZeichnen(){
 		if(zahlenrange <= 150){
 			int anzZeilen=zahlenrange/10;
@@ -72,6 +77,8 @@ public class Zahlenfeld {
 				model.setValueAt("", model.getRowCount()-1, model.getColumnCount()-(k+1));
 			}
 		}
+		
+		
 	}
 
 
@@ -82,6 +89,8 @@ public class Zahlenfeld {
 		zahlenfeld.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		zahlenfeld.setRowSelectionAllowed(true);
         zahlenfeld.setColumnSelectionAllowed(true);
+        
+        
 	
 	}
 
@@ -118,6 +127,20 @@ public class Zahlenfeld {
 	}
 	
 
+	public boolean icCellEditable(){
+		zahlenfeld.addMouseListener( new MouseAdapter()
+	    {
+	      @Override
+	      public void mouseClicked( MouseEvent e )
+	      {
+	        int rowAtPoint    = zahlenfeld.rowAtPoint(e.getPoint());
+	        int columnAtPoint = zahlenfeld.columnAtPoint(e.getPoint());
+	        isCellEditable(rowAtPoint, columnAtPoint);
+	        System.out.println(zahlenfeld.getValueAt(rowAtPoint, columnAtPoint));
+	      }
+	    } );
+		return false;
+	}
 	
     public boolean isCellEditable(int row, int col) {
             return false;
@@ -132,6 +155,7 @@ public class Zahlenfeld {
     	zahlenfeld.clearSelection();
     	return gezZahl;
     }
+	
     
     
 }

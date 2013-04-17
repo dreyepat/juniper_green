@@ -4,7 +4,7 @@ package ch.sipama.Logik;
  * @author Marco Lamm - 01.04.2013
  * 
  * Class is not connected to others - own main method for testing
- * 2 different varaitions
+ * 2 different variations
  * 
  */
 
