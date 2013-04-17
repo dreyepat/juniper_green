@@ -14,6 +14,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import ch.sipama.Logik.Spieldaten;
 
 
 /**
@@ -30,11 +31,13 @@ public class Hauptgui extends JPanel {
 	//Instanzvariablen
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
+	private Spieldaten spieldaten;
 	
 	
 	//Defaultkonstruktor
 	public Hauptgui(){
 		createFrame();
+		spieldaten = new Spieldaten();
 	}
 	
 	
@@ -70,13 +73,19 @@ public class Hauptgui extends JPanel {
 		
 		//Menü 'Datei' mit den Befehlen
 		JMenu dateiMenu = new JMenu("Datei");
+		JMenu jgMenu = new JMenu("Juniper Green");
 		JMenu hilfeMenu = new JMenu("Hilfe");
 		bar.add(dateiMenu);
+		bar.add(jgMenu);
 		bar.add(hilfeMenu);
+		
 		
 		//Menüpunkte erstellen und hinzufügen
 		JMenuItem beenden = new JMenuItem("Beenden");
 		dateiMenu.add(beenden);
+		
+		JMenuItem log = new JMenuItem("Log");
+		jgMenu.add(log);
 		
 		JMenuItem hilfe = new JMenuItem("Anleitung");
 		hilfeMenu.add(hilfe);
@@ -109,6 +118,14 @@ public class Hauptgui extends JPanel {
 				
 			}
 		});
+		
+		log.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				logAnzeigen();
+			}
+		});
+		
 	}
 	
 	
@@ -121,6 +138,12 @@ public class Hauptgui extends JPanel {
 		}
 	}
 	
+	public void logAnzeigen(){
+		
+		JOptionPane.showMessageDialog(null, spieldaten.logAnzeigen(), "Spielverlauf", JOptionPane.INFORMATION_MESSAGE);
+		
+		
+	}
 	
 	//Öffnet den Standardbrowser des Benutzers mit unserer Github-Seite
 	private void ladeURL(String seite) { 
