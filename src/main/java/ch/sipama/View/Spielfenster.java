@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+
 public class Spielfenster {
 
 	//Instanzvariablen
@@ -149,18 +150,18 @@ public class Spielfenster {
 				if(txtSpielerA.getText().length()<1 || txtSpielerB.getText().length()<1){
 					int o = JOptionPane.showConfirmDialog(null, "<html><body>Möchtest du das Spiel starten, ohne Namen eingetragen zu haben?<br><br>Klicke auf 'Abbrechen', um die Namen noch einzutragen!</html></body>", "Hinweis", 2);
 					if(o==0){
-						zFeld.neueTabelle(zRange);
-						zFeld.tabelleAktualisieren();
-						gezZahl.setText("Ziehe eine gerade Zahl!");
-						btnNeustart.setEnabled(false);
-						btnSpielzug.setEnabled(true);
-						btnSpielAbbrechen.setEnabled(true);
 						if(txtSpielerA.getText().length()<1){
 							txtSpielerA.setText("Spieler A");
 						}
 						if(txtSpielerB.getText().length()<1){
 							txtSpielerB.setText("Spieler B");
 						}
+						zFeld.neueTabelle(zRange, txtSpielerA.getText(), txtSpielerB.getText());
+						zFeld.tabelleAktualisieren();
+						gezZahl.setText("Ziehe eine gerade Zahl!");
+						btnNeustart.setEnabled(false);
+						btnSpielzug.setEnabled(true);
+						btnSpielAbbrechen.setEnabled(true);
 						txtZahlenraum.setEditable(false);
 						txtSpielerA.setEditable(false);
 						txtSpielerB.setEditable(false);
@@ -168,7 +169,7 @@ public class Spielfenster {
 					}
 				}
 				else{
-					zFeld.neueTabelle(zRange);
+					zFeld.neueTabelle(zRange, txtSpielerA.getText(), txtSpielerB.getText());
 					zFeld.tabelleAktualisieren();
 					gezZahl.setText("Ziehe eine gerade Zahl!");
 					btnNeustart.setEnabled(false);
@@ -212,7 +213,7 @@ public class Spielfenster {
 			txtSpielerB.setText("");
 			gezZahl.setText("<html><body>Lege den Zahlenraum fest,<br>um das Spiel zu starten!</body></html>");
 			lblAktSpieler.setText("");
-			zFeld.neueTabelle(0);
+			zFeld.neueTabelle(0, "", "");
 		}
 	}
 	

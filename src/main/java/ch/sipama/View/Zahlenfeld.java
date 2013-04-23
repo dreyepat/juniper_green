@@ -7,11 +7,16 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import ch.sipama.Logik.Spieldaten;
+
 public class Zahlenfeld{
 
+	private String spielerA;
+	private String spielerB;
 	private int zahlenrange;
 	private DefaultTableModel model;
 	private JTable zahlenfeld = new JTable();
+	private Spieldaten spdaten;
 	
 	
 	
@@ -78,6 +83,8 @@ public class Zahlenfeld{
 			}
 		}
 		
+		spdaten = new Spieldaten(zahlenrange, spielerA, spielerB);
+		
 		
 	}
 
@@ -107,8 +114,10 @@ public class Zahlenfeld{
 	}
 	
 
-	public void neueTabelle(int zRange){
+	public void neueTabelle(int zRange, String spielerA, String spielerB){
 		int range = zRange;
+		this.spielerA = spielerA;
+		this.spielerB = spielerB;
 		for(int i=model.getRowCount(); i>0; i--){
 			model.removeRow(i-1);
 		}
@@ -153,6 +162,8 @@ public class Zahlenfeld{
     	String gezZahl = (String) model.getValueAt(row, column);
     	model.setValueAt("", row, column);
     	zahlenfeld.clearSelection();
+    	int gezogeneZahl = Integer.parseInt(gezZahl);
+    	spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
     	return gezZahl;
     }
 	
