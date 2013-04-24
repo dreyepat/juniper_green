@@ -83,7 +83,8 @@ public class Zahlenfeld{
 			}
 		}
 		
-		spdaten = new Spieldaten(zahlenrange, spielerA, spielerB);
+		spdaten = Spieldaten.getInstance();
+		spdaten.setSpieldaten(zahlenrange, spielerA, spielerB);
 		
 		
 	}

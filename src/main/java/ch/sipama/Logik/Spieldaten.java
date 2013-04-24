@@ -6,8 +6,9 @@ import ch.sipama.Controller.Spielzug;
 public class Spieldaten {
 	
 	//Instanzvariablen
-	String spielerA;
-	String spielerB;
+	private static Spieldaten instance = null;
+	private String spielerA;
+	private String spielerB;
 	boolean spielstart;
 	int zaehler;
 	private ArrayList<Integer> zahlenrange;
@@ -15,7 +16,14 @@ public class Spieldaten {
 	private ArrayList<MoeglicheZuege> moegZuege;
 	
 	
-	public Spieldaten(int zrange, String spielerA, String spielerB){
+	public static Spieldaten getInstance(){
+		if (instance == null){
+			instance = new Spieldaten();
+		}
+		return instance;
+	}
+	
+	public void setSpieldaten(int zrange, String spielerA, String spielerB){
 		this.spielerA = spielerA;
 		this.spielerB = spielerB;
 		spielstart = true;
@@ -28,17 +36,13 @@ public class Spieldaten {
 		}
 	}
 	
-	
-	
 	public String logAnzeigen(){
 		String spielverlauf = "<html><body>";
-		System.out.println(""+ log.size());
 		for(int i=0; i<log.size(); i++){
 		
-		spielverlauf = spielverlauf + log.get(i).getSpieler() + " :" + log.get(i).getZahl() + "<br>";	
+		spielverlauf = spielverlauf + log.get(i).getSpieler() + ": " + log.get(i).getZahl() + "<br>";	
 		}
 		spielverlauf = spielverlauf + "</html></body>";
-		System.out.println(spielverlauf);
 		return spielverlauf;
 	}
 	
@@ -54,10 +58,6 @@ public class Spieldaten {
 		zahlenrange.remove(gezZahl);
 		Spielzug spielzug = new Spielzug(spieler, row, column, gezZahl);
 		log.add(spielzug);
-		System.out.println(""+log.size());
-		int i = log.size()-1;
-		System.out.println(log.get(i).getSpieler() + " :" + log.get(i).getZahl());
-		
 	}
 
 }

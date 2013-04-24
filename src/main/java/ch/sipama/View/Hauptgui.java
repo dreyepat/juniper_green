@@ -37,7 +37,7 @@ public class Hauptgui extends JPanel {
 	//Defaultkonstruktor
 	public Hauptgui(){
 		createFrame();
-		spieldaten = new Spieldaten(0,"", "");
+		spieldaten = Spieldaten.getInstance();
 	}
 	
 	
