@@ -3,6 +3,8 @@ package ch.sipama.View;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -158,14 +160,20 @@ public class Zahlenfeld{
     
     
     public String spielzug(){
-    	int row = zahlenfeld.getSelectedRow();
-    	int column = zahlenfeld.getSelectedColumn();
-    	String gezZahl = (String) model.getValueAt(row, column);
-    	model.setValueAt("", row, column);
-    	zahlenfeld.clearSelection();
-    	int gezogeneZahl = Integer.parseInt(gezZahl);
-    	spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
+    	String gezZahl="";
+    	try{
+    		int row = zahlenfeld.getSelectedRow();
+        	int column = zahlenfeld.getSelectedColumn();
+        	gezZahl = (String) model.getValueAt(row, column);
+    		int gezogeneZahl = Integer.parseInt(gezZahl);
+    		spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
+        	model.setValueAt("", row, column);
+        	zahlenfeld.clearSelection();
+    	}catch(NumberFormatException nfe){
+			JOptionPane.showMessageDialog(null, "Diese Zahl wurde bereits gezogen!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+		}
     	return gezZahl;
+    	
     }
 	
     

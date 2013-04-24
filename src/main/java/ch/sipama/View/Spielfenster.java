@@ -9,7 +9,7 @@ import javax.swing.*;
 public class Spielfenster {
 
 	//Instanzvariablen
-	
+
 	private JTextField txtZahlenraum;
 	private JTextField txtSpielerA;
 	private JTextField txtSpielerB;
@@ -27,7 +27,7 @@ public class Spielfenster {
 	public Spielfenster(){
 
 		zFeld= new Zahlenfeld();
-		
+
 		zFeld.tabelleZeichnen();
 		zFeld.tabelleUebernehmen();
 		feldScrollPane = new JScrollPane(zFeld.getZahlenfeld());
@@ -38,16 +38,16 @@ public class Spielfenster {
 
 		JLabel lblSpielerA = new JLabel("Spieler A:");
 		JLabel lblSpielerB = new JLabel("Spieler B:");
-		
+
 		txtSpielerA = new JTextField(12);
 		txtSpielerB = new JTextField(12);
-		
+
 		einstellungen.add(lblSpielerA);
 		einstellungen.add(lblSpielerB);
 		einstellungen.add(txtSpielerA);
 		einstellungen.add(txtSpielerB);
 
-		
+
 		lblAktSpieler = new JLabel("");
 		gezZahl = new JLabel("<html><body>Lege den Zahlenraum fest,<br>um das Spiel zu starten!</body></html>");
 		einstellungen.add(lblAktSpieler);
@@ -62,7 +62,7 @@ public class Spielfenster {
 			}
 		});
 
-		
+
 		btnSpielzug = new JButton("Zahl ziehen");
 		btnSpielzug.setEnabled(false);
 		einstellungen.add(btnSpielzug);
@@ -70,10 +70,10 @@ public class Spielfenster {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				spielzug();
-				
+
 			}
 		});
-		
+
 		btnSpielAbbrechen = new JButton ("Spiel abbrechen");
 		btnSpielAbbrechen.setEnabled(false);
 		einstellungen.add(btnSpielAbbrechen);
@@ -83,7 +83,7 @@ public class Spielfenster {
 				spielAbbrechen();
 			}
 		});
-		
+
 		JLabel lblZahlenraum = new JLabel("Zahlenraum:");
 		einstellungen.add(lblZahlenraum);
 
@@ -104,22 +104,22 @@ public class Spielfenster {
 		layout.putConstraint(SpringLayout.WEST, lblSpielerA, 5, SpringLayout.WEST, einstellungen);
 		layout.putConstraint(SpringLayout.NORTH, lblSpielerB, 20, SpringLayout.NORTH, lblSpielerA);
 		layout.putConstraint(SpringLayout.WEST, lblSpielerB, 5, SpringLayout.WEST, einstellungen);
-		
+
 		layout.putConstraint(SpringLayout.NORTH, txtSpielerA, 18,	SpringLayout.SOUTH, lblZahlenraum);
 		layout.putConstraint(SpringLayout.WEST, txtSpielerA, 5, SpringLayout.EAST, lblSpielerA);
 		layout.putConstraint(SpringLayout.NORTH, txtSpielerB, 18, SpringLayout.NORTH, lblSpielerA);
 		layout.putConstraint(SpringLayout.WEST, txtSpielerB, 5, SpringLayout.EAST, lblSpielerB);
-		
-		
+
+
 		layout.putConstraint(SpringLayout.NORTH, lblAktSpieler, 80, SpringLayout.SOUTH, btnNeustart);
 		layout.putConstraint(SpringLayout.WEST, lblAktSpieler, 5, SpringLayout.WEST, einstellungen);
-		
+
 		layout.putConstraint(SpringLayout.NORTH, gezZahl, 10, SpringLayout.SOUTH, lblAktSpieler);
 		layout.putConstraint(SpringLayout.WEST, gezZahl, 5, SpringLayout.WEST, einstellungen);
-		
+
 		layout.putConstraint(SpringLayout.NORTH, btnSpielzug, 20, SpringLayout.SOUTH, gezZahl);
 		layout.putConstraint(SpringLayout.WEST, btnSpielzug, 5, SpringLayout.WEST, einstellungen);
-		
+
 		layout.putConstraint(SpringLayout.SOUTH, btnSpielAbbrechen, -5, SpringLayout.SOUTH, einstellungen);
 		layout.putConstraint(SpringLayout.EAST, btnSpielAbbrechen, -5, SpringLayout.EAST, einstellungen);
 
@@ -127,7 +127,7 @@ public class Spielfenster {
 		splitPane.setOneTouchExpandable(false);
 		splitPane.setDividerLocation(650);
 		splitPane.setPreferredSize(new Dimension(900, 600));
-		
+
 
 	}
 
@@ -181,24 +181,27 @@ public class Spielfenster {
 					lblAktSpieler.setText(txtSpielerA.getText() + " ist am Zug!");
 				}
 			}
-			
-			
+
+
 		}catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(null, "Trage eine Zahl zwischen 10 und 1000 ein!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 			txtZahlenraum.setText("");
 		}
-		
+
 	}
-	
+
 	public void spielzug(){
-		gezZahl.setText("Zuletzt gezogene Zahl: " + zFeld.spielzug());
-		if(lblAktSpieler.getText().equals((txtSpielerA.getText() + " ist am Zug!"))){
-			lblAktSpieler.setText(txtSpielerB.getText() + " ist am Zug!");
-		}else{
-			lblAktSpieler.setText(txtSpielerA.getText() + " ist am Zug!");
+		String spielzug = zFeld.spielzug();
+		if(spielzug.length()>0){
+			gezZahl.setText("Zuletzt gezogene Zahl: " + spielzug);
+			if(lblAktSpieler.getText().equals((txtSpielerA.getText() + " ist am Zug!"))){
+				lblAktSpieler.setText(txtSpielerB.getText() + " ist am Zug!");
+			}else{
+				lblAktSpieler.setText(txtSpielerA.getText() + " ist am Zug!");
+			}
 		}
 	}
-	
+
 	public void spielAbbrechen(){
 		int o = JOptionPane.showConfirmDialog(null, "Willst du das Spiel wirklich abbrechen?", "Hinweis", JOptionPane.OK_CANCEL_OPTION);
 		if(o==0){
@@ -216,6 +219,6 @@ public class Spielfenster {
 			zFeld.neueTabelle(0, "", "");
 		}
 	}
-	
-	
+
+
 }
