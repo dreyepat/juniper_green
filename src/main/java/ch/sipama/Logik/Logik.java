@@ -1,5 +1,9 @@
 package ch.sipama.Logik;
 
+import java.util.ArrayList;
+
+import ch.sipama.View.Zahlenfeld;
+
 /*
  * @author Marco Lamm - 01.04.2013
  * 
@@ -12,13 +16,24 @@ public class Logik {
 
 	private int x = 2;
 	private int y = 48;
-	int[] zahlen = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-			18, 19, 20 };
-	int a=zahlen[6];  // first chosen number
+	private ArrayList<Integer>  zahlen= new ArrayList<Integer>();  
+	  // first chosen number
 	
 	public Logik() {
+		
+		arrayFuellen();
 //		backtrack1();
 		backtrack2();
+		
+		
+		
+		
+	}
+	
+	public void arrayFuellen(){
+		for (int i=1; i<=50; i++){
+			zahlen.add(i);
+		}
 	}
 
 	//  Variante 1---Methode:backtrack1()-----------------------------------------------------------------------------------------------------
@@ -26,7 +41,7 @@ public class Logik {
 		if (x % 2 == 0) {
 			System.out.println("Zahl " + x
 					+ " ist gerade - Nächste Zahl ziehen: " + y);
-			System.out.println(zahlen[1]);
+			System.out.println(zahlen.indexOf(zahlen ));
 			zahlCheck();
 		} else {
 			System.out.println("Ziehen Sie eine Gerade Zahl");
@@ -42,19 +57,25 @@ public class Logik {
 					+ " muss Teiler oder Vielfaches von " + x + " sein");
 		}
 	}
+	
+	public void zahlRemove(){
+		zahlen.remove(zahlen);
+	}
 
 	// sucht alle Zahlen aus Sammlung "zahlen" mit Logic JuniperGreen-beginnt
 	// mit höchster GeradZahl und sucht nur nach unten
 	public void backtrack1() {
-		for (int i = zahlen.length; i > 0; i--) {
-			if (zahlen[i - 1] % 2 == 0) {
-				System.out.println(zahlen[i - 1]);
+	System.out.println(zahlen.size());
+		for (int i = 1 ; i < zahlen.size(); i++) {
+			if (zahlen.get(i) % 2 == 0) {
+				System.out.println(zahlen.indexOf(i));
 
 				for (int k = i - 2; k >= 0; k--) {
-					if (zahlen[k] % zahlen[i - 1] == 0
-							|| zahlen[i - 1] % zahlen[k] == 0) {
-						System.out.println(zahlen[k]);
+					if (zahlen.indexOf(zahlen) % zahlen.indexOf(zahlen) == 0
+							|| zahlen.indexOf(zahlen) % zahlen.indexOf(zahlen) == 0) {
+						System.out.println(zahlen.indexOf(zahlen));
 						i = k + 1;
+						
 					}
 				}
 				i--;
@@ -84,7 +105,7 @@ public class Logik {
 	}
 	
 	public void backtrack2() {
-
+		int a=zahlen.get(6);
 		if (zahlGerade2(a) == false) {
 			System.out.println(" Wähle eine gerade Zahl! "+a+" ist ungerade");
 
