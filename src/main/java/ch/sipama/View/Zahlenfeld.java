@@ -3,15 +3,22 @@ package ch.sipama.View;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import ch.sipama.Logik.Spieldaten;
+
 public class Zahlenfeld{
 
+	private String spielerA;
+	private String spielerB;
 	private int zahlenrange;
 	private DefaultTableModel model;
 	private JTable zahlenfeld = new JTable();
+	private Spieldaten spdaten;
 	
 	
 	
@@ -78,6 +85,9 @@ public class Zahlenfeld{
 			}
 		}
 		
+		spdaten = Spieldaten.getInstance();
+		spdaten.setSpieldaten(zahlenrange, spielerA, spielerB);
+		
 		
 	}
 
@@ -107,8 +117,10 @@ public class Zahlenfeld{
 	}
 	
 
-	public void neueTabelle(int zRange){
+	public void neueTabelle(int zRange, String spielerA, String spielerB){
 		int range = zRange;
+		this.spielerA = spielerA;
+		this.spielerB = spielerB;
 		for(int i=model.getRowCount(); i>0; i--){
 			model.removeRow(i-1);
 		}
@@ -148,12 +160,20 @@ public class Zahlenfeld{
     
     
     public String spielzug(){
-    	int row = zahlenfeld.getSelectedRow();
-    	int column = zahlenfeld.getSelectedColumn();
-    	String gezZahl = (String) model.getValueAt(row, column);
-    	model.setValueAt("", row, column);
-    	zahlenfeld.clearSelection();
+    	String gezZahl="";
+    	try{
+    		int row = zahlenfeld.getSelectedRow();
+        	int column = zahlenfeld.getSelectedColumn();
+        	gezZahl = (String) model.getValueAt(row, column);
+    		int gezogeneZahl = Integer.parseInt(gezZahl);
+    		spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
+        	model.setValueAt("", row, column);
+        	zahlenfeld.clearSelection();
+    	}catch(NumberFormatException nfe){
+			JOptionPane.showMessageDialog(null, "Diese Zahl wurde bereits gezogen!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+		}
     	return gezZahl;
+    	
     }
 	
     
