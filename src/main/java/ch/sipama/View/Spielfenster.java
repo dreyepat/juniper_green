@@ -20,6 +20,10 @@ public class Spielfenster {
 	private Zahlenfeld zFeld;
 	private JLabel gezZahl;
 	private JLabel lblAktSpieler;
+	private JRadioButton radSpielerVsSpieler;
+	private JRadioButton radSpielerVsComp1;
+	private JRadioButton radSpielerVsComp2;
+	private JRadioButton radSpielerVsComp3;
 	private JButton btnNeustart;
 	private JButton btnSpielzug;
 	private JButton btnSpielAbbrechen;
@@ -38,10 +42,27 @@ public class Spielfenster {
 
 		JLabel lblSpielerA = new JLabel("Spieler A:");
 		JLabel lblSpielerB = new JLabel("Spieler B:");
+		JLabel lblSpielmodus = new JLabel("Spielmodus:");
 
+		radSpielerVsSpieler = new JRadioButton("Spieler vs Spieler");
+		radSpielerVsComp1 = new JRadioButton("Spieler vs R2-D2");
+		radSpielerVsComp2 = new JRadioButton("Spieler vs C-3PO");
+		radSpielerVsComp3 = new JRadioButton("Spieler vs Meister Yoda");
+		
+		ButtonGroup sModus = new ButtonGroup();
+		sModus.add(radSpielerVsSpieler);
+		sModus.add(radSpielerVsComp1);
+		sModus.add(radSpielerVsComp2);
+		sModus.add(radSpielerVsComp3);
+		
 		txtSpielerA = new JTextField(12);
 		txtSpielerB = new JTextField(12);
 
+		einstellungen.add(lblSpielmodus);
+		einstellungen.add(radSpielerVsSpieler);
+		einstellungen.add(radSpielerVsComp1);
+		einstellungen.add(radSpielerVsComp2);
+		einstellungen.add(radSpielerVsComp3);
 		einstellungen.add(lblSpielerA);
 		einstellungen.add(lblSpielerB);
 		einstellungen.add(txtSpielerA);
@@ -96,22 +117,34 @@ public class Spielfenster {
 		layout.putConstraint(SpringLayout.WEST, lblZahlenraum, 5, SpringLayout.WEST, einstellungen);
 		layout.putConstraint(SpringLayout.NORTH, txtZahlenraum, 5, SpringLayout.NORTH, einstellungen);
 		layout.putConstraint(SpringLayout.WEST, txtZahlenraum, 10, SpringLayout.EAST, lblZahlenraum);
+		
+		layout.putConstraint(SpringLayout.NORTH, lblSpielmodus, 20,	SpringLayout.SOUTH, lblZahlenraum);
+		layout.putConstraint(SpringLayout.WEST, lblSpielmodus, 5, SpringLayout.WEST, einstellungen);
+		
+		layout.putConstraint(SpringLayout.NORTH, radSpielerVsSpieler, 16,	SpringLayout.SOUTH, lblZahlenraum);
+		layout.putConstraint(SpringLayout.WEST, radSpielerVsSpieler, 10, SpringLayout.EAST, lblSpielmodus);
+		layout.putConstraint(SpringLayout.NORTH, radSpielerVsComp1, 0,	SpringLayout.SOUTH, radSpielerVsSpieler);
+		layout.putConstraint(SpringLayout.WEST, radSpielerVsComp1, 10, SpringLayout.EAST, lblSpielmodus);
+		layout.putConstraint(SpringLayout.NORTH, radSpielerVsComp2, 0,	SpringLayout.SOUTH, radSpielerVsComp1);
+		layout.putConstraint(SpringLayout.WEST, radSpielerVsComp2, 10, SpringLayout.EAST, lblSpielmodus);
+		layout.putConstraint(SpringLayout.NORTH, radSpielerVsComp3, 0,	SpringLayout.SOUTH, radSpielerVsComp2);
+		layout.putConstraint(SpringLayout.WEST, radSpielerVsComp3, 10, SpringLayout.EAST, lblSpielmodus);
 
 		layout.putConstraint(SpringLayout.NORTH, btnNeustart, 10, SpringLayout.SOUTH, lblSpielerB);
 		layout.putConstraint(SpringLayout.WEST, btnNeustart, 5, SpringLayout.WEST, einstellungen);
 
-		layout.putConstraint(SpringLayout.NORTH, lblSpielerA, 20,	SpringLayout.SOUTH, lblZahlenraum);
+		layout.putConstraint(SpringLayout.NORTH, lblSpielerA, 20,	SpringLayout.SOUTH, radSpielerVsComp3);
 		layout.putConstraint(SpringLayout.WEST, lblSpielerA, 5, SpringLayout.WEST, einstellungen);
 		layout.putConstraint(SpringLayout.NORTH, lblSpielerB, 20, SpringLayout.NORTH, lblSpielerA);
 		layout.putConstraint(SpringLayout.WEST, lblSpielerB, 5, SpringLayout.WEST, einstellungen);
 
-		layout.putConstraint(SpringLayout.NORTH, txtSpielerA, 18,	SpringLayout.SOUTH, lblZahlenraum);
+		layout.putConstraint(SpringLayout.NORTH, txtSpielerA, 18,	SpringLayout.SOUTH, radSpielerVsComp3);
 		layout.putConstraint(SpringLayout.WEST, txtSpielerA, 5, SpringLayout.EAST, lblSpielerA);
 		layout.putConstraint(SpringLayout.NORTH, txtSpielerB, 18, SpringLayout.NORTH, lblSpielerA);
 		layout.putConstraint(SpringLayout.WEST, txtSpielerB, 5, SpringLayout.EAST, lblSpielerB);
 
 
-		layout.putConstraint(SpringLayout.NORTH, lblAktSpieler, 80, SpringLayout.SOUTH, btnNeustart);
+		layout.putConstraint(SpringLayout.NORTH, lblAktSpieler, 40, SpringLayout.SOUTH, btnNeustart);
 		layout.putConstraint(SpringLayout.WEST, lblAktSpieler, 5, SpringLayout.WEST, einstellungen);
 
 		layout.putConstraint(SpringLayout.NORTH, gezZahl, 10, SpringLayout.SOUTH, lblAktSpieler);

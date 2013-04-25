@@ -84,8 +84,11 @@ public class Hauptgui extends JPanel {
 		JMenuItem beenden = new JMenuItem("Beenden");
 		dateiMenu.add(beenden);
 		
+		JMenuItem spielregeln = new JMenuItem("Spielregeln");
+		jgMenu.add(spielregeln);
 		JMenuItem log = new JMenuItem("Log");
 		jgMenu.add(log);
+		
 		
 		JMenuItem hilfe = new JMenuItem("Anleitung");
 		hilfeMenu.add(hilfe);
@@ -119,6 +122,15 @@ public class Hauptgui extends JPanel {
 			}
 		});
 		
+		spielregeln.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				spielregelnAnzeigen();
+			}
+		});
+		
+		
+		
 		log.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -138,11 +150,17 @@ public class Hauptgui extends JPanel {
 		}
 	}
 	
+	public void spielregelnAnzeigen(){
+		String spielregeln = "<html><body>Spielregeln<br><br>" +
+				"1. Beide Spieler nehmen abwechselnd jeweils eine Zahl aus der Tabelle.<br>Die entfernten Zahlen werden nicht ersetzt und im weiteren Verlauf<br>nicht mehr verwendet.<br><br>" +
+				"2. Im ersten Zug muss eine gerade Zahl gezogen werden. In allen weiteren<br>Zügen muss die gewählte Zahl ein Teiler oder ein Vielfaches der<br>zuletzt gezogenen sein.<br><br>" +
+				"3. Wer keine Zahl mehr ziehen kann, hat verloren.</html></body>";
+		JOptionPane.showMessageDialog(null, spielregeln, "Spielregeln", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	
 	public void logAnzeigen(){
-		
 		JOptionPane.showMessageDialog(null, spieldaten.logAnzeigen(), "Spielverlauf", JOptionPane.INFORMATION_MESSAGE);
-		
-		
 	}
 	
 	//Öffnet den Standardbrowser des Benutzers mit unserer Github-Seite
