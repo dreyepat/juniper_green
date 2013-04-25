@@ -16,32 +16,32 @@ public class Logik {
 
 	private int x = 2;
 	private int y = 48;
-	private ArrayList<Integer>  zahlen= new ArrayList<Integer>();  
-	  // first chosen number
-	
+	private ArrayList<Integer> zahlen = new ArrayList<Integer>();
+
+	// first chosen number
+
 	public Logik() {
-		
+
 		arrayFuellen();
-//		backtrack1();
-		backtrack2();
-		
-		
-		
-		
+		// backtrack1();
+		// backtrack2();
+		backtrack3();
+
 	}
-	
-	public void arrayFuellen(){
-		for (int i=1; i<=50; i++){
+
+	public void arrayFuellen() {
+		for (int i = 1; i <= 7; i++) {
 			zahlen.add(i);
 		}
 	}
 
-	//  Variante 1---Methode:backtrack1()-----------------------------------------------------------------------------------------------------
+	// Variante
+	// 1---Methode:backtrack1()-----------------------------------------------------------------------------------------------------
 	public void zahlGerade() {
 		if (x % 2 == 0) {
 			System.out.println("Zahl " + x
 					+ " ist gerade - Nächste Zahl ziehen: " + y);
-			System.out.println(zahlen.indexOf(zahlen ));
+			System.out.println(zahlen.indexOf(zahlen));
 			zahlCheck();
 		} else {
 			System.out.println("Ziehen Sie eine Gerade Zahl");
@@ -57,37 +57,72 @@ public class Logik {
 					+ " muss Teiler oder Vielfaches von " + x + " sein");
 		}
 	}
-	
-	public void zahlRemove(){
+
+	public void zahlRemove() {
 		zahlen.remove(zahlen);
 	}
 
 	// sucht alle Zahlen aus Sammlung "zahlen" mit Logic JuniperGreen-beginnt
 	// mit höchster GeradZahl und sucht nur nach unten
 	public void backtrack1() {
-	System.out.println(zahlen.size());
-		for (int i = 1 ; i < zahlen.size(); i++) {
-			if (zahlen.get(i) % 2 == 0) {
-				System.out.println(zahlen.indexOf(i));
 
-				for (int k = i - 2; k >= 0; k--) {
-					if (zahlen.indexOf(zahlen) % zahlen.indexOf(zahlen) == 0
-							|| zahlen.indexOf(zahlen) % zahlen.indexOf(zahlen) == 0) {
-						System.out.println(zahlen.indexOf(zahlen));
-						i = k + 1;
-						
-					}
-				}
-				i--;
-			} else {
-				System.out.println("Du musst mit einer geraden Zahl beginnen");
-				break;
+		int i = zahlen.size() - 1;
+
+		System.out.print(zahlen.get(i) + " ");
+		for (int k = i - 1; k >= 0; k--) {
+
+			if (zahlen.get(i) % zahlen.get(k) == 0
+					|| zahlen.get(k) % zahlen.get(i) == 0) {
+				System.out.print(zahlen.get(k) + " ");
+
+				i = k;
 			}
-		}
 
+		}
+		if (zahlen.size() == 1) {
+			System.out.println("stop");
+		} else {
+
+			zahlen.remove(zahlen.size() - 1);
+			System.out.println(" ");
+			backtrack1();
+		}
 	}
 
-//   Variante 2--Methode:backtrack2() ------------------------------------------------------------------------------------------------------
+	// Variante 3--Methode:backtrack3()
+	// ------------------------------------------------------------------------------------------------------
+
+	public void backtrack3() {
+
+		// int i = zahlen.size() - 1;
+
+		for (int i = 0; i <= zahlen.size() - 1; i++) {
+
+			for (int k = 0; k <= zahlen.size() - 1; k++) {
+
+				if (zahlen.get(k) % zahlen.get(i) == 0
+						|| zahlen.get(i) % zahlen.get(k) == 0) {
+					System.out.print(zahlen.get(k) + " ");
+
+				}
+
+			}
+			System.out.print("-- gezogene Zahl = " + (i + 1));
+
+			if (zahlen.size() == 1) {
+				System.out.println("stop");
+			} else {
+
+				// zahlen.remove(i);
+				System.out.println(" ");
+				// backtrack3();
+			}
+		}
+		
+	}
+
+	// Variante 2--Methode:backtrack2()
+	// ------------------------------------------------------------------------------------------------------
 
 	public boolean zahlGerade2(int a) {
 		if (a % 2 == 0) {
@@ -103,20 +138,18 @@ public class Logik {
 		return false;
 
 	}
-	
+
 	public void backtrack2() {
-		int a=zahlen.get(6);
+		int a = zahlen.get(6);
 		if (zahlGerade2(a) == false) {
-			System.out.println(" Wähle eine gerade Zahl! "+a+" ist ungerade");
+			System.out.println(" Wähle eine gerade Zahl! " + a
+					+ " ist ungerade");
 
 		} else {
 			System.out.println("OK!  die Zahl " + a + " ist gerade-Danke");
 		}
-		
-		
+
 	}
-		
-	
 
 	public static void main(String[] args) {
 		new Logik();
