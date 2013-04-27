@@ -23,14 +23,13 @@ public class Spielfenster {
 	private JLabel gezZahl;
 	private JLabel lblAktSpieler;
 	private JRadioButton radSpielerVsSpieler;
-	private JRadioButton radSpielerVsComp1;
-	private JRadioButton radSpielerVsComp2;
-	private JRadioButton radSpielerVsComp3;
+	private JRadioButton radSpielerVsComp;
 	private JButton btnNeustart;
 	private JButton btnSpielzug;
 	private JButton btnSpielAbbrechen;
 	private JButton btnHilfe;
 	private Spieldaten spieldaten;
+	private JComboBox<String> compListe;
 
 	public Spielfenster(){
 		
@@ -50,30 +49,45 @@ public class Spielfenster {
 		JLabel lblSpielerB = new JLabel("Spieler B:");
 		JLabel lblSpielmodus = new JLabel("Spielmodus:");
 
-		radSpielerVsSpieler = new JRadioButton("Spieler vs Spieler");
-		radSpielerVsComp1 = new JRadioButton("Spieler vs R2-D2");
-		radSpielerVsComp2 = new JRadioButton("Spieler vs C-3PO");
-		radSpielerVsComp3 = new JRadioButton("Spieler vs Meister Yoda");
+		radSpielerVsSpieler = new JRadioButton("Spieler gegen Spieler");
+		radSpielerVsSpieler.setSelected(true);
+		radSpielerVsSpieler.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				txtSpielerB.setEditable(true);
+				compListe.setEnabled(false);
+			}
+		});
+		
+		radSpielerVsComp = new JRadioButton("Spieler gegen Computer");
+		radSpielerVsComp.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				txtSpielerB.setEditable(false);
+				compListe.setEnabled(true);
+			}
+		});
+		
 		
 		ButtonGroup sModus = new ButtonGroup();
 		sModus.add(radSpielerVsSpieler);
-		sModus.add(radSpielerVsComp1);
-		sModus.add(radSpielerVsComp2);
-		sModus.add(radSpielerVsComp3);
+		sModus.add(radSpielerVsComp);
+		
+		String compStratListe[] = {"Sebastian", "Anna", "Tom"};
+		compListe = new JComboBox<String>(compStratListe);
+		compListe.setEnabled(false);
 		
 		txtSpielerA = new JTextField(12);
 		txtSpielerB = new JTextField(12);
 
 		einstellungen.add(lblSpielmodus);
 		einstellungen.add(radSpielerVsSpieler);
-		einstellungen.add(radSpielerVsComp1);
-		einstellungen.add(radSpielerVsComp2);
-		einstellungen.add(radSpielerVsComp3);
+		einstellungen.add(radSpielerVsComp);
 		einstellungen.add(lblSpielerA);
 		einstellungen.add(lblSpielerB);
 		einstellungen.add(txtSpielerA);
 		einstellungen.add(txtSpielerB);
-
+		einstellungen.add(compListe);
 
 		lblAktSpieler = new JLabel("");
 		gezZahl = new JLabel("<html><body>Lege den Zahlenraum fest,<br>um das Spiel zu starten!</body></html>");
@@ -142,22 +156,22 @@ public class Spielfenster {
 		
 		layout.putConstraint(SpringLayout.NORTH, radSpielerVsSpieler, 16,	SpringLayout.SOUTH, lblZahlenraum);
 		layout.putConstraint(SpringLayout.WEST, radSpielerVsSpieler, 10, SpringLayout.EAST, lblSpielmodus);
-		layout.putConstraint(SpringLayout.NORTH, radSpielerVsComp1, 0,	SpringLayout.SOUTH, radSpielerVsSpieler);
-		layout.putConstraint(SpringLayout.WEST, radSpielerVsComp1, 10, SpringLayout.EAST, lblSpielmodus);
-		layout.putConstraint(SpringLayout.NORTH, radSpielerVsComp2, 0,	SpringLayout.SOUTH, radSpielerVsComp1);
-		layout.putConstraint(SpringLayout.WEST, radSpielerVsComp2, 10, SpringLayout.EAST, lblSpielmodus);
-		layout.putConstraint(SpringLayout.NORTH, radSpielerVsComp3, 0,	SpringLayout.SOUTH, radSpielerVsComp2);
-		layout.putConstraint(SpringLayout.WEST, radSpielerVsComp3, 10, SpringLayout.EAST, lblSpielmodus);
+		layout.putConstraint(SpringLayout.NORTH, radSpielerVsComp, 0,	SpringLayout.SOUTH, radSpielerVsSpieler);
+		layout.putConstraint(SpringLayout.WEST, radSpielerVsComp, 10, SpringLayout.EAST, lblSpielmodus);
+		layout.putConstraint(SpringLayout.NORTH, compListe, 0,	SpringLayout.SOUTH, radSpielerVsComp);
+		layout.putConstraint(SpringLayout.WEST, compListe, 31, SpringLayout.EAST, lblSpielmodus);
+		
+
 
 		layout.putConstraint(SpringLayout.NORTH, btnNeustart, 10, SpringLayout.SOUTH, lblSpielerB);
 		layout.putConstraint(SpringLayout.WEST, btnNeustart, 5, SpringLayout.WEST, einstellungen);
 
-		layout.putConstraint(SpringLayout.NORTH, lblSpielerA, 20,	SpringLayout.SOUTH, radSpielerVsComp3);
+		layout.putConstraint(SpringLayout.NORTH, lblSpielerA, 20,	SpringLayout.SOUTH, compListe);
 		layout.putConstraint(SpringLayout.WEST, lblSpielerA, 5, SpringLayout.WEST, einstellungen);
 		layout.putConstraint(SpringLayout.NORTH, lblSpielerB, 20, SpringLayout.NORTH, lblSpielerA);
 		layout.putConstraint(SpringLayout.WEST, lblSpielerB, 5, SpringLayout.WEST, einstellungen);
 
-		layout.putConstraint(SpringLayout.NORTH, txtSpielerA, 18,	SpringLayout.SOUTH, radSpielerVsComp3);
+		layout.putConstraint(SpringLayout.NORTH, txtSpielerA, 18,	SpringLayout.SOUTH, compListe);
 		layout.putConstraint(SpringLayout.WEST, txtSpielerA, 5, SpringLayout.EAST, lblSpielerA);
 		layout.putConstraint(SpringLayout.NORTH, txtSpielerB, 18, SpringLayout.NORTH, lblSpielerA);
 		layout.putConstraint(SpringLayout.WEST, txtSpielerB, 5, SpringLayout.EAST, lblSpielerB);
