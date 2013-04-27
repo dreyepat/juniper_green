@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import ch.sipama.Controller.Spieldaten;
+
 
 public class Spielfenster {
 
@@ -27,8 +29,12 @@ public class Spielfenster {
 	private JButton btnNeustart;
 	private JButton btnSpielzug;
 	private JButton btnSpielAbbrechen;
+	private JButton btnHilfe;
+	private Spieldaten spieldaten;
 
 	public Spielfenster(){
+		
+		spieldaten = Spieldaten.getInstance();
 
 		zFeld= new Zahlenfeld();
 
@@ -94,6 +100,19 @@ public class Spielfenster {
 
 			}
 		});
+		
+		
+		btnHilfe = new JButton("Hilfe");
+		btnHilfe.setEnabled(false);
+		einstellungen.add(btnHilfe);
+		btnHilfe.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+
+				String text = spieldaten.moegSPAnzeigen();
+				JOptionPane.showMessageDialog(null, text, "Hilfe", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
 
 		btnSpielAbbrechen = new JButton ("Spiel abbrechen");
 		btnSpielAbbrechen.setEnabled(false);
@@ -155,6 +174,9 @@ public class Spielfenster {
 
 		layout.putConstraint(SpringLayout.SOUTH, btnSpielAbbrechen, -5, SpringLayout.SOUTH, einstellungen);
 		layout.putConstraint(SpringLayout.EAST, btnSpielAbbrechen, -5, SpringLayout.EAST, einstellungen);
+		
+		layout.putConstraint(SpringLayout.SOUTH, btnHilfe, -5, SpringLayout.SOUTH, einstellungen);
+		layout.putConstraint(SpringLayout.WEST, btnHilfe, 5, SpringLayout.WEST, einstellungen);
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, feldScrollPane, einstellungenScrollPane);
 		splitPane.setOneTouchExpandable(false);
@@ -195,6 +217,7 @@ public class Spielfenster {
 						btnNeustart.setEnabled(false);
 						btnSpielzug.setEnabled(true);
 						btnSpielAbbrechen.setEnabled(true);
+						btnHilfe.setEnabled(true);
 						txtZahlenraum.setEditable(false);
 						txtSpielerA.setEditable(false);
 						txtSpielerB.setEditable(false);
@@ -208,6 +231,7 @@ public class Spielfenster {
 					btnNeustart.setEnabled(false);
 					btnSpielzug.setEnabled(true);
 					btnSpielAbbrechen.setEnabled(true);
+					btnHilfe.setEnabled(true);
 					txtZahlenraum.setEditable(false);
 					txtSpielerA.setEditable(false);
 					txtSpielerB.setEditable(false);
@@ -244,6 +268,7 @@ public class Spielfenster {
 			btnNeustart.setEnabled(true);
 			btnSpielzug.setEnabled(false);
 			btnSpielAbbrechen.setEnabled(false);
+			btnHilfe.setEnabled(false);
 			txtZahlenraum.setText("");
 			txtSpielerA.setText("");
 			txtSpielerB.setText("");

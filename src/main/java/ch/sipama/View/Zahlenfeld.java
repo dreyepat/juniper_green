@@ -9,7 +9,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import ch.sipama.Logik.Spieldaten;
+import ch.sipama.Controller.CompRandom;
+import ch.sipama.Controller.Spieldaten;
 
 public class Zahlenfeld{
 
@@ -19,6 +20,7 @@ public class Zahlenfeld{
 	private DefaultTableModel model;
 	private JTable zahlenfeld = new JTable();
 	private Spieldaten spdaten;
+	private CompRandom compRandom = new CompRandom();
 	
 	
 	
@@ -166,14 +168,21 @@ public class Zahlenfeld{
         	int column = zahlenfeld.getSelectedColumn();
         	gezZahl = (String) model.getValueAt(row, column);
     		int gezogeneZahl = Integer.parseInt(gezZahl);
-    		spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
-        	model.setValueAt("", row, column);
-        	zahlenfeld.clearSelection();
+    		
+    		if(spdaten.validieren(gezogeneZahl)==true){
+    			spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
+    			System.out.println("" + compRandom.getNextSpielzug());
+            	model.setValueAt("", row, column);
+            	zahlenfeld.clearSelection();
+            	return gezZahl;
+    		}else{
+    			JOptionPane.showMessageDialog(null, "Dies ist kein gültiger Spielzug!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+    			return "";
+    		}
     	}catch(NumberFormatException nfe){
 			JOptionPane.showMessageDialog(null, "Diese Zahl wurde bereits gezogen!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-		}
-    	return gezZahl;
-    	
+			return "";
+		}    	
     }
 	
     

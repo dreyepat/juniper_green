@@ -14,7 +14,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import ch.sipama.Logik.Spieldaten;
+
+import ch.sipama.Controller.Spieldaten;
 
 
 /**
@@ -57,7 +58,7 @@ public class Hauptgui extends JPanel {
 		
 			
 		//Rahmengrösse definieren und sichtbar setzen
-		frame.setBounds(200, 150, 950, 450);
+		frame.setBounds(200, 150, 950, 550);
 		frame.setMinimumSize(new Dimension(450, 300));
 		frame.setVisible(true);
 		
