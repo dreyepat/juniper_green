@@ -30,6 +30,7 @@ public class Spielfenster {
 	private JButton btnHilfe;
 	private Spieldaten spieldaten;
 	private JComboBox<String> compListe;
+	private int zRange;
 
 	public Spielfenster(){
 		
@@ -210,13 +211,13 @@ public class Spielfenster {
 
 	public void spielNeustarten(){
 		try{
-			int zRange = Integer.parseInt(getZahlenraum());
+			zRange = Integer.parseInt(getZahlenraum());
 			if(zRange < 10 || zRange > 1000){
 				JOptionPane.showMessageDialog(null, "Trage eine Zahl zwischen 10 und 1000 ein!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 				txtZahlenraum.setText("");
 			}
 			else{
-				if(txtSpielerA.getText().length()<1 || txtSpielerB.getText().length()<1){
+				if((radSpielerVsSpieler.isSelected()==true && (txtSpielerA.getText().length()<1 || txtSpielerB.getText().length()<1)) || (radSpielerVsComp.isSelected()==true && txtSpielerA.getText().length()<1)){
 					int o = JOptionPane.showConfirmDialog(null, "<html><body>Möchtest du das Spiel starten, ohne Namen eingetragen zu haben?<br><br>Klicke auf 'Abbrechen', um die Namen noch einzutragen!</html></body>", "Hinweis", 2);
 					if(o==0){
 						if(txtSpielerA.getText().length()<1){
@@ -225,31 +226,11 @@ public class Spielfenster {
 						if(txtSpielerB.getText().length()<1){
 							txtSpielerB.setText("Spieler B");
 						}
-						zFeld.neueTabelle(zRange, txtSpielerA.getText(), txtSpielerB.getText());
-						zFeld.tabelleAktualisieren();
-						gezZahl.setText("Ziehe eine gerade Zahl!");
-						btnNeustart.setEnabled(false);
-						btnSpielzug.setEnabled(true);
-						btnSpielAbbrechen.setEnabled(true);
-						btnHilfe.setEnabled(true);
-						txtZahlenraum.setEditable(false);
-						txtSpielerA.setEditable(false);
-						txtSpielerB.setEditable(false);
-						lblAktSpieler.setText(txtSpielerA.getText() + " ist am Zug!");
+						spielStarten();
 					}
 				}
 				else{
-					zFeld.neueTabelle(zRange, txtSpielerA.getText(), txtSpielerB.getText());
-					zFeld.tabelleAktualisieren();
-					gezZahl.setText("Ziehe eine gerade Zahl!");
-					btnNeustart.setEnabled(false);
-					btnSpielzug.setEnabled(true);
-					btnSpielAbbrechen.setEnabled(true);
-					btnHilfe.setEnabled(true);
-					txtZahlenraum.setEditable(false);
-					txtSpielerA.setEditable(false);
-					txtSpielerB.setEditable(false);
-					lblAktSpieler.setText(txtSpielerA.getText() + " ist am Zug!");
+					spielStarten();
 				}
 			}
 
@@ -260,6 +241,29 @@ public class Spielfenster {
 		}
 
 	}
+	
+	
+	public void spielStarten(){
+		int spielmodi=0;
+		if(radSpielerVsComp.isSelected()==true){
+			spielmodi = compListe.getSelectedIndex()+1;
+		}
+		zFeld.neueTabelle(zRange, txtSpielerA.getText(), txtSpielerB.getText(), spielmodi);
+		zFeld.tabelleAktualisieren();
+		gezZahl.setText("Ziehe eine gerade Zahl!");
+		btnNeustart.setEnabled(false);
+		btnSpielzug.setEnabled(true);
+		btnSpielAbbrechen.setEnabled(true);
+		btnHilfe.setEnabled(true);
+		txtZahlenraum.setEditable(false);
+		txtSpielerA.setEditable(false);
+		txtSpielerB.setEditable(false);
+		lblAktSpieler.setText(txtSpielerA.getText() + " ist am Zug!");
+		compListe.setEnabled(false);
+		radSpielerVsSpieler.setEnabled(false);
+		radSpielerVsComp.setEnabled(false);
+	}
+	
 
 	public void spielzug(){
 		String spielzug = zFeld.spielzug();
@@ -288,7 +292,10 @@ public class Spielfenster {
 			txtSpielerB.setText("");
 			gezZahl.setText("<html><body>Lege den Zahlenraum fest,<br>um das Spiel zu starten!</body></html>");
 			lblAktSpieler.setText("");
-			zFeld.neueTabelle(0, "", "");
+			zFeld.neueTabelle(0, "", "", 0);
+			radSpielerVsSpieler.setEnabled(true);
+			radSpielerVsSpieler.setSelected(true);
+			radSpielerVsComp.setEnabled(true);
 		}
 	}
 

@@ -23,10 +23,15 @@ public class CompRandom {
 			moeglicheSpielzuege.remove(0);
 		}
 		
-		Random rnd=new Random();
-		int z=rnd.nextInt(moeglicheSpielzuege.size()); 
+		if(moeglicheSpielzuege.size()>0){
+			Random rnd=new Random();
+			int z=rnd.nextInt(moeglicheSpielzuege.size()); 
+			
+			return moeglicheSpielzuege.get(z);
+		}
 		
-		return moeglicheSpielzuege.get(z);
+		return 0;
+		
 	}
 
 }

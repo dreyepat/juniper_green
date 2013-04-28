@@ -17,6 +17,7 @@ public class Zahlenfeld{
 	private String spielerA;
 	private String spielerB;
 	private int zahlenrange;
+	private int spielmodi;
 	private DefaultTableModel model;
 	private JTable zahlenfeld = new JTable();
 	private Spieldaten spdaten;
@@ -88,7 +89,7 @@ public class Zahlenfeld{
 		}
 		
 		spdaten = Spieldaten.getInstance();
-		spdaten.setSpieldaten(zahlenrange, spielerA, spielerB);
+		spdaten.setSpieldaten(zahlenrange, spielerA, spielerB, spielmodi);
 		
 		
 	}
@@ -119,7 +120,8 @@ public class Zahlenfeld{
 	}
 	
 
-	public void neueTabelle(int zRange, String spielerA, String spielerB){
+	public void neueTabelle(int zRange, String spielerA, String spielerB, int spielmodi){
+		this.spielmodi = spielmodi;
 		int range = zRange;
 		this.spielerA = spielerA;
 		this.spielerB = spielerB;

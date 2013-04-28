@@ -2,12 +2,15 @@ package ch.sipama.Controller;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 
 public class Spieldaten {
 
 	//Instanzvariablen
 	private static Spieldaten instance = null;
 	private MoeglicheZuege mZuege;
+	private int spielmodi;
 	private String spielerA;
 	private String spielerB;
 	boolean spielstart;
@@ -23,12 +26,12 @@ public class Spieldaten {
 		return instance;
 	}
 
-	public void setSpieldaten(int zrange, String spielerA, String spielerB){
+	public void setSpieldaten(int zrange, String spielerA, String spielerB, int spielmodi){
+		this.spielmodi = spielmodi;
 		this.spielerA = spielerA;
 		this.spielerB = spielerB;
 		spielstart = true;
 		zaehler=0;
-//		zahlenrange = new ArrayList<Integer>();
 		log = new ArrayList<Spielzug>();
 
 		moegZuege = new ArrayList<MoeglicheZuege>();
@@ -70,6 +73,12 @@ public class Spieldaten {
 		}
 		Spielzug spielzug = new Spielzug(spieler, row, column, gezZahl);
 		log.add(spielzug);
+		
+		ArrayList<Integer> spielHilfe = naechsterSpielzug();
+		if(spielHilfe.size()==0){
+			String spielende = "<html><body>Es gibt keine weiteren Spielzüge mehr!<br><br>Herzlichen Glückwunsch - " + spieler + " hat gewonnen!</body></html>";
+			JOptionPane.showMessageDialog(null, spielende, "Spiel beendet", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 	
 	public boolean validieren(int gezogeneZahl){
