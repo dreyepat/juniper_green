@@ -3,18 +3,18 @@ package ch.sipama.Controller;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class CompRandom {
+public class CompRandom implements ISpielStrategie{
 	
 	private Spieldaten spieldaten;
 	
 	
 	
-	public CompRandom(){
+	public CompRandom() {
 		spieldaten = Spieldaten.getInstance();
 	}
 	
 	
-	public int getNextSpielzug(){
+	public int naechsterPCSpielzug(){
 		
 		 ArrayList<Integer> moeglicheSpielzuege = (ArrayList<Integer>) spieldaten.naechsterSpielzug().clone();
 		

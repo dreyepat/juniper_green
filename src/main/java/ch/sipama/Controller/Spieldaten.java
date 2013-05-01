@@ -10,7 +10,6 @@ public class Spieldaten {
 	//Instanzvariablen
 	private static Spieldaten instance = null;
 	private MoeglicheZuege mZuege;
-	private int spielmodi;
 	private String spielerA;
 	private String spielerB;
 	boolean spielstart;
@@ -26,8 +25,7 @@ public class Spieldaten {
 		return instance;
 	}
 
-	public void setSpieldaten(int zrange, String spielerA, String spielerB, int spielmodi){
-		this.spielmodi = spielmodi;
+	public void setSpieldaten(int zrange, String spielerA, String spielerB){
 		this.spielerA = spielerA;
 		this.spielerB = spielerB;
 		spielstart = true;
@@ -110,6 +108,7 @@ public class Spieldaten {
 		for(int i=0; i<spielHilfe.size(); i++){
 			moegSpielzuege = moegSpielzuege + spielHilfe.get(i) + ", ";
 		}
+		moegSpielzuege = moegSpielzuege.substring(0, moegSpielzuege.length()-2);
 		moegSpielzuege = moegSpielzuege + "</body></html>";
 		return moegSpielzuege;
 	}

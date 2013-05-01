@@ -10,6 +10,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import ch.sipama.Controller.CompRandom;
+import ch.sipama.Controller.ISpielStrategie;
 import ch.sipama.Controller.Spieldaten;
 
 public class Zahlenfeld{
@@ -21,7 +22,7 @@ public class Zahlenfeld{
 	private DefaultTableModel model;
 	private JTable zahlenfeld = new JTable();
 	private Spieldaten spdaten;
-	private CompRandom compRandom = new CompRandom();
+	private ISpielStrategie spielStrategie;
 	
 	
 	
@@ -89,8 +90,19 @@ public class Zahlenfeld{
 		}
 		
 		spdaten = Spieldaten.getInstance();
-		spdaten.setSpieldaten(zahlenrange, spielerA, spielerB, spielmodi);
-		
+		spdaten.setSpieldaten(zahlenrange, spielerA, spielerB);
+		if(spielmodi>0){
+			switch(spielmodi){
+			case 1:
+				spielStrategie = new CompRandom();
+				break;
+			case 2:
+				spielStrategie = new CompRandom();
+				break;
+			default:
+				System.out.println("Keine Implementation für Spielmodi " + spielmodi + "vorhanden.");
+			}
+		}
 		
 	}
 
@@ -173,7 +185,6 @@ public class Zahlenfeld{
     		
     		if(spdaten.validieren(gezogeneZahl)==true){
     			spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
-    			System.out.println("" + compRandom.getNextSpielzug());
             	model.setValueAt("", row, column);
             	zahlenfeld.clearSelection();
             	return gezZahl;
