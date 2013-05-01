@@ -9,6 +9,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import ch.sipama.Controller.AlphaBeta;
 import ch.sipama.Controller.CompRandom;
 import ch.sipama.Controller.ISpielStrategie;
 import ch.sipama.Controller.Spieldaten;
@@ -97,10 +98,10 @@ public class Zahlenfeld{
 				spielStrategie = new CompRandom();
 				break;
 			case 2:
-				spielStrategie = new CompRandom();
+				spielStrategie = new AlphaBeta();
 				break;
 			default:
-				System.out.println("Keine Implementation für Spielmodi " + spielmodi + "vorhanden.");
+				System.out.println("Keine Implementation für Spielmodi " + spielmodi + " vorhanden.");
 			}
 		}
 		
