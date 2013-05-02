@@ -71,14 +71,26 @@ public class Spieldaten {
 		}
 		Spielzug spielzug = new Spielzug(spieler, row, column, gezZahl);
 		log.add(spielzug);
-		
+
 		ArrayList<Integer> spielHilfe = naechsterSpielzug();
 		if(spielHilfe.size()==0){
 			String spielende = "<html><body>Es gibt keine weiteren Spielzüge mehr!<br><br>Herzlichen Glückwunsch - " + spieler + " hat gewonnen!</body></html>";
 			JOptionPane.showMessageDialog(null, spielende, "Spiel beendet", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-	
+
+	public void pcSpielzugAusfuehren(int row, int column, int gezZahl){
+		zaehler++;
+		Spielzug spielzug = new Spielzug(spielerB, row, column, gezZahl);
+		log.add(spielzug);
+
+		ArrayList<Integer> spielHilfe = naechsterSpielzug();
+		if(spielHilfe.size()==0){
+			String spielende = "<html><body>Es gibt keine weiteren Spielzüge mehr!<br><br>Herzlichen Glückwunsch - " + spielerB + " hat gewonnen!</body></html>";
+			JOptionPane.showMessageDialog(null, spielende, "Spiel beendet", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
 	public boolean validieren(int gezogeneZahl){
 		if(spielstart==true){
 			if(gezogeneZahl % 2==0){
@@ -95,15 +107,15 @@ public class Spieldaten {
 			}
 		}
 	}
-	
-	
+
+
 	public String moegSPAnzeigen(){
 		String moegSpielzuege = "<html><body> Mögliche Spielzüge:<br>";
-		
-//		for(int i=0; i<moegZuege.get(zahl).getJgreen().size(); i++){
-//			System.out.println("" + moegZuege.get(zahl).getJgreen().get(i));
-//		}
-		
+
+		//		for(int i=0; i<moegZuege.get(zahl).getJgreen().size(); i++){
+		//			System.out.println("" + moegZuege.get(zahl).getJgreen().get(i));
+		//		}
+
 		ArrayList<Integer> spielHilfe = naechsterSpielzug();
 		for(int i=0; i<spielHilfe.size(); i++){
 			moegSpielzuege = moegSpielzuege + spielHilfe.get(i) + ", ";
@@ -112,19 +124,21 @@ public class Spieldaten {
 		moegSpielzuege = moegSpielzuege + "</body></html>";
 		return moegSpielzuege;
 	}
-	
-	
+
+
 	public ArrayList<Integer> naechsterSpielzug(){
 		int zahl = log.get(log.size()-1).getZahl()-1;
-		
-		ArrayList<Integer> spielHilfe = (ArrayList<Integer>) moegZuege.get(zahl).getJgreen().clone();
-		for(int i=0; i<log.size(); i++){
-			for(int j=spielHilfe.size()-1; j>=0; j--){
-				if(log.get(i).getZahl()==spielHilfe.get(j)){
-					spielHilfe.remove(j);
-				}	
+		ArrayList<Integer> spielHilfe = new ArrayList<Integer>();
+		if(zahl>0){
+			spielHilfe = (ArrayList<Integer>) moegZuege.get(zahl).getJgreen().clone();
+			for(int i=0; i<log.size(); i++){
+				for(int j=spielHilfe.size()-1; j>=0; j--){
+					if(log.get(i).getZahl()==spielHilfe.get(j)){
+						spielHilfe.remove(j);
+					}	
+				}
 			}
-		}		
+		}
 		return spielHilfe;	
 	}
 

@@ -3,12 +3,10 @@ package ch.sipama.View;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
-
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-
 import ch.sipama.Controller.AlphaBeta;
 import ch.sipama.Controller.CompRandom;
 import ch.sipama.Controller.ISpielStrategie;
@@ -28,6 +26,11 @@ public class Zahlenfeld{
 	
 	
 	
+	public ISpielStrategie getSpielStrategie() {
+		return spielStrategie;
+	}
+
+
 	public void tabelleZeichnen(){
 		if(zahlenrange <= 150){
 			int anzZeilen=zahlenrange/10;
@@ -196,7 +199,44 @@ public class Zahlenfeld{
     	}catch(NumberFormatException nfe){
 			JOptionPane.showMessageDialog(null, "Diese Zahl wurde bereits gezogen!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 			return "";
-		}    	
+		}catch(ArrayIndexOutOfBoundsException oobe){
+			JOptionPane.showMessageDialog(null, "Klicke auf eine Zahl in der Tabelle!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+			return "";
+		}
+    }
+    
+    public String pcSpielzug(){
+    	String pcZahl = "";
+    	int pcZug = spielStrategie.naechsterPCSpielzug();
+    	pcZahl = pcZahl + pcZug;
+    
+    	int row = 0;
+    	int column = 0;
+    	
+    	if(zahlenrange>=150){
+    		row = pcZug/20;
+    		if(pcZug%20==0){
+    			row = row-1;
+    			column=19;
+    		}else{
+    			column = pcZug%20-1;
+    		}
+    		
+    	}else{
+    		row = pcZug/10;
+        	if(pcZug%10==0){
+        		row = row-1;
+        		column = 9;
+        	}else{
+        		column = pcZug%10-1;
+        	}
+    	}
+    	
+    	spdaten.pcSpielzugAusfuehren(row, column, pcZug);
+    	model.setValueAt("", row, column);
+    	zahlenfeld.clearSelection();
+    	
+    	return pcZahl;
     }
 	
     

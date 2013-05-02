@@ -20,8 +20,8 @@ public class Spielfenster {
 	private JScrollPane einstellungenScrollPane;
 	private JScrollPane feldScrollPane;
 	private Zahlenfeld zFeld;
-	private JLabel gezZahl;
 	private JLabel lblAktSpieler;
+	private JLabel lblGezZahl;
 	private JRadioButton radSpielerVsSpieler;
 	private JRadioButton radSpielerVsComp;
 	private JButton btnNeustart;
@@ -31,9 +31,10 @@ public class Spielfenster {
 	private Spieldaten spieldaten;
 	private JComboBox<String> compListe;
 	private int zRange;
+	private int spielmodi;
 
 	public Spielfenster(){
-		
+
 		spieldaten = Spieldaten.getInstance();
 
 		zFeld= new Zahlenfeld();
@@ -59,7 +60,7 @@ public class Spielfenster {
 				compListe.setEnabled(false);
 			}
 		});
-		
+
 		radSpielerVsComp = new JRadioButton("Spieler gegen Computer");
 		radSpielerVsComp.addActionListener(new ActionListener(){
 			@Override
@@ -68,16 +69,16 @@ public class Spielfenster {
 				compListe.setEnabled(true);
 			}
 		});
-		
-		
+
+
 		ButtonGroup sModus = new ButtonGroup();
 		sModus.add(radSpielerVsSpieler);
 		sModus.add(radSpielerVsComp);
-		
+
 		String compStratListe[] = {"Sebastian", "Anna", "Tom"};
 		compListe = new JComboBox<String>(compStratListe);
 		compListe.setEnabled(false);
-		
+
 		txtSpielerA = new JTextField(12);
 		txtSpielerB = new JTextField(12);
 
@@ -91,9 +92,9 @@ public class Spielfenster {
 		einstellungen.add(compListe);
 
 		lblAktSpieler = new JLabel("");
-		gezZahl = new JLabel("<html><body>Lege den Zahlenraum fest,<br>um das Spiel zu starten!</body></html>");
+		lblGezZahl = new JLabel("<html><body>Lege den Zahlenraum fest,<br>um das Spiel zu starten!</body></html>");
 		einstellungen.add(lblAktSpieler);
-		einstellungen.add(gezZahl);
+		einstellungen.add(lblGezZahl);
 
 		btnNeustart = new JButton("Spiel starten!");
 		einstellungen.add(btnNeustart);
@@ -115,8 +116,8 @@ public class Spielfenster {
 
 			}
 		});
-		
-		
+
+
 		btnHilfe = new JButton("Hilfe");
 		btnHilfe.setEnabled(false);
 		einstellungen.add(btnHilfe);
@@ -151,17 +152,17 @@ public class Spielfenster {
 		layout.putConstraint(SpringLayout.WEST, lblZahlenraum, 5, SpringLayout.WEST, einstellungen);
 		layout.putConstraint(SpringLayout.NORTH, txtZahlenraum, 5, SpringLayout.NORTH, einstellungen);
 		layout.putConstraint(SpringLayout.WEST, txtZahlenraum, 10, SpringLayout.EAST, lblZahlenraum);
-		
+
 		layout.putConstraint(SpringLayout.NORTH, lblSpielmodus, 20,	SpringLayout.SOUTH, lblZahlenraum);
 		layout.putConstraint(SpringLayout.WEST, lblSpielmodus, 5, SpringLayout.WEST, einstellungen);
-		
+
 		layout.putConstraint(SpringLayout.NORTH, radSpielerVsSpieler, 16,	SpringLayout.SOUTH, lblZahlenraum);
 		layout.putConstraint(SpringLayout.WEST, radSpielerVsSpieler, 10, SpringLayout.EAST, lblSpielmodus);
 		layout.putConstraint(SpringLayout.NORTH, radSpielerVsComp, 0,	SpringLayout.SOUTH, radSpielerVsSpieler);
 		layout.putConstraint(SpringLayout.WEST, radSpielerVsComp, 10, SpringLayout.EAST, lblSpielmodus);
 		layout.putConstraint(SpringLayout.NORTH, compListe, 0,	SpringLayout.SOUTH, radSpielerVsComp);
 		layout.putConstraint(SpringLayout.WEST, compListe, 31, SpringLayout.EAST, lblSpielmodus);
-		
+
 
 
 		layout.putConstraint(SpringLayout.NORTH, btnNeustart, 10, SpringLayout.SOUTH, lblSpielerB);
@@ -181,15 +182,15 @@ public class Spielfenster {
 		layout.putConstraint(SpringLayout.NORTH, lblAktSpieler, 40, SpringLayout.SOUTH, btnNeustart);
 		layout.putConstraint(SpringLayout.WEST, lblAktSpieler, 5, SpringLayout.WEST, einstellungen);
 
-		layout.putConstraint(SpringLayout.NORTH, gezZahl, 10, SpringLayout.SOUTH, lblAktSpieler);
-		layout.putConstraint(SpringLayout.WEST, gezZahl, 5, SpringLayout.WEST, einstellungen);
+		layout.putConstraint(SpringLayout.NORTH, lblGezZahl, 10, SpringLayout.SOUTH, lblAktSpieler);
+		layout.putConstraint(SpringLayout.WEST, lblGezZahl, 5, SpringLayout.WEST, einstellungen);
 
-		layout.putConstraint(SpringLayout.NORTH, btnSpielzug, 20, SpringLayout.SOUTH, gezZahl);
+		layout.putConstraint(SpringLayout.NORTH, btnSpielzug, 20, SpringLayout.SOUTH, lblGezZahl);
 		layout.putConstraint(SpringLayout.WEST, btnSpielzug, 5, SpringLayout.WEST, einstellungen);
 
 		layout.putConstraint(SpringLayout.SOUTH, btnSpielAbbrechen, -5, SpringLayout.SOUTH, einstellungen);
 		layout.putConstraint(SpringLayout.EAST, btnSpielAbbrechen, -5, SpringLayout.EAST, einstellungen);
-		
+
 		layout.putConstraint(SpringLayout.SOUTH, btnHilfe, -5, SpringLayout.SOUTH, einstellungen);
 		layout.putConstraint(SpringLayout.WEST, btnHilfe, 5, SpringLayout.WEST, einstellungen);
 
@@ -223,7 +224,7 @@ public class Spielfenster {
 						if(txtSpielerA.getText().length()<1){
 							txtSpielerA.setText("Spieler A");
 						}
-						if(txtSpielerB.getText().length()<1){
+						if(radSpielerVsComp.isSelected()==false && txtSpielerB.getText().length()<1){
 							txtSpielerB.setText("Spieler B");
 						}
 						spielStarten();
@@ -241,16 +242,24 @@ public class Spielfenster {
 		}
 
 	}
-	
-	
+
+
 	public void spielStarten(){
-		int spielmodi=0;
+		spielmodi=0;
 		if(radSpielerVsComp.isSelected()==true){
 			spielmodi = compListe.getSelectedIndex()+1;
 		}
-		zFeld.neueTabelle(zRange, txtSpielerA.getText(), txtSpielerB.getText(), spielmodi);
+
+		String spielerB="";
+		if(spielmodi>0){
+			spielerB = "PC: " + compListe.getItemAt(spielmodi-1);
+		}else{
+			spielerB = txtSpielerB.getText();
+		}
+
+		zFeld.neueTabelle(zRange, txtSpielerA.getText(), spielerB, spielmodi);
 		zFeld.tabelleAktualisieren();
-		gezZahl.setText("Ziehe eine gerade Zahl!");
+		lblGezZahl.setText("Ziehe eine gerade Zahl!");
 		btnNeustart.setEnabled(false);
 		btnSpielzug.setEnabled(true);
 		btnSpielAbbrechen.setEnabled(true);
@@ -263,12 +272,18 @@ public class Spielfenster {
 		radSpielerVsSpieler.setEnabled(false);
 		radSpielerVsComp.setEnabled(false);
 	}
-	
+
 
 	public void spielzug(){
 		String spielzug = zFeld.spielzug();
-		if(spielzug.length()>0){
-			gezZahl.setText("Zuletzt gezogene Zahl: " + spielzug);
+
+		if(spielmodi>0 && spielzug.length()>0){
+			lblAktSpieler.setText(txtSpielerA.getText() + " hat die Zahl " + spielzug + " gezogen.");
+			String pcSpielzug = zFeld.pcSpielzug();
+			lblGezZahl.setText("PC: " + compListe.getItemAt(spielmodi-1) + " hat die Zahl " + pcSpielzug + " gezogen.");
+			
+		}else if(spielzug.length()>0){
+			lblGezZahl.setText("Zuletzt gezogene Zahl: " + spielzug);
 			if(lblAktSpieler.getText().equals((txtSpielerA.getText() + " ist am Zug!"))){
 				lblAktSpieler.setText(txtSpielerB.getText() + " ist am Zug!");
 			}else{
@@ -290,7 +305,7 @@ public class Spielfenster {
 			txtZahlenraum.setText("");
 			txtSpielerA.setText("");
 			txtSpielerB.setText("");
-			gezZahl.setText("<html><body>Lege den Zahlenraum fest,<br>um das Spiel zu starten!</body></html>");
+			lblGezZahl.setText("<html><body>Lege den Zahlenraum fest,<br>um das Spiel zu starten!</body></html>");
 			lblAktSpieler.setText("");
 			zFeld.neueTabelle(0, "", "", 0);
 			radSpielerVsSpieler.setEnabled(true);
