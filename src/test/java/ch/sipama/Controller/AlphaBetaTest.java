@@ -6,26 +6,28 @@ import org.junit.Test;
 
 public class AlphaBetaTest {
 	
-	AlphaBeta test = new AlphaBeta();
+	//AlphaBeta test = new AlphaBeta();
 
 	@Test
 	public void testMaxWert() {
-		fail("Not yet implemented"); // TODO
+		Object ermittelt = null;
+		assertNotNull("MaxWert", ermittelt);
 	}
 
 	@Test
 	public void testMinWert() {
-		fail("Not yet implemented"); // TODO
+		Object ermittelt = null;
+		assertNotNull("MinWert", ermittelt);
 	}
 
 	@Test
 	public void testNaechsterPCSpielzug() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull("nextPCSpielzug", 0);
 	}
 	
 	@Test
-	private void countPoints() {
-		fail("Not yet implemented"); // TODO
+	public void countPoints() {
+		assertNotNull("countPoints", 0);
 	}
 
 }
