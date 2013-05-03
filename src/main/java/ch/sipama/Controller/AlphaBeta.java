@@ -73,7 +73,7 @@ public class AlphaBeta implements ISpielStrategie{
 	}
 	
 	
-	private int countPoints(int i, int counter, int id) {
+	public int countPoints(int i, int counter, int id) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
