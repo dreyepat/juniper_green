@@ -3,11 +3,14 @@ package ch.sipama.View;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+
 import ch.sipama.Controller.AlphaBeta;
+import ch.sipama.Controller.CompHoechst;
 import ch.sipama.Controller.CompRandom;
 import ch.sipama.Controller.ISpielStrategie;
 import ch.sipama.Controller.Spieldaten;
@@ -102,6 +105,9 @@ public class Zahlenfeld{
 				break;
 			case 2:
 				spielStrategie = new AlphaBeta();
+				break;
+			case 3:
+				spielStrategie = new CompHoechst();
 				break;
 			default:
 				System.out.println("Keine Implementation für Spielmodi " + spielmodi + " vorhanden.");
