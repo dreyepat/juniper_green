@@ -25,10 +25,10 @@ public class Zahlenfeld{
 	private JTable zahlenfeld = new JTable();
 	private Spieldaten spdaten;
 	private ISpielStrategie spielStrategie;
-	
-	
-	
-	
+
+
+
+
 	public ISpielStrategie getSpielStrategie() {
 		return spielStrategie;
 	}
@@ -48,7 +48,7 @@ public class Zahlenfeld{
 				auffueller=10-(zahlenrange%10);
 			}
 
-			
+
 			//Neue DefaultTableModel erstellen und die Spaltentitel hinzufügen			
 			this.model = new DefaultTableModel( columnNames, 0 );
 
@@ -63,19 +63,19 @@ public class Zahlenfeld{
 				model.setValueAt("", model.getRowCount()-1, model.getColumnCount()-(k+1));
 
 			}
-			
+
 			model.isCellEditable(anzZeilen, zahlenrange/10);
 
 		}else{
-			
+
 			int anzZeilen=zahlenrange/20;
 			int auffueller=0;
-			
+
 			Vector<String> columnNames = new Vector<String>();
 			for (int i=0; i<20; i++){
 				columnNames.add(""+i);
 			}
-			
+
 			if(zahlenrange%20 != 0){
 				anzZeilen=anzZeilen+1;
 				auffueller=20-(zahlenrange%20);
@@ -90,12 +90,12 @@ public class Zahlenfeld{
 				}
 				model.addRow(zeile);
 			}
-			
+
 			for(int k=0; k<auffueller; k++){
 				model.setValueAt("", model.getRowCount()-1, model.getColumnCount()-(k+1));
 			}
 		}
-		
+
 		spdaten = Spieldaten.getInstance();
 		spdaten.setSpieldaten(zahlenrange, spielerA, spielerB);
 		if(spielmodi>0){
@@ -113,20 +113,20 @@ public class Zahlenfeld{
 				System.out.println("Keine Implementation für Spielmodi " + spielmodi + " vorhanden.");
 			}
 		}
-		
+
 	}
 
 
 	public void tabelleUebernehmen(){
-		
+
 		zahlenfeld = new JTable(model);
 		zahlenfeld.setTableHeader(null);
 		zahlenfeld.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		zahlenfeld.setRowSelectionAllowed(true);
-        zahlenfeld.setColumnSelectionAllowed(true);
-        
-        
-	
+		zahlenfeld.setColumnSelectionAllowed(true);
+
+
+
 	}
 
 	public void tabelleAktualisieren(){
@@ -136,11 +136,11 @@ public class Zahlenfeld{
 	public JTable getZahlenfeld(){
 		return zahlenfeld;
 	}
-	
+
 	public DefaultTableModel getModel(){
 		return model;
 	}
-	
+
 
 	public void neueTabelle(int zRange, String spielerA, String spielerB, int spielmodi){
 		this.spielmodi = spielmodi;
@@ -163,88 +163,90 @@ public class Zahlenfeld{
 		this.zahlenrange=range;
 		tabelleZeichnen();
 	}
-	
+
 
 	public boolean icCellEditable(){
 		zahlenfeld.addMouseListener( new MouseAdapter()
-	    {
-	      @Override
-	      public void mouseClicked( MouseEvent e )
-	      {
-	        int rowAtPoint    = zahlenfeld.rowAtPoint(e.getPoint());
-	        int columnAtPoint = zahlenfeld.columnAtPoint(e.getPoint());
-	        isCellEditable(rowAtPoint, columnAtPoint);
-	        System.out.println(zahlenfeld.getValueAt(rowAtPoint, columnAtPoint));
-	      }
-	    } );
+		{
+			@Override
+			public void mouseClicked( MouseEvent e )
+			{
+				int rowAtPoint    = zahlenfeld.rowAtPoint(e.getPoint());
+				int columnAtPoint = zahlenfeld.columnAtPoint(e.getPoint());
+				isCellEditable(rowAtPoint, columnAtPoint);
+				System.out.println(zahlenfeld.getValueAt(rowAtPoint, columnAtPoint));
+			}
+		} );
 		return false;
 	}
-	
-    public boolean isCellEditable(int row, int col) {
-            return false;
-    }
-    
-    
-    public String spielzug(){
-    	String gezZahl="";
-    	try{
-    		int row = zahlenfeld.getSelectedRow();
-        	int column = zahlenfeld.getSelectedColumn();
-        	gezZahl = (String) model.getValueAt(row, column);
-    		int gezogeneZahl = Integer.parseInt(gezZahl);
-    		
-    		if(spdaten.validieren(gezogeneZahl)==true){
-    			spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
-            	model.setValueAt("", row, column);
-            	zahlenfeld.clearSelection();
-            	return gezZahl;
-    		}else{
-    			JOptionPane.showMessageDialog(null, "Dies ist kein gültiger Spielzug!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-    			return "";
-    		}
-    	}catch(NumberFormatException nfe){
+
+	public boolean isCellEditable(int row, int col) {
+		return false;
+	}
+
+
+	public String spielzug(){
+		String gezZahl="";
+		try{
+			int row = zahlenfeld.getSelectedRow();
+			int column = zahlenfeld.getSelectedColumn();
+			gezZahl = (String) model.getValueAt(row, column);
+			int gezogeneZahl = Integer.parseInt(gezZahl);
+
+			if(spdaten.validieren(gezogeneZahl)==true){
+				spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
+				model.setValueAt("", row, column);
+				zahlenfeld.clearSelection();
+				return gezZahl;
+			}else{
+				JOptionPane.showMessageDialog(null, "Dies ist kein gültiger Spielzug!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+				return "";
+			}
+		}catch(NumberFormatException nfe){
 			JOptionPane.showMessageDialog(null, "Diese Zahl wurde bereits gezogen!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 			return "";
 		}catch(ArrayIndexOutOfBoundsException oobe){
 			JOptionPane.showMessageDialog(null, "Klicke auf eine Zahl in der Tabelle!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 			return "";
 		}
-    }
-    
-    public String pcSpielzug(){
-    	String pcZahl = "";
-    	int pcZug = spielStrategie.naechsterPCSpielzug();
-    	pcZahl = pcZahl + pcZug;
-    
-    	int row = 0;
-    	int column = 0;
-    	
-    	if(zahlenrange>=150){
-    		row = pcZug/20;
-    		if(pcZug%20==0){
-    			row = row-1;
-    			column=19;
-    		}else{
-    			column = pcZug%20-1;
-    		}
-    		
-    	}else{
-    		row = pcZug/10;
-        	if(pcZug%10==0){
-        		row = row-1;
-        		column = 9;
-        	}else{
-        		column = pcZug%10-1;
-        	}
-    	}
-    	
-    	spdaten.pcSpielzugAusfuehren(row, column, pcZug);
-    	model.setValueAt("", row, column);
-    	zahlenfeld.clearSelection();
-    	
-    	return pcZahl;
-    }
-	
-    
-    
+	}
+
+	public String pcSpielzug(){
+		String pcZahl = "";
+		if(spdaten.isbSpielende()==false){
+			int pcZug = spielStrategie.naechsterPCSpielzug();
+			pcZahl = pcZahl + pcZug;
+
+			int row = 0;
+			int column = 0;
+
+			if(zahlenrange>=150){
+				row = pcZug/20;
+				if(pcZug%20==0){
+					row = row-1;
+					column=19;
+				}else{
+					column = pcZug%20-1;
+				}
+
+			}else{
+				row = pcZug/10;
+				if(pcZug%10==0){
+					row = row-1;
+					column = 9;
+				}else{
+					column = pcZug%10-1;
+				}
+			}
+
+			spdaten.pcSpielzugAusfuehren(row, column, pcZug);
+			model.setValueAt("", row, column);
+			zahlenfeld.clearSelection();
+		}
+
+		return pcZahl;
+	}
+
+
+
 }

@@ -37,9 +37,9 @@ public class AlphaBeta implements ISpielStrategie{
 				
 				spdaten.spielzugAusfuehren(row, col, i);				//Spielzug ausführen
 				
-				if(restTiefe <= 1 || spdaten.spielstart == true) { 		//board.isFull() 
+				if(restTiefe <= 1 || spdaten.bSpielstart == true) { 		//board.isFull() 
 					for (int ii=0; ii<row; ii++) { 
-						if(spdaten.spielstart == false) {				//board.isOccupied(ii,i)				
+						if(spdaten.bSpielstart == false) {				//board.isOccupied(ii,i)				
 							counter++;
 						} else {
 							zugWert = countPoints(i, counter, id);
@@ -99,9 +99,9 @@ public class AlphaBeta implements ISpielStrategie{
 				
 				spdaten.spielzugAusfuehren(row, col, i);
 				    
-				if(restTiefe<=1 || spdaten.spielstart == true) { 
+				if(restTiefe<=1 || spdaten.bSpielstart == true) { 
 					for (int ii=0; ii<row; ii++) { 
-						if(spdaten.spielstart == false) {
+						if(spdaten.bSpielstart == false) {
 							counter++;
 						} else {
 							zugWert = -countPoints(i, counter, oppId);
