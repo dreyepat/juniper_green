@@ -130,7 +130,7 @@ public class Spielfenster {
 			}
 		});
 
-		btnSpielAbbrechen = new JButton ("Spiel abbrechen");
+		btnSpielAbbrechen = new JButton ("Neues Spiel starten");
 		btnSpielAbbrechen.setEnabled(false);
 		einstellungen.add(btnSpielAbbrechen);
 		btnSpielAbbrechen.addActionListener(new ActionListener(){
@@ -290,6 +290,9 @@ public class Spielfenster {
 				lblAktSpieler.setText(txtSpielerA.getText() + " ist am Zug!");
 			}
 		}
+		if(spieldaten.isbSpielende()==true){
+			btnSpielzug.setEnabled(false);
+		}
 	}
 
 	public void spielAbbrechen(){
@@ -312,6 +315,11 @@ public class Spielfenster {
 			radSpielerVsSpieler.setSelected(true);
 			radSpielerVsComp.setEnabled(true);
 		}
+	}
+
+	public void rueckgaengig() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

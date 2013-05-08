@@ -32,6 +32,7 @@ public class Hauptgui extends JPanel {
 	//Instanzvariablen
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
+	private Spielfenster spielfenster;
 	private Spieldaten spieldaten;
 	
 	
@@ -48,7 +49,7 @@ public class Hauptgui extends JPanel {
 		//Rahmen erstellen
 		frame = new JFrame("Juniper Green");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Spielfenster spielfenster = new Spielfenster();
+		spielfenster = new Spielfenster();
 		frame.getContentPane().add(spielfenster.getSplitPane());
 		
 		
@@ -89,6 +90,8 @@ public class Hauptgui extends JPanel {
 		jgMenu.add(spielregeln);
 		JMenuItem log = new JMenuItem("Log");
 		jgMenu.add(log);
+		JMenuItem rueckgaengig = new JMenuItem("Rückgängig");
+		jgMenu.add(rueckgaengig);
 		
 		
 		JMenuItem hilfe = new JMenuItem("Anleitung");
@@ -136,6 +139,19 @@ public class Hauptgui extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				logAnzeigen();
+			}
+		});
+		
+		
+		
+		rueckgaengig.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				spielfenster.rueckgaengig();
+				
+				
+				
+				
 			}
 		});
 		
