@@ -14,12 +14,13 @@ public class Spieldaten {
 	private String spielerB;
 	boolean bSpielstart;
 	boolean bSpielende;
-	
-
-	int zaehler;
+	private int zaehler; //für Anzahl Spielzüge
 	private ArrayList<Spielzug> log;
 	private ArrayList<MoeglicheZuege> moegZuege;
+	private int groesstePrimzahl;
 
+
+	
 
 	public static Spieldaten getInstance(){
 		if (instance == null){
@@ -32,7 +33,14 @@ public class Spieldaten {
 		return bSpielende;
 	}
 
+	public ArrayList<Spielzug> getLog() {
+		return log;
+	}
 
+	public int getGroesstePrimzahl() {
+		return groesstePrimzahl;
+	}
+	
 	public void setSpieldaten(int zrange, String spielerA, String spielerB){
 		this.spielerA = spielerA;
 		this.spielerB = spielerB;
@@ -40,7 +48,6 @@ public class Spieldaten {
 		bSpielende = false;
 		zaehler=0;
 		log = new ArrayList<Spielzug>();
-
 		moegZuege = new ArrayList<MoeglicheZuege>();
 		for(int i=1; i<=zrange; i++){
 			String liste = "";
@@ -54,9 +61,18 @@ public class Spieldaten {
 			moegZuege.add(mZuege);
 			System.out.println(liste);
 		}
-
-
-
+		if(zrange>0){
+			groesstePrimzahl=0;
+			int i=moegZuege.size()-1;
+			while(groesstePrimzahl<1){
+				if(moegZuege.get(i).getJgreen().size()==2){
+					groesstePrimzahl=moegZuege.get(i).getJgreen().get(1);
+				}
+				i--;
+			}
+			System.out.println("grösste Primzahl: " + groesstePrimzahl);
+		}
+		
 	}
 
 	public String logAnzeigen(){
