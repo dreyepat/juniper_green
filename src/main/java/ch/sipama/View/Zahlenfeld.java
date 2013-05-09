@@ -1,5 +1,6 @@
 package ch.sipama.View;
 
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
@@ -124,7 +125,8 @@ public class Zahlenfeld{
 		zahlenfeld.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		zahlenfeld.setRowSelectionAllowed(true);
 		zahlenfeld.setColumnSelectionAllowed(true);
-
+		zahlenfeld.setRowHeight(60);
+		zahlenfeld.setBackground(Color.yellow);
 
 
 	}
