@@ -165,6 +165,10 @@ public class Spieldaten {
 	}
 
 
+	public ArrayList<MoeglicheZuege> getMoegZuege() {
+		return moegZuege;
+	}
+
 	public String moegSPAnzeigen(){
 		String moegSpielzuege = "<html><body> Mögliche Spielzüge:<br>";
 		ArrayList<Integer> spielHilfe = naechsterSpielzug();
