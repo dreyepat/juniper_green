@@ -1,15 +1,11 @@
 package ch.sipama.View;
 
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Vector;
-
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-
 import ch.sipama.Controller.AlphaBeta;
 import ch.sipama.Controller.CompHoechst;
 import ch.sipama.Controller.CompRandom;

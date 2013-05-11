@@ -324,50 +324,44 @@ public class Spielfenster {
 			if(spielmodi>0){
 				if(spieldaten.getLog().size()<2){
 					JOptionPane.showMessageDialog(null, "<html><body>Das Spiel wurde noch nicht gestartet.<br>Du kannst keine Spielzüge rückgängig machen.</body></html>", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-				}else{
+				}else if (spieldaten.getLog().size()>2){
 					int row1 = spieldaten.getLog().get(spieldaten.getLog().size()-1).getRow();
 					int column1 = spieldaten.getLog().get(spieldaten.getLog().size()-1).getColumn();
 					String zahl1 = "" + spieldaten.getLog().get(spieldaten.getLog().size()-1).getZahl();
 					zFeld.getModel().setValueAt(zahl1, row1, column1);
-					
+
 					int row2 = spieldaten.getLog().get(spieldaten.getLog().size()-2).getRow();
 					int column2 = spieldaten.getLog().get(spieldaten.getLog().size()-2).getColumn();
 					String zahl2 = "" + spieldaten.getLog().get(spieldaten.getLog().size()-2).getZahl();
 					zFeld.getModel().setValueAt(zahl2, row2, column2);
-					
-					
-					lblAktSpieler.setText(spieldaten.getLog().get(spieldaten.getLog().size()-1).getSpieler() + " ist am Zug!");
-					
-					if(spieldaten.getLog().size()>2){
-						lblAktSpieler.setText(txtSpielerA.getText() + " hat die Zahl " + spieldaten.getLog().get(spieldaten.getLog().size()-4).getZahl() + " gezogen.");
-						lblGezZahl.setText("PC: " + compListe.getItemAt(spielmodi-1) + " hat die Zahl " + spieldaten.getLog().get(spieldaten.getLog().size()-3).getZahl() + " gezogen.");
-					}else{
-						lblAktSpieler.setText(txtSpielerA.getText() + " ist am Zug!");
-						lblGezZahl.setText("Ziehe eine gerade Zahl!");	
-					}
+
+
+					lblAktSpieler.setText(txtSpielerA.getText() + " hat die Zahl " + spieldaten.getLog().get(spieldaten.getLog().size()-4).getZahl() + " gezogen.");
+					lblGezZahl.setText("PC: " + compListe.getItemAt(spielmodi-1) + " hat die Zahl " + spieldaten.getLog().get(spieldaten.getLog().size()-3).getZahl() + " gezogen.");
+
 					spieldaten.getLog().remove(spieldaten.getLog().size()-1);
 					spieldaten.getLog().remove(spieldaten.getLog().size()-1);
-					
-					
-					
+
+
+
+				}else{
+					spielNeustarten();
 				}
 			}else{
 				if(spieldaten.getLog().size()<1){
 					JOptionPane.showMessageDialog(null, "<html><body>Das Spiel wurde noch nicht gestartet.<br>Du kannst keine Spielzüge rückgängig machen.</body></html>", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-				}else{
+				}else if (spieldaten.getLog().size()>1){
 					int row = spieldaten.getLog().get(spieldaten.getLog().size()-1).getRow();
 					int column = spieldaten.getLog().get(spieldaten.getLog().size()-1).getColumn();
 					String zahl = "" + spieldaten.getLog().get(spieldaten.getLog().size()-1).getZahl();
 					zFeld.getModel().setValueAt(zahl, row, column);
-					
+
 					lblAktSpieler.setText(spieldaten.getLog().get(spieldaten.getLog().size()-1).getSpieler() + " ist am Zug!");
-					
-					if(spieldaten.getLog().size()>1){
-						lblGezZahl.setText("Zuletzt gezogene Zahl: " + spieldaten.getLog().get(spieldaten.getLog().size()-2).getZahl());
-					}else{
-						lblGezZahl.setText("Ziehe eine gerade Zahl!");
-					}
+					lblGezZahl.setText("Zuletzt gezogene Zahl: " + spieldaten.getLog().get(spieldaten.getLog().size()-2).getZahl());
+
 					spieldaten.getLog().remove(spieldaten.getLog().size()-1);
+				}else{
+					spielNeustarten();
 				}
 			}
 		}
