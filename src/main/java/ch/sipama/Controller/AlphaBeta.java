@@ -17,18 +17,81 @@ public class AlphaBeta implements ISpielStrategie{
 	private ArrayList<Integer> alphaBetaLog;
 	private int alpha;
 	private int beta;
+	private ArrayList<Integer> nachfolger;
+	
+	private ArrayList<Integer> neutraleListe;
+	private ArrayList<Integer> gemischteListe;
+	private ArrayList<Integer> verliererListe;
 
 	public AlphaBeta(){
-		spdaten = spdaten.getInstance();
-		suchtiefe = 3;
+		spdaten = Spieldaten.getInstance();
+		suchtiefe = 3;	
+	}
+
+
+	@Override
+	public int naechsterPCSpielzug(){
 		alphaBetaLog = new ArrayList<Integer>();
 		for(int i=0; i<spdaten.getLog().size(); i++){
 			alphaBetaLog.add(spdaten.getLog().get(i).getZahl());
 		}
 		alpha=0;
 		beta=0;
-		alphaBeta(alphaBetaLog, alpha, beta);
+
+		//Diese Zahlen könnte der PC wählen
+		nachfolger = new ArrayList<Integer>();
+		nachfolger = (ArrayList<Integer>) spdaten.getMoegZuege().get(alphaBetaLog.get(alphaBetaLog.size()-1)-1).getJgreen().clone();
+		for(int i=0; i<alphaBetaLog.size(); i++){
+			for(int j=nachfolger.size()-1; j>=0; j--){
+				if(alphaBetaLog.get(i)==nachfolger.get(j)){
+					nachfolger.remove(j);
+				}	
+			}
+		}
+
+		//1 als möglichen nächsten Spielzug entfernen
+		if(nachfolger.get(0)==1 && nachfolger.size()>1){
+			nachfolger.remove(0);
+
+			if(nachfolger.size()>1){
+				//Alphabeta-Algorithmus nur aufrufen, wenn mehr als 1 möglicher Nachfolger zur Auswahl steht
+
+
+				//allenfalls in while-Schlaufe umschreiben, damit Bearbeitung abbrechen kann, falls eine "Siegeszahl" gefunden wurde
+
+				int j=0;
+				int siegeszahl = 0;
+
+				while(j<suchtiefe && siegeszahl==0){
+					alphaBeta(alphaBetaLog, alpha, beta);	
+					j++;
+				}
+				if(siegeszahl==0){
+					//falls neutrales Array != 0 => Random aus diesem Array als Rückgabewert
+					//else: Random aus "VerliererArray als Rückgabewert
+
+					return 0;
+
+				}else{
+					return siegeszahl;
+				}
+
+
+
+			}else{
+				//sonst den möglichen verbliebenen Nachfolger als Spielzug zurückgeben
+				return nachfolger.get(0);
+			}
+
+
+		}
+
+		return 0;
 	}
+
+
+
+
 
 	public int alphaBeta(ArrayList<Integer> alphaBetaLog, int alpha, int beta){
 		if(alphaBetaLog.get(alphaBetaLog.size()-1)==1){
@@ -41,16 +104,7 @@ public class AlphaBeta implements ISpielStrategie{
 
 
 
-		ArrayList<Integer> nachfolger = new ArrayList<Integer>();
-		int zahl = alphaBetaLog.get(alphaBetaLog.size()-1);
-		nachfolger = (ArrayList<Integer>) spdaten.getMoegZuege().get(zahl).getJgreen().clone();
-		for(int i=0; i<alphaBetaLog.size(); i++){
-			for(int j=nachfolger.size()-1; j>=0; j--){
-				if(alphaBetaLog.get(i)==nachfolger.get(j)){
-					nachfolger.remove(j);
-				}	
-			}
-		}
+
 
 
 		ArrayList<ArrayList> spielbaum = new ArrayList<ArrayList>();
@@ -60,21 +114,32 @@ public class AlphaBeta implements ISpielStrategie{
 			spielbaum.add(spielast);
 		}
 
-		
+
 		for(int i=0; i<spielbaum.size(); i++){
 			if((alphaBetaLog.size()+1)%2==0){											//Spieler A ist am Zug
 				beta = min(beta, alphaBeta(spielbaum.get(i), alpha, beta));
-				if((int)spielbaum.get(i).get( spielbaum.get(i).size()-1)==1){
-					alpha=1;
-				}
+
+
+				//				if((int)spielbaum.get(i).get( spielbaum.get(i).size()-1)==1){
+				//					alpha=1;
+				//				}
 			}else{
-				if((int)spielbaum.get(i).get( spielbaum.get(i).size()-1)==1){
-					beta=-1;
-				}
+				alpha = max(alpha, alphaBeta(spielbaum.get(i), alpha, beta));
+
+
+				//				if((int)spielbaum.get(i).get( spielbaum.get(i).size()-1)==1){
+				//					beta=-1;
+				//				}
 			}
+
+
 		}
 
-			return 0;
+		if((alphaBetaLog.size()+1)%2==0){
+			return beta;
+		}else{
+			return alpha;
+		}
 
 	}
 
@@ -97,8 +162,16 @@ public class AlphaBeta implements ISpielStrategie{
 
 
 
-	private int min(int beta2, int alphaBeta) {
+	private int max(int alpha2, int alphaBeta) {
+		if(alpha2 > alphaBeta){
+			return alpha2;
+		}
+		else{
+			return alphaBeta;
+		}
+	}
 
+	private int min(int beta2, int alphaBeta) {
 		if(beta2>alphaBeta){
 			return alphaBeta;
 		}
@@ -107,11 +180,7 @@ public class AlphaBeta implements ISpielStrategie{
 		}
 	}
 
-	@Override
-	public int naechsterPCSpielzug() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 
 
 
