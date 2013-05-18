@@ -25,20 +25,18 @@ public class AlphaBetaObjekt {
 		ArrayList<Integer> spielHilfe = new ArrayList<Integer>();
 		int letzterZug = log.get(log.size()-1);
 		System.out.println(""+ letzterZug);
-		spielHilfe = (ArrayList<Integer>) spdaten.getMoegZuege().get(letzterZug).getJgreen().clone();
+		spielHilfe = (ArrayList<Integer>) spdaten.getMoegZuege().get(letzterZug-1).getJgreen().clone();
 		for(int i=0; i<log.size(); i++){
 			for(int j=spielHilfe.size()-1; j>=0; j--){
 				if(log.get(i) == spielHilfe.get(j)){
 					spielHilfe.remove(j);
 				}
 			}
-
-			if(spielHilfe.get(0)==1){
-				spielHilfe.remove(0);
-			}
-			spielZugListe = (ArrayList<Integer>) spielHilfe.clone();		
 		}
-
+		if(spielHilfe.get(0)==1){
+			spielHilfe.remove(0);
+		}
+		spielZugListe = (ArrayList<Integer>) spielHilfe.clone();
 	}
 
 

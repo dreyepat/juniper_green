@@ -33,25 +33,43 @@ public class CompAlphaBeta implements ISpielStrategie{
 
 	@Override
 	public int naechsterPCSpielzug(){
-		ArrayList<Integer> spielZugListe = (ArrayList<Integer>) spdaten.naechsterSpielzug().clone();
 
-		if(spielZugListe.get(0)==1 && spielZugListe.size()>1){
-			spielZugListe.remove(0);
-		}
-		if(spielZugListe.size()==1){
-			return spielZugListe.get(0);
-
+		if(spdaten.getLog().get(spdaten.getLog().size()-1).getZahl() == 1){
+			return spdaten.getGroesstePrimzahl();
 		}else{
-			log = new ArrayList<Integer>();
-			for(int i=0; i<spdaten.getLog().size(); i++){
-				log.add(spdaten.getLog().get(i).getZahl());
-			}
-			alphaBetaO= new AlphaBetaObjekt(0, log);
-			objektListe.add(alphaBetaO);
+			ArrayList<Integer> spielZugListe = (ArrayList<Integer>) spdaten.naechsterSpielzug().clone();
 
-			alphaBeta(alphaBetaO.getPointer());
-			return rueckgabewert;
+
+
+			if(spielZugListe.get(0)==1 && spielZugListe.size()>1){
+				spielZugListe.remove(0);
+
+
+			}
+
+			if(spielZugListe.size()==1){
+				return spielZugListe.get(0);
+
+			}
+
+			else{
+				log = new ArrayList<Integer>();
+				for(int i=0; i<spdaten.getLog().size(); i++){
+					log.add(spdaten.getLog().get(i).getZahl());
+				}
+				alphaBetaO= new AlphaBetaObjekt(0, log);
+				objektListe.add(alphaBetaO);
+
+				alphaBeta(alphaBetaO.getPointer());
+				return rueckgabewert;
+			}
 		}
+
+
+
+
+
+
 	}
 
 
