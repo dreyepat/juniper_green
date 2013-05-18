@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-import ch.sipama.Controller.AlphaBeta;
+import ch.sipama.Controller.CompAlphaBeta;
 import ch.sipama.Controller.CompHoechst;
 import ch.sipama.Controller.CompRandom;
 import ch.sipama.Controller.ISpielStrategie;
@@ -101,7 +101,7 @@ public class Zahlenfeld{
 				spielStrategie = new CompRandom();
 				break;
 			case 2:
-				spielStrategie = new AlphaBeta();
+				spielStrategie = new CompAlphaBeta();
 				break;
 			case 3:
 				spielStrategie = new CompHoechst();

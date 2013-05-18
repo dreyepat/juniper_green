@@ -145,8 +145,7 @@ public class Spieldaten {
 	public ArrayList<Integer> naechsterSpielzug(){
 		ArrayList<Integer> spielHilfe = new ArrayList<Integer>();
 		if(bSpielende==false && bSpielstart == false){
-			int zahl = log.get(log.size()-1).getZahl()-1;
-			spielHilfe = (ArrayList<Integer>) moegZuege.get(zahl).getJgreen().clone();
+			spielHilfe = (ArrayList<Integer>) moegZuege.get((log.get(log.size()-1).getZahl()-1)).getJgreen().clone();
 			for(int i=0; i<log.size(); i++){
 				for(int j=spielHilfe.size()-1; j>=0; j--){
 					if(log.get(i).getZahl()==spielHilfe.get(j)){
