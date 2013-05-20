@@ -1,7 +1,6 @@
 package ch.sipama.Controller;
 
 import java.util.LinkedList;
-import java.util.Random;
 
 public class CompAlphaBeta implements ISpielStrategie{
 
@@ -28,11 +27,36 @@ public class CompAlphaBeta implements ISpielStrategie{
 	@Override
 	public int naechsterPCSpielzug(){
 		int iLetzteZahl = oSpdaten.getLogZahl(oSpdaten.logListgroesse()-1);
-		if(iLetzteZahl-1 == 1){
+		System.out.println("Letzter Spielzug " + iLetzteZahl);
+		if(iLetzteZahl == 1){
 			return oSpdaten.getGroesstePrimzahl();
 		}
-		LinkedList<Integer> spielZugListe = new LinkedList<Integer>(oSpdaten.getZRaumListe(iLetzteZahl));
-
+		
+		
+		//Liste mit bisherigen Spielzügen erstellen
+		lListLog = new LinkedList<Integer>();
+		for(int i=0; i<oSpdaten.logListgroesse(); i++){
+			lListLog.add(oSpdaten.getLogZahl(i));
+		}
+		
+		//Liste mit den nächsten möglichen Spielzügen erstellen:
+		LinkedList<Integer> spielZugListe = new LinkedList<Integer>(oSpdaten.getZRaumListe(iLetzteZahl-1));
+		for(int i=0; i<lListLog.size(); i++){
+			for(int j=spielZugListe.size()-1; j>=0; j--){
+				if(lListLog.get(i)==spielZugListe.get(j)){
+					spielZugListe.remove(j);
+				}
+			}
+		}
+		
+		String liste= "";
+		for(int i=0; i<spielZugListe.size(); i++){
+			liste = liste + spielZugListe.get(i) + " ";
+		}
+		System.out.println("Mögliche Spielzüge für den PC: " + liste);
+		
+		
+		//1 aus der Auswahl entfernen, falls die Liste mehr als 1 Element enthält
 		if(spielZugListe.getFirst()==1 && spielZugListe.size()>1){
 			spielZugListe.removeFirst();
 		}
@@ -40,30 +64,31 @@ public class CompAlphaBeta implements ISpielStrategie{
 			return spielZugListe.getFirst();
 		}
 
-		lListLog = new LinkedList<Integer>();
-		for(int i=0; i<oSpdaten.logListgroesse(); i++){
-			lListLog.add(oSpdaten.getLogZahl(i));
-		}
+		
 
 		//Ausgangswerte setzen
 		iRueckgabewert = spielZugListe.getFirst();
+		System.out.println("Erster Rückgabewert zwischengespeichert: " + iRueckgabewert);
 		fProzent = 0;
 
-		for(int i=1; i<spielZugListe.size(); i++){
+		for(int i=0; i<spielZugListe.size(); i++){
 			float fMax=0;
 			float fMin=0;
 			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(lListLog);
 			lListLogErweitert.addLast(spielZugListe.get(i));
 			oAlphaBeta= new AlphaBetaObjekt(null, lListLogErweitert, spielZugListe.size());
+			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast() + " als mögliche Zahl und Aanzahl Geschwister: " + spielZugListe.size());
 			float fAuswertung = alphaBeta(oAlphaBeta, fMax, fMin);
+			System.out.println("Auswertung: " + fAuswertung);
 			
 			if(fAuswertung > fProzent){
 				fProzent = fAuswertung;
 				iRueckgabewert = spielZugListe.get(i);
+				System.out.println("Neuer zwischenwert mit " + fProzent + " Gewinnchance und " + iRueckgabewert + " als neue Returnzahl");
 			}
 
 		}
-
+		System.out.println("PC-Spielzug mit Rückgabewert: " + iRueckgabewert);
 		return iRueckgabewert;
 
 	}
