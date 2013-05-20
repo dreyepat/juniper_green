@@ -14,58 +14,50 @@ import ch.sipama.Controller.Spieldaten;
 
 public class Zahlenfeld{
 
-	private String spielerA;
-	private String spielerB;
-	private int zahlenrange;
-	private int spielmodi;
-	private DefaultTableModel model;
-	private JTable zahlenfeld = new JTable();
-	private Spieldaten spdaten;
-	private ISpielStrategie spielStrategie;
-
-
-
-
-	public ISpielStrategie getSpielStrategie() {
-		return spielStrategie;
-	}
-
+	private String sSpielerA;
+	private String sSpielerB;
+	private int iZRange;
+	private int iSpielmodi;
+	private DefaultTableModel dTblModel;
+	private JTable jTblZahlenfeld = new JTable();
+	private Spieldaten oSpdaten;
+	private ISpielStrategie iFSpielstrategie;
 
 	public void tabelleZeichnen(){
-		if(zahlenrange <= 150){
-			int anzZeilen=zahlenrange/10;
+		if(iZRange <= 150){
+			int anzZeilen=iZRange/10;
 			int auffueller=0;
 			Vector<String> columnNames = new Vector<String>();
 			for (int i=0; i<10; i++){
 				columnNames.add(""+i);
 			}
 
-			if(zahlenrange%10 != 0){
+			if(iZRange%10 != 0){
 				anzZeilen=anzZeilen+1;
-				auffueller=10-(zahlenrange%10);
+				auffueller=10-(iZRange%10);
 			}
 
 
 			//Neue DefaultTableModel erstellen und die Spaltentitel hinzufügen			
-			this.model = new DefaultTableModel( columnNames, 0 );
+			this.dTblModel = new DefaultTableModel( columnNames, 0 );
 
 			for(int i=0; i<anzZeilen; i++){
 				Vector<String> zeile = new Vector<String>();
 				for(int j=0; j<10; j++){
 					zeile.add("" + (10*i+(j+1)));
 				}
-				model.addRow(zeile);
+				dTblModel.addRow(zeile);
 			}
 			for(int k=0; k<auffueller; k++){
-				model.setValueAt("", model.getRowCount()-1, model.getColumnCount()-(k+1));
+				dTblModel.setValueAt("", dTblModel.getRowCount()-1, dTblModel.getColumnCount()-(k+1));
 
 			}
 
-			model.isCellEditable(anzZeilen, zahlenrange/10);
+			dTblModel.isCellEditable(anzZeilen, iZRange/10);
 
 		}else{
 
-			int anzZeilen=zahlenrange/20;
+			int anzZeilen=iZRange/20;
 			int auffueller=0;
 
 			Vector<String> columnNames = new Vector<String>();
@@ -73,41 +65,41 @@ public class Zahlenfeld{
 				columnNames.add(""+i);
 			}
 
-			if(zahlenrange%20 != 0){
+			if(iZRange%20 != 0){
 				anzZeilen=anzZeilen+1;
-				auffueller=20-(zahlenrange%20);
+				auffueller=20-(iZRange%20);
 			}
 
-			model = new DefaultTableModel( columnNames, 0 );
+			dTblModel = new DefaultTableModel( columnNames, 0 );
 
 			for(int i=0; i<anzZeilen; i++){
 				Vector<String> zeile = new Vector<String>();
 				for(int j=0; j<20; j++){
 					zeile.add("" + (20*i+(j+1)));
 				}
-				model.addRow(zeile);
+				dTblModel.addRow(zeile);
 			}
 
 			for(int k=0; k<auffueller; k++){
-				model.setValueAt("", model.getRowCount()-1, model.getColumnCount()-(k+1));
+				dTblModel.setValueAt("", dTblModel.getRowCount()-1, dTblModel.getColumnCount()-(k+1));
 			}
 		}
 
-		spdaten = Spieldaten.getInstance();
-		spdaten.setSpieldaten(zahlenrange, spielerA, spielerB);
-		if(spielmodi>0){
-			switch(spielmodi){
+		oSpdaten = Spieldaten.getInstance();
+		oSpdaten.setSpieldaten(iZRange, sSpielerA, sSpielerB);
+		if(iSpielmodi>0){
+			switch(iSpielmodi){
 			case 1:
-				spielStrategie = new CompRandom();
+				iFSpielstrategie = new CompRandom();
 				break;
 			case 2:
-				spielStrategie = new CompAlphaBeta();
+				iFSpielstrategie = new CompAlphaBeta();
 				break;
 			case 3:
-				spielStrategie = new CompHoechst();
+				iFSpielstrategie = new CompHoechst();
 				break;
 			default:
-				System.out.println("Keine Implementation für Spielmodi " + spielmodi + " vorhanden.");
+				System.out.println("Keine Implementation für Spielmodi " + iSpielmodi + " vorhanden.");
 			}
 		}
 
@@ -116,49 +108,49 @@ public class Zahlenfeld{
 
 	public void tabelleUebernehmen(){
 
-		zahlenfeld = new JTable(model);
-		zahlenfeld.setTableHeader(null);
-		zahlenfeld.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		zahlenfeld.setRowSelectionAllowed(true);
-		zahlenfeld.setColumnSelectionAllowed(true);
-		zahlenfeld.setRowHeight(60);
-		zahlenfeld.setBackground(Color.yellow);
+		jTblZahlenfeld = new JTable(dTblModel);
+		jTblZahlenfeld.setTableHeader(null);
+		jTblZahlenfeld.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jTblZahlenfeld.setRowSelectionAllowed(true);
+		jTblZahlenfeld.setColumnSelectionAllowed(true);
+		jTblZahlenfeld.setRowHeight(60);
+		jTblZahlenfeld.setBackground(Color.yellow);
 
 
 	}
 
 	public void tabelleAktualisieren(){
-		zahlenfeld.setModel(model);
+		jTblZahlenfeld.setModel(dTblModel);
 	}
 
 	public JTable getZahlenfeld(){
-		return zahlenfeld;
+		return jTblZahlenfeld;
 	}
 
 	public DefaultTableModel getModel(){
-		return model;
+		return dTblModel;
 	}
 
 
 	public void neueTabelle(int zRange, String spielerA, String spielerB, int spielmodi){
-		this.spielmodi = spielmodi;
+		this.iSpielmodi = spielmodi;
 		int range = zRange;
-		this.spielerA = spielerA;
-		this.spielerB = spielerB;
-		for(int i=model.getRowCount(); i>0; i--){
-			model.removeRow(i-1);
+		this.sSpielerA = spielerA;
+		this.sSpielerB = spielerB;
+		for(int i=dTblModel.getRowCount(); i>0; i--){
+			dTblModel.removeRow(i-1);
 		}
-		model.fireTableDataChanged();
-		if(range<=150 && zahlenrange>150){
-			zahlenfeld.removeColumnSelectionInterval(10, 19);
+		dTblModel.fireTableDataChanged();
+		if(range<=150 && iZRange>150){
+			jTblZahlenfeld.removeColumnSelectionInterval(10, 19);
 		}
-		else if(range>150 && zahlenrange<=150){
+		else if(range>150 && iZRange<=150){
 			for (int i=0; i<10; i++){
-				model.addColumn("" + (10+i));
+				dTblModel.addColumn("" + (10+i));
 
 			}
 		}
-		this.zahlenrange=range;
+		this.iZRange=range;
 		tabelleZeichnen();
 	}
 
@@ -186,15 +178,15 @@ public class Zahlenfeld{
 	public String spielzug(){
 		String gezZahl="";
 		try{
-			int row = zahlenfeld.getSelectedRow();
-			int column = zahlenfeld.getSelectedColumn();
-			gezZahl = (String) model.getValueAt(row, column);
+			int row = jTblZahlenfeld.getSelectedRow();
+			int column = jTblZahlenfeld.getSelectedColumn();
+			gezZahl = (String) dTblModel.getValueAt(row, column);
 			int gezogeneZahl = Integer.parseInt(gezZahl);
 
-			if(spdaten.validieren(gezogeneZahl)==true){
-				spdaten.spielzugAusfuehren(row, column, gezogeneZahl);
-				model.setValueAt("", row, column);
-				zahlenfeld.clearSelection();
+			if(oSpdaten.validieren(gezogeneZahl)==true){
+				oSpdaten.spielzugAusfuehren(row, column, gezogeneZahl);
+				dTblModel.setValueAt("", row, column);
+				jTblZahlenfeld.clearSelection();
 				return gezZahl;
 			}else{
 				JOptionPane.showMessageDialog(null, "Dies ist kein gültiger Spielzug!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
@@ -211,14 +203,14 @@ public class Zahlenfeld{
 
 	public String pcSpielzug(){
 		String pcZahl = "";
-		if(spdaten.isbSpielende()==false){
-			int pcZug = spielStrategie.naechsterPCSpielzug();
+		if(oSpdaten.isbSpielende()==false){
+			int pcZug = iFSpielstrategie.naechsterPCSpielzug();
 			pcZahl = pcZahl + pcZug;
 
 			int row = 0;
 			int column = 0;
 
-			if(zahlenrange>=150){
+			if(iZRange>=150){
 				row = pcZug/20;
 				if(pcZug%20==0){
 					row = row-1;
@@ -237,14 +229,16 @@ public class Zahlenfeld{
 				}
 			}
 
-			spdaten.pcSpielzugAusfuehren(row, column, pcZug);
-			model.setValueAt("", row, column);
-			zahlenfeld.clearSelection();
+			oSpdaten.pcSpielzugAusfuehren(row, column, pcZug);
+			dTblModel.setValueAt("", row, column);
+			jTblZahlenfeld.clearSelection();
 		}
 
 		return pcZahl;
 	}
 
-
+	public ISpielStrategie getSpielStrategie() {
+		return iFSpielstrategie;
+	}
 
 }

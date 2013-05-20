@@ -2,45 +2,43 @@ package ch.sipama.Controller;
 
 public class Spielzug {
 	
-	private String spieler;
-	private int row;
-	private int column;
-	private int zahl;
+	private String sSpieler;
+	private int iRow;
+	private int iColumn;
+	private int iZahl;
 	
 	
 	public Spielzug(String spieler, int row, int column, int zahl){
-		this.spieler = spieler;
-		this.row = row;
-		this.column = column;
-		this.zahl = zahl;
+		sSpieler = spieler;
+		iRow = row;
+		iColumn = column;
+		iZahl = zahl;
 	}
 	
 	
 	public String getSpieler() {
-		return spieler;
+		return sSpieler;
 	}
 	public void setSpieler(String spieler) {
-		this.spieler = spieler;
+		this.sSpieler = spieler;
 	}
 	public int getRow() {
-		return row;
+		return iRow;
 	}
 	public void setRow(int row) {
-		this.row = row;
+		this.iRow = row;
 	}
 	public int getColumn() {
-		return column;
+		return iColumn;
 	}
 	public void setColumn(int column) {
-		this.column = column;
+		this.iColumn = column;
 	}
 	public int getZahl() {
-		return zahl;
+		return iZahl;
 	}
 	public void setZahl(int zahl) {
-		this.zahl = zahl;
+		this.iZahl = zahl;
 	}
 	
-	
-
 }

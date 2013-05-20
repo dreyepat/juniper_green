@@ -26,20 +26,17 @@ import ch.sipama.Controller.Spieldaten;
 
 public class Hauptgui extends JPanel {
 	
-	/**
-	 * 
-	 */
 	//Instanzvariablen
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
-	private Spielfenster spielfenster;
-	private Spieldaten spieldaten;
+	private Spielfenster oSpielfenster;
+	private Spieldaten oSpdaten;
 	
 	
 	//Defaultkonstruktor
 	public Hauptgui(){
 		createFrame();
-		spieldaten = Spieldaten.getInstance();
+		oSpdaten = Spieldaten.getInstance();
 	}
 	
 	
@@ -49,8 +46,8 @@ public class Hauptgui extends JPanel {
 		//Rahmen erstellen
 		frame = new JFrame("Juniper Green");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		spielfenster = new Spielfenster();
-		frame.getContentPane().add(spielfenster.getSplitPane());
+		oSpielfenster = new Spielfenster();
+		frame.getContentPane().add(oSpielfenster.getSplitPane());
 		
 		
 		//Menübar einbinden, indem die entsprechende Methode aufgerufen wird
@@ -147,7 +144,7 @@ public class Hauptgui extends JPanel {
 		rueckgaengig.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				spielfenster.rueckgaengig();
+				oSpielfenster.rueckgaengig();
 				
 				
 				
@@ -177,7 +174,7 @@ public class Hauptgui extends JPanel {
 	
 	
 	public void logAnzeigen(){
-		JOptionPane.showMessageDialog(null, spieldaten.logAnzeigen(), "Spielverlauf", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, oSpdaten.logAnzeigen(), "Spielverlauf", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	//Öffnet den Standardbrowser des Benutzers mit unserer Github-Seite

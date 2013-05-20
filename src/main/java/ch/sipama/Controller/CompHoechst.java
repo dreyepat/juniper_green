@@ -1,41 +1,26 @@
 package ch.sipama.Controller;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class CompHoechst implements ISpielStrategie{
 
-	private Spieldaten spieldaten;
-
-
+	private Spieldaten oSpdaten;
 
 	public CompHoechst() {
-		spieldaten = Spieldaten.getInstance();
+		oSpdaten = Spieldaten.getInstance();
 	}
 
 
 	public int naechsterPCSpielzug(){
 
-		if(spieldaten.getLog().get(spieldaten.getLog().size()-1).getZahl()==1){
-			return spieldaten.getGroesstePrimzahl();
-		}else{
-
-			ArrayList<Integer> moeglicheSpielzuege = (ArrayList<Integer>) spieldaten.naechsterSpielzug().clone();
-
-			//Zahl 1 entfernen, falls im Array mehr als 1 Zahl ist und falls die erste Zahl des Arrays wirklich eine 1 ist
-			if(moeglicheSpielzuege.size()>1 && moeglicheSpielzuege.get(0)==1){
-				moeglicheSpielzuege.remove(0);
-			}
-
-			if(moeglicheSpielzuege.size()>0){
-				int nHoechst = moeglicheSpielzuege.size()-1; 
-				int z = nHoechst;
-
-				return moeglicheSpielzuege.get(z);
-			}
+		//Prüfen, ob der Spieler im Zug vorher die 1 gezogen hat - falls ja, die höchste Primzahl ziehen
+		if(oSpdaten.getLogZahl(oSpdaten.logListgroesse()-1)==1){
+			return oSpdaten.getGroesstePrimzahl();
 		}
 
-		return 0;
-
+		//die höchste mögliche Zahl zurückgeben
+		LinkedList<Integer> moeglicheSpielzuege = new LinkedList<Integer>(oSpdaten.naechsterSpielzug());
+		return moeglicheSpielzuege.getLast();
 	}
 
 }

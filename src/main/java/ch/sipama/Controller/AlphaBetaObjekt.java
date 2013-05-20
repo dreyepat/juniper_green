@@ -1,47 +1,35 @@
 package ch.sipama.Controller;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class AlphaBetaObjekt {
 
-	private int suchtiefe;
-	private ArrayList<Integer> log;
-	private ArrayList<Integer> spielZugListe;
-	private int pointer;
-	private int alpha;
-	private int beta;
-	private Spieldaten spdaten;
+	private AlphaBetaObjekt oVorgaenger;
+	private int iSuchtiefe;
+	private LinkedList<Integer> lListSpielZugListe;
+	private int iPointer;
+	private float fAlpha;
+	private float fBeta;
+	private Spieldaten oSpdaten;
 
 
-	public AlphaBetaObjekt(int suchtiefe, ArrayList<Integer> log){
-		spdaten = spdaten.getInstance();
-		this.log = (ArrayList<Integer>) log.clone();
-		this.suchtiefe = suchtiefe + 1;
-		pointer = 0;
-		alpha = 0;
-		beta = 0;
-		spielZugListe = new ArrayList<Integer>();
-
-		ArrayList<Integer> spielHilfe = new ArrayList<Integer>();
+	public AlphaBetaObjekt(int suchtiefe, LinkedList<Integer> log){
+		oSpdaten = Spieldaten.getInstance();
+		this.iSuchtiefe = suchtiefe + 1;
+		iPointer = 0;
+		fAlpha = 0;
+		fBeta = 0;
+		
 		int letzterZug = log.get(log.size()-1);
-		System.out.println(""+ letzterZug);
-		spielHilfe = (ArrayList<Integer>) spdaten.getMoegZuege().get(letzterZug-1).getJgreen().clone();
-		for(int i=0; i<log.size(); i++){
-			for(int j=spielHilfe.size()-1; j>=0; j--){
-				if(log.get(i) == spielHilfe.get(j)){
-					spielHilfe.remove(j);
-				}
-			}
+		lListSpielZugListe = new LinkedList<Integer>(oSpdaten.zRaumListe(letzterZug-1));
+		if(lListSpielZugListe.getFirst()==1){
+			lListSpielZugListe.removeFirst();
 		}
-		if(spielHilfe.get(0)==1){
-			spielHilfe.remove(0);
-		}
-		spielZugListe = (ArrayList<Integer>) spielHilfe.clone();
 	}
 
 
-	public int auswerten(){
-		if(spielZugListe.size()==0){
+	public float auswerten(){
+		if(lListSpielZugListe.size()==0){
 			return 1;
 		}else{
 			return 0;	
@@ -49,58 +37,42 @@ public class AlphaBetaObjekt {
 	}
 
 
-
 	public int getPointer() {
-		return pointer;
+		return iPointer;
 	}
 
 
 	public void setPointer(int pointer) {
-		this.pointer = pointer;
+		this.iPointer = pointer;
 	}
 
 
-	public int getAlpha() {
-		return alpha;
+	public float getAlpha() {
+		return fAlpha;
 	}
 
 
-	public void setAlpha(int alpha) {
-		this.alpha = alpha;
+	public void setAlpha(float alpha) {
+		this.fAlpha = alpha;
 	}
 
 
-	public int getBeta() {
-		return beta;
+	public float getBeta() {
+		return fBeta;
 	}
 
 
-	public void setBeta(int beta) {
-		this.beta = beta;
-	}
-
-
-	public ArrayList<Integer> getSpielZugListe() {
-		return spielZugListe;
+	public void setBeta(float beta) {
+		this.fBeta = beta;
 	}
 
 
 	public int getSuchtiefe() {
-		return suchtiefe;
+		return iSuchtiefe;
 	}
-
 
 	public void setSuchtiefe(int suchtiefe) {
-		this.suchtiefe = suchtiefe;
+		this.iSuchtiefe = suchtiefe;
 	}
-
-
-
-
-	public ArrayList<Integer> getLog() {
-		return log;
-	}
-
-
 
 }

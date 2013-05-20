@@ -1,7 +1,7 @@
 package ch.sipama.Controller;
 
 import java.util.ArrayList;
-
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 
@@ -9,18 +9,15 @@ public class Spieldaten {
 
 	//Instanzvariablen
 	private static Spieldaten instance = null;
-	private MoeglicheZuege mZuege;
-	private String spielerA;
-	private String spielerB;
+	private String sSpielerA;
+	private String sSpielerB;
 	boolean bSpielstart;
 	boolean bSpielende;
-	private int zaehler; //für Anzahl Spielzüge
-	private ArrayList<Spielzug> log;
-	private ArrayList<MoeglicheZuege> moegZuege;
-	private int groesstePrimzahl;
-
-
-	
+	private int iZaehler; //für Anzahl Spielzüge
+	private LinkedList<Spielzug> lListLog;
+	private LinkedList<Integer> lListJgreen; 
+	private ArrayList<LinkedList<Integer>> aListZRaumListen;
+	private int iGroesstePrimzahl;
 
 	public static Spieldaten getInstance(){
 		if (instance == null){
@@ -28,58 +25,52 @@ public class Spieldaten {
 		}
 		return instance;
 	}
-	
-	public boolean isbSpielende() {
-		return bSpielende;
-	}
 
-	public ArrayList<Spielzug> getLog() {
-		return log;
-	}
-
-	public int getGroesstePrimzahl() {
-		return groesstePrimzahl;
-	}
-	
 	public void setSpieldaten(int zrange, String spielerA, String spielerB){
-		this.spielerA = spielerA;
-		this.spielerB = spielerB;
+		sSpielerA = spielerA;
+		sSpielerB = spielerB;
 		bSpielstart = true;
 		bSpielende = false;
-		zaehler=0;
-		log = new ArrayList<Spielzug>();
-		moegZuege = new ArrayList<MoeglicheZuege>();
+
+		//Anzahl Spielzüge zwischenspeichern
+		iZaehler=0;
+
+		//Liste für den Spielverlauf mit 'Spielzug'-Objekten
+		lListLog = new LinkedList<Spielzug>();
+
+		//Für jede Zahl des Zahlenraums alle Teiler und Vielfache bestimmen und in der aListZRaumListen abspeichern
+		aListZRaumListen = new ArrayList<LinkedList<Integer>>();
 		for(int i=1; i<=zrange; i++){
-			String liste = "";
-			mZuege = new MoeglicheZuege();
+			lListJgreen = new LinkedList<Integer>();
 			for(int j=1; j<=zrange; j++){
 				if(j%i==0 || i%j==0) {
-					mZuege.getJgreen().add(j);
-					liste = liste + j + " ";
+					lListJgreen.add(j);
 				}
 			}
-			moegZuege.add(mZuege);
-			System.out.println(liste);
-		}
+			aListZRaumListen.add(lListJgreen);
+		}		
+
+		//Grösste Primzahl suchen und in Variable speichern
 		if(zrange>0){
-			groesstePrimzahl=0;
-			int i=moegZuege.size()-1;
-			while(groesstePrimzahl<1){
-				if(moegZuege.get(i).getJgreen().size()==2){
-					groesstePrimzahl=moegZuege.get(i).getJgreen().get(1);
+			iGroesstePrimzahl=0;
+			int i=aListZRaumListen.size()-1;
+			while(iGroesstePrimzahl<1){
+				if(aListZRaumListen.get(i).size()==2){
+					iGroesstePrimzahl=aListZRaumListen.get(i).get(1);
 				}
 				i--;
 			}
-			System.out.println("grösste Primzahl: " + groesstePrimzahl);
 		}
-		
+
 	}
+
+
 
 	public String logAnzeigen(){
 		String spielverlauf = "<html><body>";
-		for(int i=0; i<log.size(); i++){
+		for(int i=0; i<lListLog.size(); i++){
 
-			spielverlauf = spielverlauf + log.get(i).getSpieler() + ": " + log.get(i).getZahl() + "<br>";	
+			spielverlauf = spielverlauf + lListLog.get(i).getSpieler() + ": " + lListLog.get(i).getZahl() + "<br>";	
 		}
 		spielverlauf = spielverlauf + "</body></html>";
 		return spielverlauf;
@@ -88,16 +79,19 @@ public class Spieldaten {
 
 	public void spielzugAusfuehren(int row, int column, int gezZahl){
 		String spieler;
-		zaehler++;
-		if(zaehler % 2==0){
-			spieler = spielerB;
+		iZaehler++;
+		if(iZaehler % 2==0){
+			spieler = sSpielerB;
 		}else{
-			spieler = spielerA;
+			spieler = sSpielerA;
 		}
-		Spielzug spielzug = new Spielzug(spieler, row, column, gezZahl);
-		log.add(spielzug);
 
-		ArrayList<Integer> spielHilfe = naechsterSpielzug();
+		//Spielzuginformationen ins Log speichern
+		Spielzug spielzug = new Spielzug(spieler, row, column, gezZahl);
+		lListLog.add(spielzug);
+
+		//Prüfen, ob das Spiel zu Ende ist
+		LinkedList<Integer> spielHilfe = naechsterSpielzug();
 		if(spielHilfe.size()==0){
 			String spielende = "<html><body>Es gibt keine weiteren Spielzüge mehr!<br><br>Herzlichen Glückwunsch - " + spieler + " hat gewonnen!</body></html>";
 			JOptionPane.showMessageDialog(null, spielende, "Spiel beendet", JOptionPane.INFORMATION_MESSAGE);
@@ -105,17 +99,17 @@ public class Spieldaten {
 		}
 	}
 
-	
-	
+
+
 	public void pcSpielzugAusfuehren(int row, int column, int gezZahl){
 		if(bSpielende==false){
-			zaehler++;
-			Spielzug spielzug = new Spielzug(spielerB, row, column, gezZahl);
-			log.add(spielzug);
+			iZaehler++;
+			Spielzug spielzug = new Spielzug(sSpielerB, row, column, gezZahl);
+			lListLog.add(spielzug);
 
-			ArrayList<Integer> spielHilfe = naechsterSpielzug();
+			LinkedList<Integer> spielHilfe = naechsterSpielzug();
 			if(spielHilfe.size()==0){
-				String spielende = "<html><body>Es gibt keine weiteren Spielzüge mehr!<br><br>Herzlichen Glückwunsch - " + spielerB + " hat gewonnen!</body></html>";
+				String spielende = "<html><body>Es gibt keine weiteren Spielzüge mehr!<br><br>Herzlichen Glückwunsch - " + sSpielerB + " hat gewonnen!</body></html>";
 				JOptionPane.showMessageDialog(null, spielende, "Spiel beendet", JOptionPane.INFORMATION_MESSAGE);
 				bSpielende = true;
 			}
@@ -128,49 +122,50 @@ public class Spieldaten {
 			if(gezogeneZahl % 2==0){
 				bSpielstart = false;
 				return true;
-			}else{
-				return false;
 			}
+			return false;
+
 		}else{
-			if(log.get(log.size()-1).getZahl() % gezogeneZahl==0 || gezogeneZahl % log.get(log.size()-1).getZahl()==0){
+			if(lListLog.get(lListLog.size()-1).getZahl() % gezogeneZahl==0 || gezogeneZahl % lListLog.get(lListLog.size()-1).getZahl()==0){
 				return true;
-			}else{
-				return false;
 			}
+			return false;
 		}
 	}
 
 
 
-	public ArrayList<Integer> naechsterSpielzug(){
-		ArrayList<Integer> spielHilfe = new ArrayList<Integer>();
-		if(bSpielende==false && bSpielstart == false){
-			spielHilfe = (ArrayList<Integer>) moegZuege.get((log.get(log.size()-1).getZahl()-1)).getJgreen().clone();
-			for(int i=0; i<log.size(); i++){
-				for(int j=spielHilfe.size()-1; j>=0; j--){
-					if(log.get(i).getZahl()==spielHilfe.get(j)){
-						spielHilfe.remove(j);
-					}	
-				}
-			}
-		}else if(bSpielstart == true){
-			for(int i=2; i<=moegZuege.size(); i++){
-				if(i%2==0){
-					spielHilfe.add(i);
-				}
+	public LinkedList<Integer> naechsterSpielzug(){
+		LinkedList<Integer> spielHilfe;
+
+		if (bSpielende) {
+			spielHilfe = new LinkedList<Integer>();
+			return spielHilfe;
+		}
+
+		if (bSpielstart) {
+			spielHilfe = new LinkedList<Integer>(aListZRaumListen.get(1));
+			spielHilfe.remove(0);
+			return spielHilfe;
+		}
+
+		spielHilfe = new LinkedList<Integer>(aListZRaumListen.get(lListLog.getLast().getZahl()-1));
+
+		for (int i=0; i < lListLog.size(); i++) {
+			for(int j=spielHilfe.size()-1; j>=0; j--){
+				if(lListLog.get(i).getZahl()==spielHilfe.get(j)){
+					spielHilfe.remove(j);
+				}	
 			}
 		}
 		return spielHilfe;	
 	}
 
 
-	public ArrayList<MoeglicheZuege> getMoegZuege() {
-		return moegZuege;
-	}
 
 	public String moegSPAnzeigen(){
 		String moegSpielzuege = "<html><body> Mögliche Spielzüge:<br>";
-		ArrayList<Integer> spielHilfe = naechsterSpielzug();
+		LinkedList<Integer> spielHilfe = naechsterSpielzug();
 		for(int i=0; i<spielHilfe.size(); i++){
 			moegSpielzuege = moegSpielzuege + spielHilfe.get(i) + ", ";
 			if(i%10==0 && i>0){
@@ -182,5 +177,44 @@ public class Spieldaten {
 		return moegSpielzuege;
 	}
 
+
+
+	public int logListgroesse(){
+		return lListLog.size();
+	}
+	
+	public String getLogSpieler(int index) {
+		return lListLog.get(index).getSpieler();
+	}
+	
+	public int getLogZahl(int index){
+		return lListLog.get(index).getZahl();
+	}
+
+	public int getLogRow(int index){
+		return lListLog.get(index).getRow();
+	}
+	
+	public int getLogColumn(int index){
+		return lListLog.get(index).getColumn();
+	}
+	
+	public LinkedList<Integer> zRaumListe(int index){
+		return aListZRaumListen.get(index);
+	}
+	
+	public boolean isbSpielende() {
+		return bSpielende;
+	}
+
+	public int getGroesstePrimzahl() {
+		return iGroesstePrimzahl;
+	}
+
+	public void rueckgaengigLog() {
+		lListLog.removeLast();		
+	}
+
+	
 
 }

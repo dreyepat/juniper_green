@@ -1,16 +1,15 @@
 package ch.sipama.Controller;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 public class CompHoechstTest {
 	
-	private Spieldaten spieldaten;
+	private Spieldaten oSpdaten;
 
 	@Test
 	public void testCompHoechst() {
-		assertNotNull("Spieldaten", spieldaten.getInstance());
+		assertNotNull("Spieldaten", Spieldaten.getInstance());
 	}
 
 	@Test

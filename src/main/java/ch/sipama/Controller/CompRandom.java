@@ -1,40 +1,32 @@
 package ch.sipama.Controller;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class CompRandom implements ISpielStrategie{
 
-	private Spieldaten spieldaten;
-
-
+	private Spieldaten oSpdaten;
 
 	public CompRandom() {
-		spieldaten = Spieldaten.getInstance();
+		oSpdaten = Spieldaten.getInstance();
 	}
-
-
+	
 	public int naechsterPCSpielzug(){
 
-		if(spieldaten.getLog().get(spieldaten.getLog().size()-1).getZahl()==1){
-			return spieldaten.getGroesstePrimzahl();
-		}else{
-			ArrayList<Integer> moeglicheSpielzuege = (ArrayList<Integer>) spieldaten.naechsterSpielzug().clone();
+		if(oSpdaten.getLogZahl(oSpdaten.logListgroesse()-1)==1){
+			return oSpdaten.getGroesstePrimzahl();
+		}
+		LinkedList<Integer> moeglicheSpielzuege = new LinkedList<Integer>(oSpdaten.naechsterSpielzug());
 
-			//Zahl 1 entfernen, falls im Array mehr als 1 Zahl ist und falls die erste Zahl des Arrays wirklich eine 1 ist
-			if(moeglicheSpielzuege.size()>1 && moeglicheSpielzuege.get(0)==1){
-				moeglicheSpielzuege.remove(0);
-			}
-
-			if(moeglicheSpielzuege.size()>0){
-				Random rnd=new Random();
-				int z=rnd.nextInt(moeglicheSpielzuege.size()); 
-
-				return moeglicheSpielzuege.get(z);
-			}
+		//Zahl 1 entfernen, falls im Array mehr als 1 Zahl ist und falls die erste Zahl des Arrays wirklich eine 1 ist
+		if(moeglicheSpielzuege.size()>1 && moeglicheSpielzuege.getFirst()==1){
+			moeglicheSpielzuege.removeFirst();
 		}
 
-		return 0;
+		//Eine der möglichen Zahlen auswählen und zurückgeben
+		Random rnd=new Random();
+		int z=rnd.nextInt(moeglicheSpielzuege.size()); 
+		return moeglicheSpielzuege.get(z);
 	}
 
 }
