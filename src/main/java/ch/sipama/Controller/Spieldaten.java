@@ -199,7 +199,7 @@ public class Spieldaten {
 		return lListLog.get(index).getColumn();
 	}
 	
-	public LinkedList<Integer> zRaumListe(int index){
+	public LinkedList<Integer> getZRaumListe(int index){
 		return aListZRaumListen.get(index);
 	}
 	

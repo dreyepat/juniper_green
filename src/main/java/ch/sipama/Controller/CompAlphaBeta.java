@@ -1,6 +1,5 @@
 package ch.sipama.Controller;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -15,146 +14,97 @@ public class CompAlphaBeta implements ISpielStrategie{
 	 */
 
 	private Spieldaten oSpdaten;
-	private int iSuchtiefe;
 	private int iRueckgabewert;
+	private float fProzent;
 	private AlphaBetaObjekt oAlphaBeta;
 	private LinkedList<Integer> lListLog;
-	private ArrayList<AlphaBetaObjekt> aListObjektListe;
-
-
-
 
 
 	public CompAlphaBeta(){
 		oSpdaten = Spieldaten.getInstance();
-		iSuchtiefe = 3;
-		aListObjektListe = new ArrayList<AlphaBetaObjekt>();
 	}
 
 
 	@Override
 	public int naechsterPCSpielzug(){
-
-		if(oSpdaten.getLog().get(oSpdaten.getLog().size()-1).getZahl() == 1){
+		int iLetzteZahl = oSpdaten.getLogZahl(oSpdaten.logListgroesse()-1);
+		if(iLetzteZahl-1 == 1){
 			return oSpdaten.getGroesstePrimzahl();
-		}else{
-			ArrayList<Integer> spielZugListe = (ArrayList<Integer>) oSpdaten.naechsterSpielzug().clone();
-
-			if(spielZugListe.get(0)==1 && spielZugListe.size()>1){
-				spielZugListe.remove(0);
-			}
-			if(spielZugListe.size()==1){
-				return spielZugListe.get(0);
-			}
-			else{
-				lListLog = new LinkedList<Integer>();
-				for(int i=0; i<oSpdaten.getLog().size(); i++){
-					lListLog.add(oSpdaten.getLog().get(i).getZahl());
-				}
-				oAlphaBeta= new AlphaBetaObjekt(0, lListLog);
-				aListObjektListe.add(oAlphaBeta);
-
-				alphaBeta(oAlphaBeta.getPointer());
-				return iRueckgabewert;
-			}
 		}
+		LinkedList<Integer> spielZugListe = new LinkedList<Integer>(oSpdaten.getZRaumListe(iLetzteZahl));
+
+		if(spielZugListe.getFirst()==1 && spielZugListe.size()>1){
+			spielZugListe.removeFirst();
+		}
+		if(spielZugListe.size()==1){
+			return spielZugListe.getFirst();
+		}
+
+		lListLog = new LinkedList<Integer>();
+		for(int i=0; i<oSpdaten.logListgroesse(); i++){
+			lListLog.add(oSpdaten.getLogZahl(i));
+		}
+
+		//Ausgangswerte setzen
+		iRueckgabewert = spielZugListe.getFirst();
+		fProzent = 0;
+
+		for(int i=1; i<spielZugListe.size(); i++){
+			float fMax=0;
+			float fMin=0;
+			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(lListLog);
+			lListLogErweitert.addLast(spielZugListe.get(i));
+			oAlphaBeta= new AlphaBetaObjekt(null, lListLogErweitert, spielZugListe.size());
+			float fAuswertung = alphaBeta(oAlphaBeta, fMax, fMin);
+			
+			if(fAuswertung > fProzent){
+				fProzent = fAuswertung;
+				iRueckgabewert = spielZugListe.get(i);
+			}
+
+		}
+
+		return iRueckgabewert;
+
 	}
 
 
 
 
 
-	public void alphaBeta(int i){
-		int naechsterZug = oAlphaBeta.getSpielZugListe().get(oAlphaBeta.getPointer());
-		oAlphaBeta = new AlphaBetaObjekt(aListObjektListe.get(aListObjektListe.size()-1).getSuchtiefe(), aListObjektListe.get(aListObjektListe.size()-1).getLog());
+	public float alphaBeta(AlphaBetaObjekt oAlphaBeta, float fMax, float fMin){
 
-		//im neuen alphaBetaO das Log um die Zahl erweitern, auf den im Vorgängerobjekt der Pointer zeigt
-		oAlphaBeta.getLog().add(naechsterZug);
-
-		//im Vorgängerobjekt den Pointer um 1 erhöhen
-		aListObjektListe.get(aListObjektListe.size()-1).setPointer(i+1);
-
-		//das neue alphaBetaO dem Spielbaum hinzufügen, den man auswertet
-		aListObjektListe.add(oAlphaBeta);
-
-		//neues Objekt auswerten, ob es ein Blatt ist:
-		float auswertung = oAlphaBeta.auswerten();
-
-		//wenn Suchtiefe noch nicht erreicht ist und es kein Blatt ist, den Alphabeta-Algorithmus erneut aufrufen
-		if(auswertung==0 && oAlphaBeta.getSuchtiefe()<iSuchtiefe){
-			alphaBeta(oAlphaBeta.getPointer());
-
-
-
-		//wenn es kein Blatt ist:	
-		}else if(auswertung==0 && oAlphaBeta.getSuchtiefe()==iSuchtiefe){ 
-			while(aListObjektListe.size()>1){
-				aListObjektListe.get(aListObjektListe.size()-2).setAlpha(aListObjektListe.get(aListObjektListe.size()-2).getAlpha());
-				aListObjektListe.get(aListObjektListe.size()-2).setBeta(aListObjektListe.get(aListObjektListe.size()-2).getBeta());
-				aListObjektListe.remove(aListObjektListe.size()-1);
-				if(aListObjektListe.get(aListObjektListe.size()-1).getSpielZugListe().size()>aListObjektListe.get(aListObjektListe.size()-1).getPointer()){
-					oAlphaBeta=aListObjektListe.get(aListObjektListe.size()-1);
-					alphaBeta(oAlphaBeta.getPointer());
-					break;
-				}	
-			}
-			//Vorgehen, wenn kein "Gewinnerpfad" gefunden wurde - Zufallszahl aus der ersten Liste
-			Random rnd=new Random();
-			int z=rnd.nextInt(aListObjektListe.get(0).getSpielZugListe().size());
-			iRueckgabewert = aListObjektListe.get(0).getSpielZugListe().get(z);
-			
-			
-		//Blatt des Spielers A (Computer gewinnt)
-		}else if(auswertung==1 && oAlphaBeta.getSuchtiefe()%2==0){
-			if(aListObjektListe.size()>1){
-				aListObjektListe.get(aListObjektListe.size()-2).setAlpha(1);
-				aListObjektListe.get(aListObjektListe.size()-2).setBeta(aListObjektListe.get(aListObjektListe.size()-2).getBeta());
-				aListObjektListe.remove(aListObjektListe.size()-1);  //Cutoff von weiteren möglichen Spielverläufen (Da Gewinnpfad gefunden)
-				oAlphaBeta = aListObjektListe.get(aListObjektListe.size()-1);
-				
-				//Auswahlmöglichkeiten des Spielers A aus dem vorherigen Zug weiter auswerten
-				if(oAlphaBeta.getSpielZugListe().size()>oAlphaBeta.getPointer()){
-					alphaBeta(oAlphaBeta.getPointer());
-				//Falls Auswahlliste des Spielers A	fertig abgearbeitet, die Werte alpha und beta prüfen
-				}else{
-					
-				}
-				
-				
-				
-				
-				//Auswertung nach oben fortsetzen....
+		//sind wir bei einem Blatt gelandet?
+		if(oAlphaBeta.auswerten()){
+			if(oAlphaBeta.getlListLogGroesse()%2==0){
+				return fMin + 1/oAlphaBeta.getiGeschwister();
 			}else{
-				iRueckgabewert = aListObjektListe.get(0).getSpielZugListe().get(aListObjektListe.get(0).getPointer()-1);
-			}
-
-			
-		//
-		}else if(auswertung==1 && oAlphaBeta.getSuchtiefe()%2==1){
-			if(aListObjektListe.size()>1){
-				aListObjektListe.get(aListObjektListe.size()-2).setAlpha(aListObjektListe.get(aListObjektListe.size()-2).getAlpha());
-				aListObjektListe.get(aListObjektListe.size()-2).setBeta(-1);
-				//Auswertung nach oben fortsetzen...	
-			}else{
-				//bei 'Verliererpfad' die Zahl aus der Liste möglicher Spielzüge entfernen, sofern mehr als 1 zur Auswahl steht
-				if(aListObjektListe.get(0).getSpielZugListe().size()>1){
-					aListObjektListe.get(0).setPointer(aListObjektListe.get(0).getPointer()-1);
-					aListObjektListe.get(0).getSpielZugListe().remove(aListObjektListe.get(0).getPointer());
-				}else{
-					//wir verlieren... *snief*
-					iRueckgabewert = aListObjektListe.get(0).getSpielZugListe().get(0);
-				}
+				return fMax + 1/oAlphaBeta.getiGeschwister();
 			}
 		}
 
+		for(int i=0; i<oAlphaBeta.getlListSpielZugListgroesse(); i++){
+			if(oAlphaBeta.getlListLogGroesse()%2==0){
+				if(fMax< alphaBeta(oAlphaBeta, fMax, fMin)){
+					fMax = alphaBeta(oAlphaBeta, fMax, fMin);
+				}
 
+				if(fMax==1){
+					return fMax;
+				}
+			}else{
+				if(fMin< alphaBeta(oAlphaBeta, fMax, fMin)){
+					fMin = alphaBeta(oAlphaBeta, fMax, fMin);
+				}
 
-
-
+				if(fMin==1){
+					return fMin;
+				}
+			}
+		}
+		return 0;
 
 	}
-
-
 
 
 
@@ -175,6 +125,7 @@ public class CompAlphaBeta implements ISpielStrategie{
 	//	6 return b;
 	//	end if
 	//	end function
+
 
 
 
