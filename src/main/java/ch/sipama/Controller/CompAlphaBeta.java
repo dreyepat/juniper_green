@@ -5,11 +5,8 @@ import java.util.LinkedList;
 public class CompAlphaBeta implements ISpielStrategie{
 
 	/**
-	 * Die Methode (max) sucht den besten nächsten Zug mit dem MiniMax-Algorithmus
 	 * @param oSpdaten - Das Spielfeld
-	 * @param restTiefe - die restliche Tiefe
-	 * @param suchTiefe - die gewünschte Suchtiefe
-	 * @return ermittelt - der ermittelte Zugwert
+	 * @return iRueckgabewert - der ermittelte Zugwert
 	 */
 
 	private Spieldaten oSpdaten;
@@ -101,10 +98,14 @@ public class CompAlphaBeta implements ISpielStrategie{
 
 		//sind wir bei einem Blatt gelandet?
 		if(oAlphaBeta.auswerten()){
-			if(oAlphaBeta.getlListLogGroesse()%2==0){
-				return fMin + 1/oAlphaBeta.getiGeschwister();
+			if(oAlphaBeta.getlListLogGroesse()%2==1){
+				float fTest = fMin + 1/oAlphaBeta.getiGeschwister();
+				System.out.println("oAlphaBeta-Auswertung für Spieler: " + fTest);
+				return fTest;
 			}else{
-				return fMax + 1/oAlphaBeta.getiGeschwister();
+				float fTest = fMax + 1/oAlphaBeta.getiGeschwister();
+				System.out.println("oAlphaBeta-Auswertung für Computer: " + fTest);
+				return fTest;
 			}
 		}
 		System.out.println("Auswertung Schritt 1: kein Blatt");
@@ -116,26 +117,29 @@ public class CompAlphaBeta implements ISpielStrategie{
 			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast() + " als mögliche Zahl und Aanzahl Geschwister: " + oAlphaBeta.getlListSpielZugListgroesse());
 			oAlphaBeta= new AlphaBetaObjekt(oAlphaBeta, lListLogErweitert, oAlphaBeta.getlListSpielZugListgroesse());
 			
-			if(oAlphaBeta.getlListLogGroesse()%2==0){
+			if(oAlphaBeta.getlListLogGroesse()%2==1){
 				System.out.println("PC ist am Zug - neues Alphabeta-Objekt");
-				if(fMax< alphaBeta(oAlphaBeta, fMax, fMin)){
-					fMax = alphaBeta(oAlphaBeta, fMax, fMin);
+				if(fMax<= (alphaBeta(oAlphaBeta, fMax, fMin))/oAlphaBeta.getiGeschwister()){
+					fMax = (alphaBeta(oAlphaBeta, fMax, fMin))/oAlphaBeta.getiGeschwister();
 				}
-				System.out.println("fMax: " + fMax);
-				if(fMax==1){
+				System.out.println("fMax dazwischen: " + fMax);
+				if(fMax<=fMin){
+					System.out.println("test: fMax" + fMax + " fMin: " + fMin);
 					return fMax;
 				}
 			}else{
 				System.out.println("Spieler ist am Zug - neues Alphabeta-Objekt");
-				if(fMin< alphaBeta(oAlphaBeta, fMax, fMin)){
-					fMin = alphaBeta(oAlphaBeta, fMax, fMin);
+				if(fMin<= (alphaBeta(oAlphaBeta, fMax, fMin)/oAlphaBeta.getiGeschwister())){
+					fMin = (alphaBeta(oAlphaBeta, fMax, fMin)/oAlphaBeta.getiGeschwister());
 				}
 
-				if(fMin==1){
+				if(fMax<=fMin){
+					System.out.println("test2 - fMin: " + fMin + " fMax: " + fMax);
 					return fMin;
 				}
 			}
 		}
+		System.out.println("Return 0");
 		return 0;
 
 	}
