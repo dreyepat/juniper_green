@@ -17,6 +17,13 @@ public class AlphaBetaObjekt {
 
 	public AlphaBetaObjekt(AlphaBetaObjekt vorgaenger, LinkedList<Integer> log, int geschwister){
 		lListLog = new LinkedList<Integer>(log);
+		
+		String sLog = "";
+		for(int i=0; i<lListLog.size(); i++){
+			sLog = sLog + lListLog.get(i) + " ";
+		}
+		System.out.println("virtuelles Log: " + sLog);
+		
 		oSpdaten = Spieldaten.getInstance();
 		oVorgaenger = vorgaenger;
 		iGeschwister = geschwister;
@@ -25,9 +32,26 @@ public class AlphaBetaObjekt {
 
 		int letzterZug = lListLog.getLast();
 		lListSpielZugListe = new LinkedList<Integer>(oSpdaten.getZRaumListe(letzterZug-1));
+		for(int i=0; i<lListLog.size(); i++){
+			for(int j=lListSpielZugListe.size()-1; j>=0; j--){
+				if(lListLog.get(i)==lListSpielZugListe.get(j)){
+					lListSpielZugListe.remove(j);
+				}
+			}
+		}
+				
 		if(lListSpielZugListe.getFirst()==1){
 			lListSpielZugListe.removeFirst();
 		}
+		
+		
+		String liste= "";
+		for(int i=0; i<lListSpielZugListe.size(); i++){
+			liste = liste + lListSpielZugListe.get(i) + " ";
+		}
+		System.out.println("Mögliche Spielzüge vom neuen AlphaBetaObjekt: " + liste);
+		
+		
 	}
 
 
@@ -80,4 +104,11 @@ public class AlphaBetaObjekt {
 	public int getiGeschwister() {
 		return iGeschwister;
 	}
+
+
+	public LinkedList<Integer> getlListLog() {
+		return lListLog;
+	}
+	
+	
 }

@@ -76,8 +76,8 @@ public class CompAlphaBeta implements ISpielStrategie{
 			float fMin=0;
 			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(lListLog);
 			lListLogErweitert.addLast(spielZugListe.get(i));
-			oAlphaBeta= new AlphaBetaObjekt(null, lListLogErweitert, spielZugListe.size());
 			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast() + " als mögliche Zahl und Aanzahl Geschwister: " + spielZugListe.size());
+			oAlphaBeta= new AlphaBetaObjekt(null, lListLogErweitert, spielZugListe.size());
 			float fAuswertung = alphaBeta(oAlphaBeta, fMax, fMin);
 			System.out.println("Auswertung: " + fAuswertung);
 			
@@ -107,17 +107,26 @@ public class CompAlphaBeta implements ISpielStrategie{
 				return fMax + 1/oAlphaBeta.getiGeschwister();
 			}
 		}
+		System.out.println("Auswertung Schritt 1: kein Blatt");
 
 		for(int i=0; i<oAlphaBeta.getlListSpielZugListgroesse(); i++){
+			
+			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(oAlphaBeta.getlListLog());
+			lListLogErweitert.addLast(oAlphaBeta.getlListSpielZugZahl(i));
+			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast() + " als mögliche Zahl und Aanzahl Geschwister: " + oAlphaBeta.getlListSpielZugListgroesse());
+			oAlphaBeta= new AlphaBetaObjekt(oAlphaBeta, lListLogErweitert, oAlphaBeta.getlListSpielZugListgroesse());
+			
 			if(oAlphaBeta.getlListLogGroesse()%2==0){
+				System.out.println("PC ist am Zug - neues Alphabeta-Objekt");
 				if(fMax< alphaBeta(oAlphaBeta, fMax, fMin)){
 					fMax = alphaBeta(oAlphaBeta, fMax, fMin);
 				}
-
+				System.out.println("fMax: " + fMax);
 				if(fMax==1){
 					return fMax;
 				}
 			}else{
+				System.out.println("Spieler ist am Zug - neues Alphabeta-Objekt");
 				if(fMin< alphaBeta(oAlphaBeta, fMax, fMin)){
 					fMin = alphaBeta(oAlphaBeta, fMax, fMin);
 				}
