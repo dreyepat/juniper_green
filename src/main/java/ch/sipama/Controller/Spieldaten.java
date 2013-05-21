@@ -11,8 +11,8 @@ public class Spieldaten {
 	private static Spieldaten instance = null;
 	private String sSpielerA;
 	private String sSpielerB;
-	boolean bSpielstart;
-	boolean bSpielende;
+	private boolean bSpielstart;
+	private boolean bSpielende;
 	private int iZaehler; //für Anzahl Spielzüge
 	private LinkedList<Spielzug> lListLog;
 	private LinkedList<Integer> lListJgreen; 
