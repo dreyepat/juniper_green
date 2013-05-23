@@ -1,6 +1,7 @@
 package ch.sipama.Controller;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 public class CompAlphaBeta implements ISpielStrategie{
 
@@ -10,8 +11,6 @@ public class CompAlphaBeta implements ISpielStrategie{
 	 */
 
 	private Spieldaten oSpdaten;
-	private int iRueckgabewert;
-	private float fProzent;
 	private AlphaBetaObjekt oAlphaBeta;
 	private LinkedList<Integer> lListLog;
 
@@ -29,7 +28,6 @@ public class CompAlphaBeta implements ISpielStrategie{
 			return oSpdaten.getGroesstePrimzahl();
 		}
 
-
 		//Liste mit bisherigen Spielzügen erstellen
 		lListLog = new LinkedList<Integer>();
 		for(int i=0; i<oSpdaten.logListgroesse(); i++){
@@ -46,12 +44,6 @@ public class CompAlphaBeta implements ISpielStrategie{
 			}
 		}
 
-		String liste= "";
-		for(int i=0; i<spielZugListe.size(); i++){
-			liste = liste + spielZugListe.get(i) + " ";
-		}
-		System.out.println("Mögliche Spielzüge für den PC: " + liste);
-
 
 		//1 aus der Auswahl entfernen, falls die Liste mehr als 1 Element enthält
 		if(spielZugListe.getFirst()==1 && spielZugListe.size()>1){
@@ -62,32 +54,32 @@ public class CompAlphaBeta implements ISpielStrategie{
 		}
 
 
+		String liste= "";
+		for(int i=0; i<spielZugListe.size(); i++){
+			liste = liste + spielZugListe.get(i) + " ";
+		}
+		System.out.println("Mögliche Spielzüge für den PC: " + liste);
+
 
 		for(int i=0; i<spielZugListe.size(); i++){
-			float fMax=0;
-			float fMin=0;
+
 			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(lListLog);
 			lListLogErweitert.addLast(spielZugListe.get(i));
 			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast() + " als mögliche Zahl und Aanzahl Geschwister: " + spielZugListe.size());
-			oAlphaBeta= new AlphaBetaObjekt(null, lListLogErweitert, spielZugListe.size());
-			float fAuswertung = alphaBeta(oAlphaBeta, fMax, fMin);
-			System.out.println("Auswertung: " + fAuswertung);
+			oAlphaBeta= new AlphaBetaObjekt(null, lListLogErweitert);
+			int iAuswertung = alphaBeta(oAlphaBeta);
+			System.out.println("Auswertung: " + iAuswertung);
 
-			if(i==0){
-				fProzent = fAuswertung;
-				iRueckgabewert = spielZugListe.getFirst();
-				System.out.println("Erster Rückgabewert zwischengespeichert: " + iRueckgabewert);
+			if(iAuswertung == 1){
+				System.out.println("Siegesstrasse gefunden - Rückgabezahl: " + spielZugListe.get(i));
+				return spielZugListe.get(i);	
 			}
-
-			if(fAuswertung > fProzent){
-				fProzent = fAuswertung;
-				iRueckgabewert = spielZugListe.get(i);
-				System.out.println("Neuer zwischenwert mit " + fProzent + " Gewinnchance und " + iRueckgabewert + " als neue Returnzahl");
-			}
-
 		}
-		System.out.println("PC-Spielzug mit Rückgabewert: " + iRueckgabewert);
-		return iRueckgabewert;
+
+		System.out.println("keine Siegesstrasse gefunden - Randommässig eine Zahl zurückgegeben");
+		Random rnd=new Random();
+		int z=rnd.nextInt(spielZugListe.size()); 
+		return spielZugListe.get(z);
 
 	}
 
@@ -95,54 +87,68 @@ public class CompAlphaBeta implements ISpielStrategie{
 
 
 
-	public float alphaBeta(AlphaBetaObjekt oAlphaBeta, float fMax, float fMin){
+	public int alphaBeta(AlphaBetaObjekt oAlphaBeta){
 
+		int iAuswertung=0;
+		
 		//sind wir bei einem Blatt gelandet?
 		if(oAlphaBeta.auswerten()){
-			if(oAlphaBeta.getlListLogGroesse()%2==0){
-				fMin=-1;
+			if(oAlphaBeta.getlListLogGroesse()%2==1){
 				System.out.println("Blattauswertung: -1, da PC am Zug");
-				return fMin;
+				return -1;
 			}else{
-				fMax=1;
 				System.out.println("Blattauswertung: 1, da Spieler am Zug");
-				return fMax;
+				return 1;
 			}
 		}
-		
-		System.out.println("Auswertung Schritt 1: kein Blatt");
+
 		for(int i=0; i<oAlphaBeta.getlListSpielZugListgroesse(); i++){
 
 			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(oAlphaBeta.getlListLog());
 			lListLogErweitert.addLast(oAlphaBeta.getlListSpielZugZahl(i));
 			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast() + " als mögliche Zahl und Aanzahl Geschwister: " + oAlphaBeta.getlListSpielZugListgroesse());
-			oAlphaBeta= new AlphaBetaObjekt(oAlphaBeta, lListLogErweitert, oAlphaBeta.getlListSpielZugListgroesse());
+			oAlphaBeta= new AlphaBetaObjekt(oAlphaBeta, lListLogErweitert);
 
-			if(oAlphaBeta.getlListLogGroesse()%2==0){
+			if(oAlphaBeta.getlListLogGroesse()%2==1){
 				System.out.println("PC ist am Zug - neues Alphabeta-Objekt");
-				fMax = alphaBeta(oAlphaBeta, fMax, fMin);
-				System.out.println("fMax dazwischen: " + fMax);
-				if(fMax==-1){
+				iAuswertung = alphaBeta(oAlphaBeta);
+				System.out.println("PC-Zug mit Rückgabewert: " + iAuswertung);
+				if(iAuswertung==-1){
+					int letzteZahl = lListLogErweitert.getLast();
 					lListLogErweitert.removeLast();
+					if(oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse()>0){
+						System.out.println("" + letzteZahl + "sollte aus der Liste entfernt werden.");
+						oAlphaBeta.getoVorgaenger().removelListSpielZugZahl(letzteZahl);
+					}else{
+						return -1;
+					}
 				}
-				if(fMax==1){
-					System.out.println("test: fMax" + fMax + " fMin: " + fMin);
-					return fMax;
+				if(iAuswertung==1){
+					System.out.println("Siegesstrasse für PC - iAuswertung=1 wird zurückgegeben");
+					return iAuswertung;
 				}
 			}else{
 				System.out.println("Spieler ist am Zug - neues Alphabeta-Objekt");
-				fMin = alphaBeta(oAlphaBeta, fMax, fMin);
-				if(fMin==1){
+				iAuswertung = alphaBeta(oAlphaBeta);
+				if(iAuswertung==1){
+					int letzteZahl = lListLogErweitert.getLast();
 					lListLogErweitert.removeLast();
+					if(oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse()>0){
+						System.out.println("" + letzteZahl + "sollte aus der Liste entfernt werden - falls es richtig programmiert ist.");
+						oAlphaBeta.getoVorgaenger().removelListSpielZugZahl(letzteZahl);
+					}else{
+						return 1;
+					}
 				}	
-				if(fMin==-1){
-					System.out.println("test2 - fMin: " + fMin + " fMax: " + fMax);
-					return fMin;
+				if(iAuswertung==-1){
+					System.out.println("Siegesstrasse für Spieler - iAuswertung=-1 wird zurückgegeben");
+					return iAuswertung;
 				}
 			}
+			
 		}
-		System.out.println("Return 0");
-		return 0;
+		System.out.println("" + iAuswertung);
+		return iAuswertung;
 
 	}
 
