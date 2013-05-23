@@ -28,14 +28,14 @@ public class CompAlphaBeta implements ISpielStrategie{
 		if(iLetzteZahl == 1){
 			return oSpdaten.getGroesstePrimzahl();
 		}
-		
-		
+
+
 		//Liste mit bisherigen Spielzügen erstellen
 		lListLog = new LinkedList<Integer>();
 		for(int i=0; i<oSpdaten.logListgroesse(); i++){
 			lListLog.add(oSpdaten.getLogZahl(i));
 		}
-		
+
 		//Liste mit den nächsten möglichen Spielzügen erstellen:
 		LinkedList<Integer> spielZugListe = new LinkedList<Integer>(oSpdaten.getZRaumListe(iLetzteZahl-1));
 		for(int i=0; i<lListLog.size(); i++){
@@ -45,14 +45,14 @@ public class CompAlphaBeta implements ISpielStrategie{
 				}
 			}
 		}
-		
+
 		String liste= "";
 		for(int i=0; i<spielZugListe.size(); i++){
 			liste = liste + spielZugListe.get(i) + " ";
 		}
 		System.out.println("Mögliche Spielzüge für den PC: " + liste);
-		
-		
+
+
 		//1 aus der Auswahl entfernen, falls die Liste mehr als 1 Element enthält
 		if(spielZugListe.getFirst()==1 && spielZugListe.size()>1){
 			spielZugListe.removeFirst();
@@ -61,12 +61,7 @@ public class CompAlphaBeta implements ISpielStrategie{
 			return spielZugListe.getFirst();
 		}
 
-		
 
-		//Ausgangswerte setzen
-		iRueckgabewert = spielZugListe.getFirst();
-		System.out.println("Erster Rückgabewert zwischengespeichert: " + iRueckgabewert);
-		fProzent = 0;
 
 		for(int i=0; i<spielZugListe.size(); i++){
 			float fMax=0;
@@ -77,7 +72,13 @@ public class CompAlphaBeta implements ISpielStrategie{
 			oAlphaBeta= new AlphaBetaObjekt(null, lListLogErweitert, spielZugListe.size());
 			float fAuswertung = alphaBeta(oAlphaBeta, fMax, fMin);
 			System.out.println("Auswertung: " + fAuswertung);
-			
+
+			if(i==0){
+				fProzent = fAuswertung;
+				iRueckgabewert = spielZugListe.getFirst();
+				System.out.println("Erster Rückgabewert zwischengespeichert: " + iRueckgabewert);
+			}
+
 			if(fAuswertung > fProzent){
 				fProzent = fAuswertung;
 				iRueckgabewert = spielZugListe.get(i);
@@ -98,42 +99,43 @@ public class CompAlphaBeta implements ISpielStrategie{
 
 		//sind wir bei einem Blatt gelandet?
 		if(oAlphaBeta.auswerten()){
-			if(oAlphaBeta.getlListLogGroesse()%2==1){
-				float fTest = fMin + 1/oAlphaBeta.getiGeschwister();
-				System.out.println("oAlphaBeta-Auswertung für Spieler: " + fTest);
-				return fTest;
+			if(oAlphaBeta.getlListLogGroesse()%2==0){
+				fMin=-1;
+				System.out.println("Blattauswertung: -1, da PC am Zug");
+				return fMin;
 			}else{
-				float fTest = fMax + 1/oAlphaBeta.getiGeschwister();
-				System.out.println("oAlphaBeta-Auswertung für Computer: " + fTest);
-				return fTest;
+				fMax=1;
+				System.out.println("Blattauswertung: 1, da Spieler am Zug");
+				return fMax;
 			}
 		}
+		
 		System.out.println("Auswertung Schritt 1: kein Blatt");
-
 		for(int i=0; i<oAlphaBeta.getlListSpielZugListgroesse(); i++){
-			
+
 			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(oAlphaBeta.getlListLog());
 			lListLogErweitert.addLast(oAlphaBeta.getlListSpielZugZahl(i));
 			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast() + " als mögliche Zahl und Aanzahl Geschwister: " + oAlphaBeta.getlListSpielZugListgroesse());
 			oAlphaBeta= new AlphaBetaObjekt(oAlphaBeta, lListLogErweitert, oAlphaBeta.getlListSpielZugListgroesse());
-			
-			if(oAlphaBeta.getlListLogGroesse()%2==1){
+
+			if(oAlphaBeta.getlListLogGroesse()%2==0){
 				System.out.println("PC ist am Zug - neues Alphabeta-Objekt");
-				if(fMax<= (alphaBeta(oAlphaBeta, fMax, fMin))/oAlphaBeta.getiGeschwister()){
-					fMax = (alphaBeta(oAlphaBeta, fMax, fMin))/oAlphaBeta.getiGeschwister();
-				}
+				fMax = alphaBeta(oAlphaBeta, fMax, fMin);
 				System.out.println("fMax dazwischen: " + fMax);
-				if(fMax<=fMin){
+				if(fMax==-1){
+					lListLogErweitert.removeLast();
+				}
+				if(fMax==1){
 					System.out.println("test: fMax" + fMax + " fMin: " + fMin);
 					return fMax;
 				}
 			}else{
 				System.out.println("Spieler ist am Zug - neues Alphabeta-Objekt");
-				if(fMin<= (alphaBeta(oAlphaBeta, fMax, fMin)/oAlphaBeta.getiGeschwister())){
-					fMin = (alphaBeta(oAlphaBeta, fMax, fMin)/oAlphaBeta.getiGeschwister());
-				}
-
-				if(fMax<=fMin){
+				fMin = alphaBeta(oAlphaBeta, fMax, fMin);
+				if(fMin==1){
+					lListLogErweitert.removeLast();
+				}	
+				if(fMin==-1){
 					System.out.println("test2 - fMin: " + fMin + " fMax: " + fMax);
 					return fMin;
 				}
