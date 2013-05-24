@@ -76,6 +76,13 @@ public class AlphaBetaObjekt {
 	public void removelListSpielZugZahl(Object letzteZahl){
 		lListSpielZugListe.remove(letzteZahl);
 	}
+	
+	public boolean getlListSpielZugZahl1(Object letzteZahl){
+		if(lListSpielZugListe.contains(letzteZahl)){
+			return true;
+		}
+		return false;
+	}
 
 	public LinkedList<Integer> getlListLog() {
 		return lListLog;

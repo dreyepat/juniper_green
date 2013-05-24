@@ -117,8 +117,11 @@ public class CompAlphaBeta implements ISpielStrategie{
 					int letzteZahl = lListLogErweitert.getLast();
 					lListLogErweitert.removeLast();
 					if(oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse()>0){
-						System.out.println("" + letzteZahl + "sollte aus der Liste entfernt werden.");
+						boolean bZentfernt = oAlphaBeta.getoVorgaenger().getlListSpielZugZahl1(letzteZahl); 
+						System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
 						oAlphaBeta.getoVorgaenger().removelListSpielZugZahl(letzteZahl);
+						iAuswertung=0;
+						System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
 					}else{
 						return -1;
 					}
@@ -134,8 +137,11 @@ public class CompAlphaBeta implements ISpielStrategie{
 					int letzteZahl = lListLogErweitert.getLast();
 					lListLogErweitert.removeLast();
 					if(oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse()>0){
-						System.out.println("" + letzteZahl + "sollte aus der Liste entfernt werden - falls es richtig programmiert ist.");
+						boolean bZentfernt = oAlphaBeta.getoVorgaenger().getlListSpielZugZahl1(letzteZahl);
+						System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
 						oAlphaBeta.getoVorgaenger().removelListSpielZugZahl(letzteZahl);
+						iAuswertung=0;
+						System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
 					}else{
 						return 1;
 					}
@@ -149,7 +155,6 @@ public class CompAlphaBeta implements ISpielStrategie{
 		}
 		System.out.println("" + iAuswertung);
 		return iAuswertung;
-
 	}
 
 
