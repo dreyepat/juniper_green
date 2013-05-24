@@ -65,7 +65,6 @@ public class CompAlphaBeta implements ISpielStrategie{
 
 			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(lListLog);
 			lListLogErweitert.addLast(spielZugListe.get(i));
-			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast() + " als mögliche Zahl und Aanzahl Geschwister: " + spielZugListe.size());
 			oAlphaBeta= new AlphaBetaObjekt(null, lListLogErweitert);
 			int iAuswertung = alphaBeta(oAlphaBeta);
 			System.out.println("Auswertung: " + iAuswertung);
@@ -106,23 +105,30 @@ public class CompAlphaBeta implements ISpielStrategie{
 
 			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(oAlphaBeta.getlListLog());
 			lListLogErweitert.addLast(oAlphaBeta.getlListSpielZugZahl(i));
-			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast() + " als mögliche Zahl und Aanzahl Geschwister: " + oAlphaBeta.getlListSpielZugListgroesse());
+			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast());
 			oAlphaBeta= new AlphaBetaObjekt(oAlphaBeta, lListLogErweitert);
 
 			if(oAlphaBeta.getlListLogGroesse()%2==1){
-				System.out.println("PC ist am Zug - neues Alphabeta-Objekt");
 				iAuswertung = alphaBeta(oAlphaBeta);
 				System.out.println("PC-Zug mit Rückgabewert: " + iAuswertung);
+				
+				String liste= "";
+				for(int j=0; j<oAlphaBeta.getlListSpielZugListgroesse(); j++){
+					liste = liste + oAlphaBeta.getlListSpielZugZahl(j) + " ";
+				}
+				System.out.println("Mögliche Spielzüge für den PC: ist das korrekt? " + liste);
+				
+				
 				if(iAuswertung==-1){
 					int letzteZahl = lListLogErweitert.getLast();
 					lListLogErweitert.removeLast();
-					if(oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse()>0){
-						boolean bZentfernt = oAlphaBeta.getoVorgaenger().getlListSpielZugZahl1(letzteZahl); 
-						System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
-						oAlphaBeta.getoVorgaenger().removelListSpielZugZahl(letzteZahl);
-						iAuswertung=0;
-						System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
+					if(oAlphaBeta.getlListSpielZugListgroesse()>0){
+						boolean bZentfernt = oAlphaBeta.getlListSpielZugZahl1(letzteZahl); 
+						System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
+						oAlphaBeta.removelListSpielZugZahl(letzteZahl);
+						System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
 					}else{
+						oAlphaBeta = oAlphaBeta.getoVorgaenger();
 						return -1;
 					}
 				}
@@ -136,13 +142,13 @@ public class CompAlphaBeta implements ISpielStrategie{
 				if(iAuswertung==1){
 					int letzteZahl = lListLogErweitert.getLast();
 					lListLogErweitert.removeLast();
-					if(oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse()>0){
-						boolean bZentfernt = oAlphaBeta.getoVorgaenger().getlListSpielZugZahl1(letzteZahl);
-						System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
-						oAlphaBeta.getoVorgaenger().removelListSpielZugZahl(letzteZahl);
-						iAuswertung=0;
-						System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getoVorgaenger().getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
+					if(oAlphaBeta.getlListSpielZugListgroesse()>0){
+						boolean bZentfernt = oAlphaBeta.getlListSpielZugZahl1(letzteZahl);
+						System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
+						oAlphaBeta.removelListSpielZugZahl(letzteZahl);
+						System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
 					}else{
+						oAlphaBeta = oAlphaBeta.getoVorgaenger();
 						return 1;
 					}
 				}	
