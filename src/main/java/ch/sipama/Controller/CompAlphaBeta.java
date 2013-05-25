@@ -54,11 +54,11 @@ public class CompAlphaBeta implements ISpielStrategie{
 		}
 
 
-		String liste= "";
-		for(int i=0; i<spielZugListe.size(); i++){
-			liste = liste + spielZugListe.get(i) + " ";
-		}
-		System.out.println("Mögliche Spielzüge für den PC: " + liste);
+//		String liste= "";
+//		for(int i=0; i<spielZugListe.size(); i++){
+//			liste = liste + spielZugListe.get(i) + " ";
+//		}
+//		System.out.println("Mögliche Spielzüge für den PC: " + liste);
 
 
 		for(int i=0; i<spielZugListe.size(); i++){
@@ -67,7 +67,7 @@ public class CompAlphaBeta implements ISpielStrategie{
 			lListLogErweitert.addLast(spielZugListe.get(i));
 			oAlphaBeta= new AlphaBetaObjekt(null, lListLogErweitert);
 			int iAuswertung = alphaBeta(oAlphaBeta);
-			System.out.println("Auswertung: " + iAuswertung);
+//			System.out.println("Auswertung: " + iAuswertung);
 
 			if(iAuswertung == 1){
 				System.out.println("Siegesstrasse gefunden - Rückgabezahl: " + spielZugListe.get(i));
@@ -93,78 +93,78 @@ public class CompAlphaBeta implements ISpielStrategie{
 		//sind wir bei einem Blatt gelandet?
 		if(oAlphaBeta.auswerten()){
 			if(oAlphaBeta.getlListLogGroesse()%2==1){
-				System.out.println("Blattauswertung: -1, da PC am Zug");
+//				System.out.println("Blattauswertung: -1, da PC am Zug");
 				return -1;
 			}else{
-				System.out.println("Blattauswertung: 1, da Spieler am Zug");
+//				System.out.println("Blattauswertung: 1, da Spieler am Zug");
 				return 1;
 			}
 		}
 
 		for(int i=0; i<oAlphaBeta.getlListSpielZugListgroesse(); i++){
 
+			//für jeden möglichen Spielzug den möglichen Spielverlauf um diese Zahl erweitern und ein neues Alphabeta-Objekt erstellen
 			LinkedList<Integer>lListLogErweitert = new LinkedList<Integer>(oAlphaBeta.getlListLog());
 			lListLogErweitert.addLast(oAlphaBeta.getlListSpielZugZahl(i));
-			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast());
-			oAlphaBeta= new AlphaBetaObjekt(oAlphaBeta, lListLogErweitert);
+//			System.out.println("Neues AlphabetaObjekt erstellt mit " + lListLogErweitert.getLast());
+			AlphaBetaObjekt alphaBetaNachfolger = new AlphaBetaObjekt(oAlphaBeta, lListLogErweitert);
 
-			if(oAlphaBeta.getlListLogGroesse()%2==1){
-				iAuswertung = alphaBeta(oAlphaBeta);
-				System.out.println("PC-Zug mit Rückgabewert: " + iAuswertung);
+			//Auswertung vom Ast zwischenspeichern und anschliessend prüfen:
+			iAuswertung=alphaBeta(alphaBetaNachfolger);
+
+			//PC ist am Zug:
+			if(alphaBetaNachfolger.getlListLogGroesse()%2==0){
 				
-				String liste= "";
-				for(int j=0; j<oAlphaBeta.getlListSpielZugListgroesse(); j++){
-					liste = liste + oAlphaBeta.getlListSpielZugZahl(j) + " ";
-				}
-				System.out.println("Mögliche Spielzüge für den PC: ist das korrekt? " + liste);
-				
-				
-				if(iAuswertung==-1){
-					int letzteZahl = lListLogErweitert.getLast();
-					lListLogErweitert.removeLast();
-					if(oAlphaBeta.getlListSpielZugListgroesse()>0){
-						boolean bZentfernt = oAlphaBeta.getlListSpielZugZahl1(letzteZahl); 
-						System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
-						oAlphaBeta.removelListSpielZugZahl(letzteZahl);
-						System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
-					}else{
-						oAlphaBeta = oAlphaBeta.getoVorgaenger();
-						return -1;
-					}
-				}
+				//Block zum löschen, sobald es läuft
+//				System.out.println("PC-Zug mit Rückgabewert: " + iAuswertung);		
+//				String liste1= "";
+//				for(int k=0; k<alphaBetaNachfolger.getlListLogGroesse(); k++){
+//					liste1 = liste1 + alphaBetaNachfolger.getlListLogZahl(k) + " ";
+//				}
+//				System.out.println("Bisheriger Spielverlauf: " + liste1);
+//				String liste= "";
+//				for(int j=0; j<alphaBetaNachfolger.getlListSpielZugListgroesse(); j++){
+//					liste = liste + alphaBetaNachfolger.getlListSpielZugZahl(j) + " ";
+//				}
+//				System.out.println("Mögliche Spielzüge für den PC: " + liste);
+//				
+				//Auswertung zu meinen Gunsten - nicht weitersuchen und zurückgeben
 				if(iAuswertung==1){
-					System.out.println("Siegesstrasse für PC - iAuswertung=1 wird zurückgegeben");
+//					System.out.println("iAuswertung zu Gunsten des PCs, deshalb Wert zurückgeben");
 					return iAuswertung;
 				}
+				
+				//Falls nicht, prüfen, ob es noch weitere Spielzüge gibt, die für den PC besser sind:
+//				System.out.println("Gibt es noch bessere Spielzüge für PC?");
+				
 			}else{
-				System.out.println("Spieler ist am Zug - neues Alphabeta-Objekt");
-				iAuswertung = alphaBeta(oAlphaBeta);
-				if(iAuswertung==1){
-					int letzteZahl = lListLogErweitert.getLast();
-					lListLogErweitert.removeLast();
-					if(oAlphaBeta.getlListSpielZugListgroesse()>0){
-						boolean bZentfernt = oAlphaBeta.getlListSpielZugZahl1(letzteZahl);
-						System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
-						oAlphaBeta.removelListSpielZugZahl(letzteZahl);
-						System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
-					}else{
-						oAlphaBeta = oAlphaBeta.getoVorgaenger();
-						return 1;
-					}
-				}	
+				//Block zum löschen, sobald es läuft
+//				System.out.println("Spieler-Zug mit Rückgabewert: " + iAuswertung);		
+//				String liste1= "";
+//				for(int k=0; k<alphaBetaNachfolger.getlListLogGroesse(); k++){
+//					liste1 = liste1 + alphaBetaNachfolger.getlListLogZahl(k) + " ";
+//				}
+//				System.out.println("Bisheriger Spielverlauf: " + liste1);
+//				String liste= "";
+//				for(int j=0; j<alphaBetaNachfolger.getlListSpielZugListgroesse(); j++){
+//					liste = liste + alphaBetaNachfolger.getlListSpielZugZahl(j) + " ";
+//				}
+//				System.out.println("Mögliche Spielzüge für den Spieler: " + liste);
+				
+				//Auswertung ist zu Gunsten des Spielers
 				if(iAuswertung==-1){
-					System.out.println("Siegesstrasse für Spieler - iAuswertung=-1 wird zurückgegeben");
+//					System.out.println("iAuswertung zu Gunsten des Spielers, deshalb Wert zurückgeben");
 					return iAuswertung;
 				}
+				
+				//Falls nicht, prüfen, ob es noch weitere Spielzüge gibt, die für den Spieler besser sind:
+//				System.out.println("Gibt es noch bessere Spielzüge für Spieler?");
 			}
-			
 		}
-		System.out.println("" + iAuswertung);
+
+//		System.out.println("kein Resultat in der Forschleife - Zwischenwert wird weitergegeben: " + iAuswertung);
 		return iAuswertung;
 	}
-
-
-
 
 	//	1 function ALPHABETA(KNOTEN V, INT A, INT B): INT  				Knoten: gezZahl, Zahl A, Zahl B und Augabewert: "nächster Spielzug" als Zahl
 	//	2 if (v hat keinen Nachfolger) return f(v); {Blattbewertung}	if v=1, höchste Primzahl oder verlieren
@@ -188,3 +188,72 @@ public class CompAlphaBeta implements ISpielStrategie{
 
 
 }
+
+
+
+//		System.out.println("PC-Zug mit Rückgabewert: " + iAuswertung);
+//		
+//		String liste= "";
+//		for(int j=0; j<oAlphaBeta.getlListSpielZugListgroesse(); j++){
+//			liste = liste + oAlphaBeta.getlListSpielZugZahl(j) + " ";
+//		}
+//		System.out.println("Mögliche Spielzüge für den PC: ist das korrekt? " + liste);
+//		
+//		
+//		if(iAuswertung==-1){
+//			int letzteZahl = lListLogErweitert.getLast();
+//			lListLogErweitert.removeLast();
+//			if(oAlphaBeta.getlListSpielZugListgroesse()>0){
+//				boolean bZentfernt = oAlphaBeta.getlListSpielZugZahl1(letzteZahl); 
+//				System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
+//				oAlphaBeta.removelListSpielZugZahl(letzteZahl);
+//				System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
+//				i--;
+//			}else{
+//				oAlphaBeta = oAlphaBeta.getoVorgaenger();
+//				lListLogErweitert.removeLast();
+//				if(!oAlphaBeta.auswerten()){
+//					iAuswertung=0;
+//					System.out.println("iAuswertung = 0 gesetzt");
+//					//return iAuswertung;
+//				}
+//			}
+//		}
+//		if(iAuswertung==1){
+//			System.out.println("Siegesstrasse für PC - iAuswertung=1 wird zurückgegeben");
+//			oAlphaBeta = oAlphaBeta.getoVorgaenger();
+//			return iAuswertung;
+//		}
+//		
+//		
+//		
+//	}else{
+//		System.out.println("Spieler ist am Zug - neues Alphabeta-Objekt");
+//		iAuswertung = alphaBeta(oAlphaBeta);
+//		if(iAuswertung==1){
+//			int letzteZahl = lListLogErweitert.getLast();
+//			lListLogErweitert.removeLast();
+//			if(oAlphaBeta.getlListSpielZugListgroesse()>0){
+//				boolean bZentfernt = oAlphaBeta.getlListSpielZugZahl1(letzteZahl);
+//				System.out.println("SpielzuglistGrösse vorher: " + oAlphaBeta.getlListSpielZugListgroesse() + " Boolean - Objekt gefunden: " + bZentfernt);
+//				oAlphaBeta.removelListSpielZugZahl(letzteZahl);
+//				System.out.println("SpielzuglistGrösse nachher: " + oAlphaBeta.getlListSpielZugListgroesse() + " iAuswertung = " + iAuswertung);
+//				i--;
+//			}else{
+//				oAlphaBeta = oAlphaBeta.getoVorgaenger();
+//				lListLogErweitert.removeLast();
+//				if(!oAlphaBeta.auswerten()){
+//					iAuswertung=0;
+//					System.out.println("iAuswertung = 0 gesetzt");
+//					//return iAuswertung;
+//				}
+//			}
+//		}	
+//		if(iAuswertung==-1){
+//			System.out.println("Siegesstrasse für Spieler - iAuswertung=-1 wird zurückgegeben");
+//			oAlphaBeta = oAlphaBeta.getoVorgaenger();
+//			return iAuswertung;
+//		}
+//	}
+//	
+//}

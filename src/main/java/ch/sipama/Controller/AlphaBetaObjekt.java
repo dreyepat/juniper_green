@@ -17,11 +17,11 @@ public class AlphaBetaObjekt {
 		oVorgaenger = vorgaenger;
 		lListLog = new LinkedList<Integer>(log);
 		
-		String sLog = "";
-		for(int i=0; i<lListLog.size(); i++){
-			sLog = sLog + lListLog.get(i) + " ";
-		}
-		System.out.println("virtuelles Log: " + sLog);
+//		String sLog = "";
+//		for(int i=0; i<lListLog.size(); i++){
+//			sLog = sLog + lListLog.get(i) + " ";
+//		}
+//		System.out.println("virtuelles Log: " + sLog);
 		
 		oSpdaten = Spieldaten.getInstance();
 
@@ -40,11 +40,11 @@ public class AlphaBetaObjekt {
 		}
 		
 		
-		String liste= "";
-		for(int i=0; i<lListSpielZugListe.size(); i++){
-			liste = liste + lListSpielZugListe.get(i) + " ";
-		}
-		System.out.println("Mögliche Spielzüge vom neuen AlphaBetaObjekt: " + liste);
+//		String liste= "";
+//		for(int i=0; i<lListSpielZugListe.size(); i++){
+//			liste = liste + lListSpielZugListe.get(i) + " ";
+//		}
+//		System.out.println("Mögliche Spielzüge vom neuen AlphaBetaObjekt: " + liste);
 		
 		
 	}
@@ -87,5 +87,10 @@ public class AlphaBetaObjekt {
 	public LinkedList<Integer> getlListLog() {
 		return lListLog;
 	}
+	
+	public int getlListLogZahl(int index){
+		return lListLog.get(index);
+	}
+	
 	
 }
