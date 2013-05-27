@@ -155,26 +155,6 @@ public class Zahlenfeld{
 	}
 
 
-//	public boolean icCellEditable(){
-//		zahlenfeld.addMouseListener( new MouseAdapter()
-//		{
-//			@Override
-//			public void mouseClicked( MouseEvent e )
-//			{
-//				int rowAtPoint    = zahlenfeld.rowAtPoint(e.getPoint());
-//				int columnAtPoint = zahlenfeld.columnAtPoint(e.getPoint());
-//				isCellEditable(rowAtPoint, columnAtPoint);
-//				System.out.println(zahlenfeld.getValueAt(rowAtPoint, columnAtPoint));
-//			}
-//		} );
-//		return false;
-//	}
-//
-//	public boolean isCellEditable(int row, int col) {
-//		return false;
-//	}
-
-
 	public String spielzug(){
 		String gezZahl="";
 		try{

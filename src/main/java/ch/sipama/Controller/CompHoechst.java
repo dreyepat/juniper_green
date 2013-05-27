@@ -18,7 +18,7 @@ public class CompHoechst implements ISpielStrategie{
 			return oSpdaten.getGroesstePrimzahl();
 		}
 
-		//die höchste mögliche Zahl zurückgeben
+		//die höchst mögliche Zahl zurückgeben
 		LinkedList<Integer> moeglicheSpielzuege = new LinkedList<Integer>(oSpdaten.naechsterSpielzug());
 		return moeglicheSpielzuege.getLast();
 	}

@@ -13,12 +13,15 @@ public class CompRandom implements ISpielStrategie{
 	
 	public int naechsterPCSpielzug(){
 
+		//Sofern der Spieler die Zahl 1 gezogen hat, wird die grösste Primzahl zurückgegeben
 		if(oSpdaten.getLogZahl(oSpdaten.logListgroesse()-1)==1){
 			return oSpdaten.getGroesstePrimzahl();
 		}
+		
+		//Liste mit möglichen Spielzügen erstellen
 		LinkedList<Integer> moeglicheSpielzuege = new LinkedList<Integer>(oSpdaten.naechsterSpielzug());
 
-		//Zahl 1 entfernen, falls im Array mehr als 1 Zahl ist und falls die erste Zahl des Arrays wirklich eine 1 ist
+		//Zahl 1 entfernen, (falls Array grösser als 1 und überhaupt im Array enthalten)
 		if(moeglicheSpielzuege.size()>1 && moeglicheSpielzuege.getFirst()==1){
 			moeglicheSpielzuege.removeFirst();
 		}

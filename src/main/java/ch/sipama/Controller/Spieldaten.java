@@ -61,21 +61,19 @@ public class Spieldaten {
 				i--;
 			}
 		}
-
 	}
-
-
 
 	public String logAnzeigen(){
 		String spielverlauf = "<html><body>";
 		for(int i=0; i<lListLog.size(); i++){
-
 			spielverlauf = spielverlauf + lListLog.get(i).getSpieler() + ": " + lListLog.get(i).getZahl() + "<br>";	
+		}
+		if(spielverlauf.length()==12){
+			spielverlauf = spielverlauf + "Es wurde bisher noch kein Spielzug ausgeführt!";	
 		}
 		spielverlauf = spielverlauf + "</body></html>";
 		return spielverlauf;
 	}
-
 
 	public void spielzugAusfuehren(int row, int column, int gezZahl){
 		String spieler;
@@ -99,8 +97,6 @@ public class Spieldaten {
 		}
 	}
 
-
-
 	public void pcSpielzugAusfuehren(int row, int column, int gezZahl){
 		if(bSpielende==false){
 			iZaehler++;
@@ -115,7 +111,6 @@ public class Spieldaten {
 			}
 		}
 	}
-
 
 	public boolean validieren(int gezogeneZahl){
 		if(bSpielstart==true){
@@ -132,8 +127,6 @@ public class Spieldaten {
 			return false;
 		}
 	}
-
-
 
 	public LinkedList<Integer> naechsterSpielzug(){
 		LinkedList<Integer> spielHilfe;
@@ -161,8 +154,6 @@ public class Spieldaten {
 		return spielHilfe;	
 	}
 
-
-
 	public String moegSPAnzeigen(){
 		String moegSpielzuege = "<html><body> Mögliche Spielzüge:<br>";
 		LinkedList<Integer> spielHilfe = naechsterSpielzug();
@@ -176,8 +167,6 @@ public class Spieldaten {
 		moegSpielzuege = moegSpielzuege + "</body></html>";
 		return moegSpielzuege;
 	}
-
-
 
 	public int logListgroesse(){
 		return lListLog.size();
@@ -214,7 +203,4 @@ public class Spieldaten {
 	public void rueckgaengigLog() {
 		lListLog.removeLast();		
 	}
-
-	
-
 }

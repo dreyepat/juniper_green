@@ -4,27 +4,17 @@ import java.util.LinkedList;
 
 public class AlphaBetaObjekt {
 
-	private AlphaBetaObjekt oVorgaenger;
 	private LinkedList<Integer> lListSpielZugListe;
 	private LinkedList<Integer> lListLog;
-
-	
-
 	private Spieldaten oSpdaten;
 
 
-	public AlphaBetaObjekt(AlphaBetaObjekt vorgaenger, LinkedList<Integer> log){
-		oVorgaenger = vorgaenger;
+	//neues Alphabeta-Objekt erstellen wobei das bisherige Log übernommen wird
+	public AlphaBetaObjekt(LinkedList<Integer> log){
 		lListLog = new LinkedList<Integer>(log);
-		
-//		String sLog = "";
-//		for(int i=0; i<lListLog.size(); i++){
-//			sLog = sLog + lListLog.get(i) + " ";
-//		}
-//		System.out.println("virtuelles Log: " + sLog);
-		
 		oSpdaten = Spieldaten.getInstance();
 
+		//eine neue Liste erstellen mit allen möglichen nächsten Spielzügen
 		int letzterZug = lListLog.getLast();
 		lListSpielZugListe = new LinkedList<Integer>(oSpdaten.getZRaumListe(letzterZug-1));
 		for(int i=0; i<lListLog.size(); i++){
@@ -34,31 +24,19 @@ public class AlphaBetaObjekt {
 				}
 			}
 		}
-				
+		//Die 1 aus der Liste möglicher Spielzüge entfernen		
 		if(lListSpielZugListe.getFirst()==1){
 			lListSpielZugListe.removeFirst();
 		}
-		
-		
-//		String liste= "";
-//		for(int i=0; i<lListSpielZugListe.size(); i++){
-//			liste = liste + lListSpielZugListe.get(i) + " ";
-//		}
-//		System.out.println("Mögliche Spielzüge vom neuen AlphaBetaObjekt: " + liste);
-		
-		
 	}
 
 
+	//Prüfen, ob das Alphabeta-Objekt ein Blatt ist
 	public boolean auswerten(){
 		if(lListSpielZugListe.size()==0){
 			return true;
 		}
 		return false;	
-	}
-
-	public AlphaBetaObjekt getoVorgaenger() {
-		return oVorgaenger;
 	}
 	
 	public int getlListLogGroesse(){

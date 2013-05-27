@@ -32,13 +32,11 @@ public class Hauptgui extends JPanel {
 	private Spielfenster oSpielfenster;
 	private Spieldaten oSpdaten;
 	
-	
 	//Defaultkonstruktor
 	public Hauptgui(){
 		createFrame();
 		oSpdaten = Spieldaten.getInstance();
 	}
-	
 	
 	//Fenster erstellen
 	public void createFrame(){
@@ -49,19 +47,13 @@ public class Hauptgui extends JPanel {
 		oSpielfenster = new Spielfenster();
 		frame.getContentPane().add(oSpielfenster.getSplitPane());
 		
-		
 		//Menübar einbinden, indem die entsprechende Methode aufgerufen wird
 		createMenuBar();
-		
-		
-			
+
 		//Rahmengrösse definieren und sichtbar setzen
 		frame.setBounds(200, 150, 950, 550);
 		frame.setMinimumSize(new Dimension(450, 300));
 		frame.setVisible(true);
-		
-		
-		
 	}
 	
 	
@@ -73,11 +65,10 @@ public class Hauptgui extends JPanel {
 		//Menü 'Datei' mit den Befehlen
 		JMenu dateiMenu = new JMenu("Datei");
 		JMenu jgMenu = new JMenu("Juniper Green");
-		JMenu hilfeMenu = new JMenu("Hilfe");
+		JMenu infoMenu = new JMenu("Infos");
 		bar.add(dateiMenu);
 		bar.add(jgMenu);
-		bar.add(hilfeMenu);
-		
+		bar.add(infoMenu);
 		
 		//Menüpunkte erstellen und hinzufügen
 		JMenuItem beenden = new JMenuItem("Beenden");
@@ -85,16 +76,15 @@ public class Hauptgui extends JPanel {
 		
 		JMenuItem spielregeln = new JMenuItem("Spielregeln");
 		jgMenu.add(spielregeln);
-		JMenuItem log = new JMenuItem("Log");
-		jgMenu.add(log);
+		JMenuItem spielverlauf = new JMenuItem("Spielverlauf");
+		jgMenu.add(spielverlauf);
 		JMenuItem rueckgaengig = new JMenuItem("Rückgängig");
 		jgMenu.add(rueckgaengig);
 		
-		
-		JMenuItem hilfe = new JMenuItem("Anleitung");
-		hilfeMenu.add(hilfe);
-		JMenuItem ueber = new JMenuItem("Über...");
-		hilfeMenu.add(ueber);
+		JMenuItem github = new JMenuItem("Zum Github-Repository");
+		infoMenu.add(github);
+		JMenuItem ueber = new JMenuItem("Über");
+		infoMenu.add(ueber);
 		
 		
 		//Action-Listener für die Menüpunkte
@@ -108,7 +98,7 @@ public class Hauptgui extends JPanel {
 		});
 		
 		//Öffnet unsere Github-Seite
-		hilfe.addActionListener(new ActionListener(){
+		github.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				ladeURL("https://github.com/dreyepat/juniper_green"); 
@@ -119,7 +109,8 @@ public class Hauptgui extends JPanel {
 		ueber.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				String sUeber="<html><body>Juniper Green<br><br>Version 2013.1.0<br><br>von<br>Patrizia Dreyer<br>Marco Lamm<br>Simone Sterren</body></html>";
+				JOptionPane.showMessageDialog(null, sUeber, "Über", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
@@ -130,25 +121,17 @@ public class Hauptgui extends JPanel {
 			}
 		});
 		
-		
-		
-		log.addActionListener(new ActionListener(){
+		spielverlauf.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
 				logAnzeigen();
 			}
 		});
 		
-		
-		
 		rueckgaengig.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				oSpielfenster.rueckgaengig();
-				
-				
-				
-				
 			}
 		});
 		
@@ -168,7 +151,7 @@ public class Hauptgui extends JPanel {
 		String spielregeln = "<html><body>Spielregeln<br><br>" +
 				"1. Beide Spieler nehmen abwechselnd jeweils eine Zahl aus der Tabelle.<br>Die entfernten Zahlen werden nicht ersetzt und im weiteren Verlauf<br>nicht mehr verwendet.<br><br>" +
 				"2. Im ersten Zug muss eine gerade Zahl gezogen werden. In allen weiteren<br>Zügen muss die gewählte Zahl ein Teiler oder ein Vielfaches der<br>zuletzt gezogenen sein.<br><br>" +
-				"3. Wer keine Zahl mehr ziehen kann, hat verloren.</html></body>";
+				"3. Wer keine Zahl mehr ziehen kann, hat verloren.</body></html>";
 		JOptionPane.showMessageDialog(null, spielregeln, "Spielregeln", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
