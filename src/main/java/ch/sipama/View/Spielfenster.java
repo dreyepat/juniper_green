@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import ch.sipama.Controller.Spieldaten;
 
+/**
+ * @author Simone Sterren
+ *
+ */
 
 public class Spielfenster {
 

@@ -3,12 +3,13 @@ package ch.sipama.Controller;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class CompAlphaBeta implements ISpielStrategie{
+/**
+ * @author Simone Sterren
+ * @param oSpdaten - Das Spielfeld
+ * @return iRueckgabewert - der ermittelte Zugwert
+ */
 
-	/**
-	 * @param oSpdaten - Das Spielfeld
-	 * @return iRueckgabewert - der ermittelte Zugwert
-	 */
+public class CompAlphaBeta implements ISpielStrategie{
 
 	private Spieldaten oSpdaten;
 	private AlphaBetaObjekt oAlphaBeta;

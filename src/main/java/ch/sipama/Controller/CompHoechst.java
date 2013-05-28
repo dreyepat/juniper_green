@@ -2,6 +2,11 @@ package ch.sipama.Controller;
 
 import java.util.LinkedList;
 
+/**
+ * @author Patrizia Dreyer
+ *
+ */
+
 public class CompHoechst implements ISpielStrategie{
 
 	private Spieldaten oSpdaten;

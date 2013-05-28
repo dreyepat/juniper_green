@@ -12,6 +12,11 @@ import ch.sipama.Controller.CompRandom;
 import ch.sipama.Controller.ISpielStrategie;
 import ch.sipama.Controller.Spieldaten;
 
+/**
+ * @author Marco Lamm
+ *
+ */
+
 public class Zahlenfeld{
 
 	private String sSpielerA;

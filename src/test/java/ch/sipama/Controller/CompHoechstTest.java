@@ -3,6 +3,11 @@ package ch.sipama.Controller;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+/**
+ * @author Marco Lamm
+ *
+ */
+
 public class CompHoechstTest {
 	
 	private Spieldaten oSpdaten;
