@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
+/**
+ * @author Simone Sterren
+ *
+ */
 
 public class Spieldaten {
 

@@ -2,6 +2,11 @@ package ch.sipama.Controller;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author Marco Lamm
+ *
+ */
+
 public class CompHoechstTest {
 	
 	private Spieldaten oSpdaten;

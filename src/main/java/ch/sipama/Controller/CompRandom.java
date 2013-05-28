@@ -3,6 +3,11 @@ package ch.sipama.Controller;
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * @author Simone Sterren
+ *
+ */
+
 public class CompRandom implements ISpielStrategie{
 
 	private Spieldaten oSpdaten;

@@ -1,5 +1,10 @@
 package ch.sipama.Controller;
 
+/**
+ * @author Marco Lamm
+ *
+ */
+
 public class Spielzug {
 	
 	private String sSpieler;

@@ -2,6 +2,11 @@ package ch.sipama.Controller;
 
 import java.util.LinkedList;
 
+/**
+ * @author Simone Sterren
+ *
+ */
+
 public class AlphaBetaObjekt {
 
 	private LinkedList<Integer> lListSpielZugListe;
