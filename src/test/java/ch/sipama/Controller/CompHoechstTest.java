@@ -1,11 +1,13 @@
 package ch.sipama.Controller;
 
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class CompHoechstTest {
 	
 	private Spieldaten oSpdaten;
 	
+	@Test
 	public void testAll() {
 		oSpdaten = Spieldaten.getInstance();
 		oSpdaten.setSpieldaten(10, "sSpielerA", "sSpielerB");
