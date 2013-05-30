@@ -53,7 +53,7 @@ public class CompAlphaBeta implements ISpielStrategie{
 			return spielZugListe.getFirst();
 		}
 
-		//Falls Spieler nach der 1 von Anna nicht beendet, Randommässig ziehen
+		//Falls Spieler nach der 1 von Anna nicht beendet, randommässig weiterspielen
 		if(lListLog.contains(1)){
 			Random rnd=new Random();
 			int z=rnd.nextInt(spielZugListe.size()); 

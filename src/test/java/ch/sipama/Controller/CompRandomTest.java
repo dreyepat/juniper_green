@@ -16,9 +16,6 @@ public class CompRandomTest {
 	public boolean enthaeltZahl() {
 
 		LinkedList<Integer> array = new LinkedList<Integer>(oSpdaten.naechsterSpielzug());
-		
-
-		
 		if(array.contains(cr.naechsterPCSpielzug())){
 			return true;
 		}
@@ -32,6 +29,7 @@ public class CompRandomTest {
 		oSpdaten=Spieldaten.getInstance();
 		oSpdaten.setSpieldaten(10, "sSpielerA", "sSpielerB");
 		oSpdaten.spielzugAusfuehren(0, 3, 4);
+		oSpdaten.setbSpielstart(false);
 
 		//Objekt erstellen
 		assertNotNull(cr);

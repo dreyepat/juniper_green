@@ -4,6 +4,13 @@ import static org.junit.Assert.*;
 import java.util.LinkedList;
 import org.junit.Test;
 
+/**
+ * @author Patrizia Dreyer
+ * 
+ *
+ */
+
+
 public class AlphaBetaObjektTest {
 	
 	private Spieldaten oSpdaten;

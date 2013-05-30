@@ -216,6 +216,14 @@ public class Spielfenster {
 	public void spielNeustarten(){
 		try{
 			iZRange = Integer.parseInt(getZahlenraum());
+			
+			if(iZRange>50 && comboBoxCompListe.getSelectedIndex()==1){
+				JOptionPane.showMessageDialog(null, "Beschränke den Zahlenraum bei Anna auf max. 50!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+				txtZahlenraum.setText("50");
+				return;
+			}
+			
+			
 			if(iZRange < 10 || iZRange > 1000){
 				JOptionPane.showMessageDialog(null, "Trage eine Zahl zwischen 10 und 1000 ein!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 				txtZahlenraum.setText("");
@@ -283,7 +291,12 @@ public class Spielfenster {
 		if(iSpielmodi>0 && spielzug.length()>0){
 			lblSpielinfo1.setText(txtSpielerA.getText() + " hat die Zahl " + spielzug + " gezogen.");
 			String pcSpielzug = oZFeld.pcSpielzug();
-			lblSpielinfo2.setText("PC: " + comboBoxCompListe.getItemAt(iSpielmodi-1) + " hat die Zahl " + pcSpielzug + " gezogen.");
+			if(pcSpielzug.length()>0){
+				lblSpielinfo2.setText("PC: " + comboBoxCompListe.getItemAt(iSpielmodi-1) + " hat die Zahl " + pcSpielzug + " gezogen.");
+			}else{
+				lblSpielinfo2.setText("PC: " + comboBoxCompListe.getItemAt(iSpielmodi-1) + " hat verloren!");
+			}
+			
 
 		}else if(spielzug.length()>0){
 			lblSpielinfo2.setText("Zuletzt gezogene Zahl: " + spielzug);
