@@ -176,6 +176,10 @@ public class Spieldaten {
 		return lListLog.size();
 	}
 	
+	public void setbSpielstart(boolean bSpielstart) {
+		this.bSpielstart = bSpielstart;
+	}
+	
 	public String getLogSpieler(int index) {
 		return lListLog.get(index).getSpieler();
 	}
